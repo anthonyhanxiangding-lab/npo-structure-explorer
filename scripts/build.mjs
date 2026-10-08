@@ -1,0 +1,10 @@
+import fs from 'node:fs';
+import {build} from 'esbuild';
+import {execFileSync} from 'node:child_process';
+const db=JSON.parse(fs.readFileSync('database.json','utf8'));
+const out=await build({entryPoints:['web/app.js'],bundle:true,write:false,minify:true,format:'iife',target:['chrome110','safari16'],legalComments:'inline'});
+const script=out.outputFiles[0].text.replace(/<\/script/gi,'<\\/script');
+const html=fs.readFileSync('web/template.html','utf8').replace('/*STYLE*/',()=>fs.readFileSync('web/styles.css','utf8')).replace('/*SCRIPT*/',()=>script);
+fs.writeFileSync('index.html',html);fs.writeFileSync('NPO结构探索器.html',html);
+execFileSync('python3',['scripts/export-sqlite.py']);
+console.log(`Built ${html.length} characters; ${db.components.length} components; ${db.sources.length} sources`);
