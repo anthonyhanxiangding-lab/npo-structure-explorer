@@ -1,0 +1,1150 @@
+{
+  "schemaVersion": "1.0.0",
+  "dataset": "npo-architecture",
+  "asOf": "2026-10-08",
+  "scope": "单个3.2T或6.4T NPO模块及分摊供光链路。交换ASIC仅作外部位置参照，不在组件树和BOM内",
+  "schemaNotes": {
+    "architectures": "前端可选研究模型，每个对象含通道定义、自动电侧配置、默认集成参数及证据状态。不是厂商准确拆机BOM",
+    "sourceIds": "关联sources.id；supports表示确切支持范围，不代表该来源支持同一对象中的全部模型假设",
+    "status": "product=已发布产品；sampling=送样；demonstration=演示；roadmap=路线；scenario=组合研究情景；reference=相邻技术参考",
+    "quantityKind": "functional_channel=功能通道数量；physical_assembly=物理采购总成数量；allocated_share=分摊数量；integrated_feature=已集成于父件的结构数量",
+    "costRule": "group与integrated_feature禁止与父件采购成本重复求和；只累计选择后的独立采购层。缺乏可支持的拆分价格时，子件价格应为null",
+    "date": "date为原资料日期，只有版本月份时保留YYYY-MM；accessed为本轮核验日，二者不得混用"
+  },
+  "definitions": [
+    {
+      "id": "capacity",
+      "term": "3.2T/6.4T",
+      "meaning": "按一个方向的名义带宽定义。全双工有同速Tx和Rx，不能把1.6T Tx＋1.6T Rx改名为3.2T",
+      "sourceIds": [
+        "AR02"
+      ]
+    },
+    {
+      "id": "opticalLane",
+      "term": "光lane",
+      "meaning": "独立调制的数据通道。本模型默认并行单模、一条波长占用一条Tx或Rx纤芯；如果引入WDM，lane数与光纤根数需分开计算",
+      "sourceIds": [
+        "AR01",
+        "AR02"
+      ]
+    },
+    {
+      "id": "electricalLane",
+      "term": "电lane",
+      "meaning": "主机与光引擎之间的高速差分电通道。每方向单独计数。名义200G与器件212/224Gb/s级规格不可当作不同总带宽相加",
+      "sourceIds": [
+        "AR01",
+        "AR02",
+        "AR07"
+      ]
+    },
+    {
+      "id": "port",
+      "term": "端口",
+      "meaning": "多个光lane可以组成一个协议端口。8×400GBASE-DR4表示8个400G端口，合计32条100G级光lane；不表示8条400G光lane",
+      "sourceIds": [
+        "AR01"
+      ]
+    },
+    {
+      "id": "npo",
+      "term": "NPO",
+      "meaning": "本网页约定光引擎为ASIC封装外、邻近ASIC的独立模块。主机ASIC为环境参照，不属于NPO模块BOM。光引擎内部PIC与EIC的集成仍属于NPO内部封装",
+      "sourceIds": [
+        "AR04",
+        "AR12"
+      ]
+    },
+    {
+      "id": "els",
+      "term": "ELS/ELSFP",
+      "meaning": "ELS是供光功能，ELSFP是一种外置可插拔光源形态。CW供光路数不必等于数据lane数，一路激光可通过分光供多个调制器",
+      "sourceIds": [
+        "AR01",
+        "AR02"
+      ]
+    },
+    {
+      "id": "packageVsChannel",
+      "term": "芯片颗数与通道数",
+      "meaning": "Driver/TIA可多通道集成于一颗裸片或同一EIC。一条lane需要一个功能通道，不一定需要一颗独立芯片",
+      "sourceIds": [
+        "AR05",
+        "AR06"
+      ]
+    },
+    {
+      "id": "fiberVsFau",
+      "term": "光纤数与FAU总成数",
+      "meaning": "FAU容纳多根光纤。Tx/Rx是否合并在同一FAU、供光纤是否另配FAU、PIC版图和耦合方式都会影响总成数量",
+      "sourceIds": [
+        "AR02",
+        "AR11"
+      ]
+    }
+  ],
+  "architectures": [
+    {
+      "id": "npo3200-16x200",
+      "label": "3.2T · 16×200G",
+      "capacityGbps": 3200,
+      "capacityBasis": "per_direction",
+      "opticalLaneGbps": 200,
+      "opticalTxLanes": 16,
+      "opticalRxLanes": 16,
+      "electricalLaneGbps": 200,
+      "electricalTxLanes": 16,
+      "electricalRxLanes": 16,
+      "electricalSelectionVisible": false,
+      "signalMode": "linear",
+      "opticalTopology": "parallel_single_mode",
+      "laserPlacementOptions": [
+        "external_els",
+        "module_integrated_cw"
+      ],
+      "defaultLaserPlacement": "external_els",
+      "status": "roadmap_referenced_generic_model",
+      "displayStatus": "通用16×200G示意，含厂商路线参考",
+      "sourceIds": [
+        "AR05",
+        "AR09",
+        "AR10",
+        "AR14"
+      ],
+      "quantityAssumptions": [
+        "driver/tia每颗4lane",
+        "PIC每颗8路双向光lane",
+        "信号FAU每组8芯且Tx/Rx分体",
+        "每路CW供4条Tx lane",
+        "8路ELS按实际供光路数分摊"
+      ],
+      "defaultQuantities": {
+        "npoModule": 1,
+        "opticalTxFunctionalChannels": 16,
+        "opticalRxFunctionalChannels": 16,
+        "driverEquivalentPackages": 4,
+        "tiaEquivalentPackages": 4,
+        "picEquivalentDies": 2,
+        "signalFauAssemblies": 4,
+        "signalFibers": 32,
+        "activeCwPaths": 4,
+        "elsSupplyFibers": 4,
+        "elsPhysicalModules": 1,
+        "elsAllocatedEquivalent": 0.5,
+        "gearbox1p6TEquivalentPackages": 0
+      },
+      "limitations": [
+        "BOM、PIC/EIC颗数及FAU拆分为可调整模型，不对应任一厂商完整拆机",
+        "ELS内置/外置切换是位置和结构假设，不是所有参考厂商都支持这两种选项"
+      ]
+    },
+    {
+      "id": "npo3200-8x400",
+      "label": "3.2T · 8×400G",
+      "capacityGbps": 3200,
+      "capacityBasis": "per_direction",
+      "opticalLaneGbps": 400,
+      "opticalTxLanes": 8,
+      "opticalRxLanes": 8,
+      "electricalLaneGbps": 200,
+      "electricalTxLanes": 16,
+      "electricalRxLanes": 16,
+      "electricalSelectionVisible": false,
+      "signalMode": "gearbox_retimed_scenario",
+      "opticalTopology": "parallel_single_mode",
+      "laserPlacementOptions": [
+        "external_els",
+        "module_integrated_cw"
+      ],
+      "defaultLaserPlacement": "external_els",
+      "status": "scenario",
+      "displayStatus": "400G光lane研究情景",
+      "sourceIds": [
+        "AR07",
+        "AR08"
+      ],
+      "quantityAssumptions": [
+        "driver/tia每颗4lane",
+        "PIC每颗8路双向光lane",
+        "信号FAU每组8芯且Tx/Rx分体",
+        "每路CW供4条Tx lane",
+        "8路ELS按实际供光路数分摊"
+      ],
+      "defaultQuantities": {
+        "npoModule": 1,
+        "opticalTxFunctionalChannels": 8,
+        "opticalRxFunctionalChannels": 8,
+        "driverEquivalentPackages": 2,
+        "tiaEquivalentPackages": 2,
+        "picEquivalentDies": 1,
+        "signalFauAssemblies": 2,
+        "signalFibers": 16,
+        "activeCwPaths": 2,
+        "elsSupplyFibers": 2,
+        "elsPhysicalModules": 1,
+        "elsAllocatedEquivalent": 0.25,
+        "gearbox1p6TEquivalentPackages": 2
+      },
+      "limitations": [
+        "电侧自动保持200G，2:1电光速率映射需gearbox，数量是1.6T等效块，不代表已可采购NPO设计",
+        "400G器件性能、功率及单价均需独立验证，不能按200G模型减少lane后当作实际报价"
+      ]
+    },
+    {
+      "id": "npo6400-32x200",
+      "label": "6.4T · 32×200G",
+      "capacityGbps": 6400,
+      "capacityBasis": "per_direction",
+      "opticalLaneGbps": 200,
+      "opticalTxLanes": 32,
+      "opticalRxLanes": 32,
+      "electricalLaneGbps": 200,
+      "electricalTxLanes": 32,
+      "electricalRxLanes": 32,
+      "electricalSelectionVisible": false,
+      "signalMode": "linear",
+      "opticalTopology": "parallel_single_mode",
+      "laserPlacementOptions": [
+        "external_els",
+        "module_integrated_cw"
+      ],
+      "defaultLaserPlacement": "external_els",
+      "status": "product_referenced_generic_model",
+      "displayStatus": "已有32×200G NPO产品参考",
+      "sourceIds": [
+        "AR02",
+        "AR03",
+        "AR04"
+      ],
+      "quantityAssumptions": [
+        "driver/tia每颗4lane",
+        "PIC每颗8路双向光lane",
+        "信号FAU每组8芯且Tx/Rx分体",
+        "每路CW供4条Tx lane",
+        "8路ELS按实际供光路数分摊"
+      ],
+      "defaultQuantities": {
+        "npoModule": 1,
+        "opticalTxFunctionalChannels": 32,
+        "opticalRxFunctionalChannels": 32,
+        "driverEquivalentPackages": 8,
+        "tiaEquivalentPackages": 8,
+        "picEquivalentDies": 4,
+        "signalFauAssemblies": 8,
+        "signalFibers": 64,
+        "activeCwPaths": 8,
+        "elsSupplyFibers": 8,
+        "elsPhysicalModules": 1,
+        "elsAllocatedEquivalent": 1.0,
+        "gearbox1p6TEquivalentPackages": 0
+      },
+      "limitations": [
+        "BOM、PIC/EIC颗数及FAU拆分为可调整模型，不对应任一厂商完整拆机",
+        "ELS内置/外置切换是位置和结构假设，不是所有参考厂商都支持这两种选项"
+      ]
+    },
+    {
+      "id": "npo6400-16x400",
+      "label": "6.4T · 16×400G",
+      "capacityGbps": 6400,
+      "capacityBasis": "per_direction",
+      "opticalLaneGbps": 400,
+      "opticalTxLanes": 16,
+      "opticalRxLanes": 16,
+      "electricalLaneGbps": 200,
+      "electricalTxLanes": 32,
+      "electricalRxLanes": 32,
+      "electricalSelectionVisible": false,
+      "signalMode": "gearbox_retimed_scenario",
+      "opticalTopology": "parallel_single_mode",
+      "laserPlacementOptions": [
+        "external_els",
+        "module_integrated_cw"
+      ],
+      "defaultLaserPlacement": "external_els",
+      "status": "scenario",
+      "displayStatus": "400G光lane研究情景",
+      "sourceIds": [
+        "AR07",
+        "AR08"
+      ],
+      "quantityAssumptions": [
+        "driver/tia每颗4lane",
+        "PIC每颗8路双向光lane",
+        "信号FAU每组8芯且Tx/Rx分体",
+        "每路CW供4条Tx lane",
+        "8路ELS按实际供光路数分摊"
+      ],
+      "defaultQuantities": {
+        "npoModule": 1,
+        "opticalTxFunctionalChannels": 16,
+        "opticalRxFunctionalChannels": 16,
+        "driverEquivalentPackages": 4,
+        "tiaEquivalentPackages": 4,
+        "picEquivalentDies": 2,
+        "signalFauAssemblies": 4,
+        "signalFibers": 32,
+        "activeCwPaths": 4,
+        "elsSupplyFibers": 4,
+        "elsPhysicalModules": 1,
+        "elsAllocatedEquivalent": 0.5,
+        "gearbox1p6TEquivalentPackages": 4
+      },
+      "limitations": [
+        "电侧自动保持200G，2:1电光速率映射需gearbox，数量是1.6T等效块，不代表已可采购NPO设计",
+        "400G器件性能、功率及单价均需独立验证，不能按200G模型减少lane后当作实际报价"
+      ]
+    }
+  ],
+  "vendorRoutes": [
+    {
+      "id": "route-ciena-6400",
+      "vendor": "Ciena",
+      "region": "海外",
+      "product": "Vesta 200 6.4T CPX",
+      "status": "product",
+      "architectureIds": [
+        "npo6400-32x200"
+      ],
+      "binding": "exact_lane_architecture",
+      "display": "Ciena Vesta 200：32×200G，CPO/NPO光引擎",
+      "sourceIds": [
+        "AR02",
+        "AR12"
+      ],
+      "caveat": "本模型默认芯片颗数和FAU拆分不代表Vesta真实设计"
+    },
+    {
+      "id": "route-eoptolink-6400",
+      "vendor": "新易盛Eoptolink",
+      "region": "中国",
+      "product": "6.4T NPO",
+      "status": "product",
+      "architectureIds": [
+        "npo6400-32x200"
+      ],
+      "binding": "exact_lane_architecture",
+      "display": "新易盛：6.4T NPO，32×200G，已发布",
+      "sourceIds": [
+        "AR03"
+      ],
+      "caveat": "发布稿没有量产数量与内部采购BOM"
+    },
+    {
+      "id": "route-marvell-6400",
+      "vendor": "Marvell",
+      "region": "海外",
+      "product": "6.4T 3D Silicon Photonics Light Engine",
+      "status": "demonstration",
+      "architectureIds": [
+        "npo6400-32x200"
+      ],
+      "binding": "adjacent_cpo_reference",
+      "display": "Marvell：32×200G的CPO评估光引擎",
+      "sourceIds": [
+        "AR04"
+      ],
+      "caveat": "参考光lane组织，不作为NPO发布产品"
+    },
+    {
+      "id": "route-giga-3200",
+      "vendor": "易飞扬GIGALIGHT",
+      "region": "中国",
+      "product": "3.2T NPO roadmap / HYBRID DR8×2 reference",
+      "status": "roadmap",
+      "architectureIds": [
+        "npo3200-16x200"
+      ],
+      "binding": "roadmap_related",
+      "display": "易飞扬：3.2T NPO路线，16通道HYBRID为相邻设计参考",
+      "sourceIds": [
+        "AR09",
+        "AR10"
+      ],
+      "caveat": "未把3.2T NPO路线升级为量产或确切16×200G线性产品"
+    },
+    {
+      "id": "route-nvidia-3200",
+      "vendor": "NVIDIA",
+      "region": "海外",
+      "product": "Spectrum-6 3.2T optical engine",
+      "status": "reference",
+      "architectureIds": [
+        "npo3200-16x200"
+      ],
+      "binding": "adjacent_cpo_reference",
+      "display": "NVIDIA：3.2T/200G级CPO光引擎参考",
+      "sourceIds": [
+        "AR14"
+      ],
+      "caveat": "CPO而非NPO，不能由总速率反推出相同BOM"
+    },
+    {
+      "id": "route-broadcom-400",
+      "vendor": "Broadcom",
+      "region": "海外",
+      "product": "Taurus BCM83640",
+      "status": "sampling",
+      "architectureIds": [
+        "npo3200-8x400",
+        "npo6400-16x400"
+      ],
+      "binding": "enabling_component_only",
+      "display": "Broadcom Taurus：400G光lane及8:4电光变换器件参考",
+      "sourceIds": [
+        "AR07"
+      ],
+      "caveat": "未核验8×400G或16×400G硅光NPO整机；该DSP集成EML laser driver，不可叠加同功能外置Driver成本"
+    },
+    {
+      "id": "route-marvell-400",
+      "vendor": "Marvell",
+      "region": "海外",
+      "product": "2nm 400G/lane optical PAM4",
+      "status": "demonstration",
+      "architectureIds": [
+        "npo3200-8x400",
+        "npo6400-16x400"
+      ],
+      "binding": "enabling_technology_only",
+      "display": "Marvell：400G/lane光PAM4演示参考",
+      "sourceIds": [
+        "AR08"
+      ],
+      "caveat": "速率技术演示，不表示对应NPO成品"
+    },
+    {
+      "id": "route-broadcom-vcsel",
+      "vendor": "Broadcom",
+      "region": "海外",
+      "product": "3.2T VCSEL NPO",
+      "status": "demonstration",
+      "architectureIds": [],
+      "binding": "alternative_technology",
+      "display": "Broadcom：VCSEL 3.2T NPO替代路线",
+      "sourceIds": [
+        "AR15"
+      ],
+      "caveat": "与硅光CW＋MZM/MRM方案不同，不应显示ELS/隔离器为强制BOM"
+    }
+  ],
+  "defaultAssumptions": {
+    "basis": "以下为可视化数量模型，不是特定厂商BOM",
+    "opticalTopology": "parallel_single_mode",
+    "signalFiberWavelengths": 1,
+    "driverChannelsPerPackage": 4,
+    "tiaChannelsPerPackage": 4,
+    "picDuplexLanesPerDie": 8,
+    "signalFauFibersPerAssembly": 8,
+    "separateTxRxFau": true,
+    "txLanesPerCwPath": 4,
+    "cwPathsPerElsModule": 8,
+    "elsAllocation": "share_by_active_optical_power_paths",
+    "isolatorsPerCwPath": 1,
+    "faradayRotatorsPerSingleStageIsolator": 1,
+    "polarizerElementsPerSingleStageIsolator": 2,
+    "stagesPerIsolator": 1,
+    "sourceIds": [
+      "AR02",
+      "AR05",
+      "AR06",
+      "AR11"
+    ],
+    "limitation": "4lane/EIC和8lane/PIC是便于比较的集成假设。供光与隔离器数量必须结合功率预算、激光冗余及具体隔离器设计复核"
+  },
+  "quantityRules": [
+    {
+      "id": "q-optical",
+      "quantity": "opticalTxLanes=opticalRxLanes",
+      "formula": "capacityGbps / opticalLaneGbps",
+      "kind": "functional_channel",
+      "sourceIds": [
+        "AR02"
+      ],
+      "note": "Tx和Rx均为该值，不将两方向相加成名义速率"
+    },
+    {
+      "id": "q-electrical",
+      "quantity": "electricalTxLanes=electricalRxLanes",
+      "formula": "capacityGbps / electricalLaneGbps",
+      "kind": "functional_channel",
+      "sourceIds": [
+        "AR02",
+        "AR07"
+      ],
+      "note": "若光电lane速率不同，必须显式包含lane映射机制"
+    },
+    {
+      "id": "q-driver",
+      "quantity": "driverPackages",
+      "formula": "ceil(opticalTxLanes / driverChannelsPerPackage)",
+      "kind": "physical_assembly",
+      "sourceIds": [
+        "AR06"
+      ],
+      "note": "默认每颗4lane是模型假设；可选8lane；与DSP/EIC集成时改标功能通道且禁重复成本"
+    },
+    {
+      "id": "q-tia",
+      "quantity": "tiaPackages",
+      "formula": "ceil(opticalRxLanes / tiaChannelsPerPackage)",
+      "kind": "physical_assembly",
+      "sourceIds": [
+        "AR06"
+      ],
+      "note": "默认每颗4lane，可选8lane；未知真实集成关系时标等效颗数"
+    },
+    {
+      "id": "q-pic",
+      "quantity": "picDies",
+      "formula": "ceil(max(opticalTxLanes,opticalRxLanes) / picDuplexLanesPerDie)",
+      "kind": "physical_assembly",
+      "sourceIds": [
+        "AR05"
+      ],
+      "note": "8收发lane/裸片仅建模假设，不能冒充Marvell/Ciena裸片数量"
+    },
+    {
+      "id": "q-modulator",
+      "quantity": "modulatorChannels",
+      "formula": "opticalTxLanes",
+      "kind": "integrated_feature",
+      "sourceIds": [
+        "AR02",
+        "AR05"
+      ],
+      "note": "包含于PIC价值，不另加完整采购成本；MZM与MRM是替代项"
+    },
+    {
+      "id": "q-pd",
+      "quantity": "photodetectorChannels",
+      "formula": "opticalRxLanes",
+      "kind": "integrated_feature",
+      "sourceIds": [
+        "AR02",
+        "AR05"
+      ],
+      "note": "包含于PIC；不同PD阵列可为独立裸片，需具体设计覆盖"
+    },
+    {
+      "id": "q-fiber",
+      "quantity": "signalFibers",
+      "formula": "ceil(opticalTxLanes / wavelengthsPerSignalFiber) + ceil(opticalRxLanes / wavelengthsPerSignalFiber)",
+      "kind": "integrated_feature",
+      "sourceIds": [
+        "AR01",
+        "AR02"
+      ],
+      "note": "默认并行单模，因此为2×opticalLane；不含ELS供光纤"
+    },
+    {
+      "id": "q-fau",
+      "quantity": "signalFauAssemblies",
+      "formula": "ceil(txSignalFibers / signalFauFibersPerAssembly) + ceil(rxSignalFibers / signalFauFibersPerAssembly)",
+      "kind": "physical_assembly",
+      "sourceIds": [
+        "AR11"
+      ],
+      "note": "默认Tx/Rx分开且8芯/总成；16光lane时4组，8光lane时2组；若换16芯总成则数量可能不变，但使用纤芯数会变"
+    },
+    {
+      "id": "q-cw",
+      "quantity": "activeCwPaths",
+      "formula": "ceil(opticalTxLanes / txLanesPerCwPath)",
+      "kind": "functional_channel",
+      "sourceIds": [
+        "AR01",
+        "AR02"
+      ],
+      "note": "默认1路供4Tx，6.4T×200G的8路有Ciena图示依据；其他速率按该比率缩放仍为假设"
+    },
+    {
+      "id": "q-els-physical",
+      "quantity": "elsModulesPhysical",
+      "formula": "ceil(activeCwPaths / cwPathsPerElsModule)",
+      "kind": "physical_assembly",
+      "sourceIds": [
+        "AR02"
+      ],
+      "note": "仅外置光源模式显示；不足8路也需完整一盒，独占采购按完整盒计"
+    },
+    {
+      "id": "q-els-allocated",
+      "quantity": "elsModuleAllocatedEquivalent",
+      "formula": "activeCwPaths / cwPathsPerElsModule",
+      "kind": "allocated_share",
+      "sourceIds": [
+        "AR02"
+      ],
+      "note": "仅共享供光模式可用；3.2T的0.5盒是共享资源折算，不是物理半盒；未用通道能否复用须由实际系统决定"
+    },
+    {
+      "id": "q-isolator",
+      "quantity": "isolators",
+      "formula": "activeCwPaths * isolatorsPerCwPath",
+      "kind": "physical_assembly",
+      "sourceIds": [],
+      "note": "仅分立单路隔离器参考模型。阵列隔离器/集成光源/无隔离路线数量不同，不能声称所有NPO都必须如此"
+    },
+    {
+      "id": "q-faraday",
+      "quantity": "faradayRotators",
+      "formula": "isolators * stagesPerIsolator * faradayRotatorsPerSingleStageIsolator",
+      "kind": "integrated_feature",
+      "sourceIds": [],
+      "note": "单级偏振相关隔离器示意；材料或组件占比只能在有支持的成本分配下显示"
+    },
+    {
+      "id": "q-gearbox",
+      "quantity": "gearboxEquivalentPackages",
+      "formula": "electricalLaneGbps == opticalLaneGbps ? 0 : ceil(capacityGbps / 1600)",
+      "kind": "physical_assembly",
+      "sourceIds": [
+        "AR07"
+      ],
+      "note": "1.6T等效8:4映射块数量，3.2T为2、6.4T为4；只是速率守恒模型，非承诺可用的硅光NPO料号"
+    },
+    {
+      "id": "q-control",
+      "quantity": "engineControlSet",
+      "formula": "1",
+      "kind": "physical_assembly",
+      "sourceIds": [
+        "AR05"
+      ],
+      "note": "MCU/EEPROM/PMIC/监控需按采购集成情况合并，不能盲随lane逐一倍增"
+    },
+    {
+      "id": "q-packaging",
+      "quantity": "moduleSubstrateAndLidSet",
+      "formula": "1",
+      "kind": "physical_assembly",
+      "sourceIds": [
+        "AR01"
+      ],
+      "note": "同一NPO模块的基板及盖板按一套示意；尺寸与面积可随集成方案变化，不应必然线性翻倍"
+    }
+  ],
+  "compatibilityRules": [
+    {
+      "id": "no-asic-bom",
+      "condition": "always",
+      "requirement": "ASIC仅作为灰色外部参照；componentTree不包含ASIC；ASIC cost不进NPO总BOM"
+    },
+    {
+      "id": "linear-equal-lanes",
+      "condition": "signalMode == linear",
+      "requirement": "electricalLaneGbps == opticalLaneGbps，否则必须启用gearbox/映射器件并标研究情景"
+    },
+    {
+      "id": "400g-evidence",
+      "condition": "opticalLaneGbps == 400",
+      "requirement": "顶部持续显示研究情景；厂商仅显示400G/lane技术/器件参考，不显示NPO已发布产品"
+    },
+    {
+      "id": "pic-children",
+      "condition": "component.parentId == pic",
+      "requirement": "调制器/PD/波导/分光器/耦合器为片上功能，只有独立采购证据才另列独立报价"
+    },
+    {
+      "id": "els-sharing",
+      "condition": "elsAllocation == shared",
+      "requirement": "显示物理盒数和分摊等效盒数；供光模式变化不应把激光功能删掉"
+    },
+    {
+      "id": "laser-placement",
+      "condition": "laserPlacement changes",
+      "requirement": "从外置切到模块内置时保留激光/偏置/监控功能，仅改变位置与可拆卸外壳、连接和PM供光链路；不能自动套相同封装成本"
+    },
+    {
+      "id": "phase-wdm",
+      "condition": "opticalTopology == wdm",
+      "requirement": "添加MUX/DEMUX或片上复用器，按波长分组重算信号光纤；不得沿用parallel_single_mode纤芯数量"
+    },
+    {
+      "id": "no-all-cpo-npo",
+      "condition": "vendorRoute.binding starts with adjacent",
+      "requirement": "明示CPO参考，禁止静默改名NPO"
+    },
+    {
+      "id": "keep-selection",
+      "condition": "configuration changes",
+      "requirement": "保留选中componentId和层级；数量、价值、占比和相关厂商原位重算；部件不适用时显示原因并允许返回最近有效父件"
+    }
+  ],
+  "componentHierarchySuggestions": [
+    {
+      "id": "optical-engine",
+      "parentId": "npo",
+      "label": "光引擎",
+      "kind": "assembly",
+      "children": [
+        "pic",
+        "eic",
+        "engine-package",
+        "signal-fau"
+      ]
+    },
+    {
+      "id": "pic",
+      "parentId": "optical-engine",
+      "label": "硅光PIC",
+      "kind": "purchased_or_integrated_die",
+      "children": [
+        "modulator",
+        "signal-pd",
+        "waveguide",
+        "splitter",
+        "edge-or-grating-coupler",
+        "monitor-pd",
+        "thermal-tuner",
+        "optional-wdm"
+      ],
+      "sourceIds": [
+        "AR02",
+        "AR05"
+      ]
+    },
+    {
+      "id": "modulator",
+      "parentId": "pic",
+      "label": "调制器",
+      "kind": "integrated_feature",
+      "children": [
+        "mzm-or-mrm",
+        "phase-shifter",
+        "electrode",
+        "optional-heater"
+      ],
+      "note": "MZM与MRM为替代架构，不应同时全额加价"
+    },
+    {
+      "id": "eic",
+      "parentId": "optical-engine",
+      "label": "电芯片与控制",
+      "kind": "group",
+      "children": [
+        "driver",
+        "tia",
+        "ctle",
+        "optional-dsp-gearbox",
+        "mcu",
+        "eeprom",
+        "pmic",
+        "temperature-sensor"
+      ],
+      "sourceIds": [
+        "AR02",
+        "AR05",
+        "AR06",
+        "AR07"
+      ]
+    },
+    {
+      "id": "engine-package",
+      "parentId": "optical-engine",
+      "label": "封装与电连接",
+      "kind": "group",
+      "children": [
+        "substrate",
+        "optional-interposer",
+        "rdl",
+        "microbump-or-wirebond",
+        "die-attach",
+        "underfill",
+        "socket",
+        "heat-spreader",
+        "tim"
+      ],
+      "sourceIds": [
+        "AR01",
+        "AR12"
+      ]
+    },
+    {
+      "id": "signal-fau",
+      "parentId": "optical-engine",
+      "label": "信号Fiber Array",
+      "kind": "assembly",
+      "children": [
+        "v-groove-base",
+        "cover-plate",
+        "signal-fiber",
+        "optical-adhesive",
+        "optional-lens-array",
+        "ferrule",
+        "alignment-pin",
+        "strain-relief"
+      ],
+      "sourceIds": [
+        "AR11"
+      ]
+    },
+    {
+      "id": "light-source",
+      "parentId": "npo",
+      "label": "供光组件",
+      "kind": "assembly",
+      "children": [
+        "cw-laser",
+        "isolator",
+        "micro-optics",
+        "pm-fiber",
+        "laser-electrical",
+        "light-source-housing"
+      ],
+      "note": "ELS与内置激光器共用功能树，位置与封装成本不同"
+    },
+    {
+      "id": "cw-laser",
+      "parentId": "light-source",
+      "label": "CW激光器",
+      "kind": "purchased_die_or_assembly",
+      "children": [
+        "active-region",
+        "dfb-grating",
+        "facet-coating",
+        "laser-submount",
+        "optional-monitor-pd"
+      ],
+      "note": "内部半导体结构通常没有独立交易价格，不虚构单件厂商报价"
+    },
+    {
+      "id": "isolator",
+      "parentId": "light-source",
+      "label": "光隔离器",
+      "kind": "assembly",
+      "children": [
+        "input-polarizer",
+        "faraday-rotator",
+        "output-analyzer",
+        "permanent-magnet",
+        "ar-coating",
+        "isolator-housing",
+        "optical-adhesive"
+      ],
+      "note": "采用单级偏振相关自由空间隔离器作为示意；双级或偏振无关结构需要不同树"
+    },
+    {
+      "id": "faraday-rotator",
+      "parentId": "isolator",
+      "label": "法拉第旋片",
+      "kind": "material_component",
+      "children": [
+        "magneto-optic-garnet",
+        "surface-polish",
+        "ar-coating"
+      ],
+      "note": "工艺层只解释功能，采购价如果已包括镀膜加工则不重复加总"
+    },
+    {
+      "id": "micro-optics",
+      "parentId": "light-source",
+      "label": "准直与耦合光学",
+      "kind": "group",
+      "children": [
+        "collimating-lens",
+        "focusing-lens",
+        "optional-fast-slow-axis-lens",
+        "lens-mount"
+      ],
+      "note": "具体透镜数由光路设计决定，不是固定每lane两个"
+    },
+    {
+      "id": "pm-fiber",
+      "parentId": "light-source",
+      "label": "供光保偏光纤链路",
+      "kind": "assembly",
+      "children": [
+        "pm-fiber-core",
+        "ferrule",
+        "sleeve",
+        "blindmate-connector",
+        "strain-relief"
+      ],
+      "note": "供光纤与信号FAU纤芯分别统计"
+    },
+    {
+      "id": "laser-electrical",
+      "parentId": "light-source",
+      "label": "光源驱动与监控",
+      "kind": "group",
+      "children": [
+        "laser-bias-driver",
+        "monitor-photodiode",
+        "tec-optional",
+        "thermistor",
+        "safety-control",
+        "mcu",
+        "pmic"
+      ],
+      "note": "CW激光偏置驱动与高速调制器Driver是不同功能，避免合并或重算"
+    }
+  ],
+  "sources": [
+    {
+      "id": "AR01",
+      "title": "OIF Implementation Agreement for a 3.2Tb/s Co-Packaged Module 01.0",
+      "url": "https://www.oiforum.com/wp-content/uploads/OIF-Co-Packaging-3.2T-Module-01.0.pdf",
+      "date": "2023-03-29",
+      "accessed": "2026-10-08",
+      "supports": [
+        "8×400GBASE-DR4/FR4表示8个端口，每端口含4条100G级光lane",
+        "主机侧32×106.25Gb/s，ELS使用4或8根PM供光纤，分别每路供8或4个发射器",
+        "有内置与外置激光器选项，图示DSP/Driver/TIA是逻辑功能块"
+      ],
+      "limitation": "该标准为100G/lane代际CPO模块规范，不能当成16×200G或8×400G光lane的NPO产品；没有限定PIC和FAU颗数",
+      "kind": "standard",
+      "readStatus": "read_relevant_sections"
+    },
+    {
+      "id": "AR02",
+      "title": "Ciena Vesta 200 6.4T CPX Optical Engine Infobrief",
+      "url": "https://www.ciena.com/__data/assets/pdf_file/0031/171679/vesta_200_6-4T_cpx_optical_engine_IB.pdf",
+      "date": "2026-01",
+      "accessed": "2026-10-08",
+      "supports": [
+        "32×200G，32 Tx＋32 Rx optical lanes及32电入＋32电出",
+        "支持NPO/CPO、线性驱动、ELS，示意8根外置光源纤",
+        "32条lane可分组成DR1/DR2/DR4/DR8端口"
+      ],
+      "limitation": "日期为页脚1.2026版本；功能框图未披露EIC/PIC裸片数、FAU总成数或芯片供应商",
+      "kind": "official_product_material",
+      "readStatus": "read_relevant_sections"
+    },
+    {
+      "id": "AR03",
+      "title": "Eoptolink Unveils High-Density 6.4T NPO Solution at OFC 2026",
+      "url": "https://www.prnewswire.com/news-releases/eoptolink-unveils-high-density-6-4t-npo-solution-at-ofc-2026--302713256.html",
+      "date": "2026-03-13",
+      "accessed": "2026-10-08",
+      "supports": [
+        "新易盛发布6.4T NPO，32 lanes×200Gbps、硅光方案"
+      ],
+      "limitation": "发行人发布稿，发布与展示计划不证明量产或大规模交付；未披露PIC/EIC/FAU细目",
+      "kind": "issuer_press_release",
+      "readStatus": "read_relevant_sections"
+    },
+    {
+      "id": "AR04",
+      "title": "Marvell: The evolution of AI interconnects",
+      "url": "https://www.marvell.com/blogs/the-evolution-of-ai-interconnects.html",
+      "date": "2025-03-17",
+      "accessed": "2026-10-08",
+      "supports": [
+        "NPO/OBO将光引擎直接放进系统并缩短电路径，CPO则在芯片封装离开之前完成光转换",
+        "6.4T 3D硅光引擎含32条200G电/光通道，供CPO系统评估",
+        "Marvell Ara为8×200G电侧及8×200G光侧"
+      ],
+      "limitation": "Marvell 6.4T为CPO评估资料，不等于同规格NPO量产；NPO边界定义在行业资料间存在差异",
+      "kind": "official_technical_blog",
+      "readStatus": "read_relevant_sections"
+    },
+    {
+      "id": "AR05",
+      "title": "Marvell Demonstrates Silicon Photonics Light Engine for Low-power, Rack-scale Interconnect in AI Networks",
+      "url": "https://www.marvell.com/company/newsroom/marvell-demonstrates-silicon-photonics-light-engine-for-low-power-rack-scale-interconnect-in-ai-networks.html",
+      "date": "2025-03-31",
+      "accessed": "2026-10-08",
+      "supports": [
+        "1.6T DR8光引擎支持8×200G电/光通道",
+        "同一封装集成Driver/TIA/PIC/MCU，向部分客户送样"
+      ],
+      "limitation": "为1.6T LPO/OBO及CPO基础器件；不可直接当作3.2T NPO确切BOM",
+      "kind": "issuer_press_release",
+      "readStatus": "read_relevant_sections"
+    },
+    {
+      "id": "AR06",
+      "title": "Semtech Advances Next-Gen AI Optical Interconnects for XPO",
+      "url": "https://investors.semtech.com/news/semtech-advances-next-gen-ai-optical-interconnects-for-xpo/0e9a14e5-17ff-4788-801a-05a8c619bb58",
+      "date": "2026-09-21",
+      "accessed": "2026-10-08",
+      "supports": [
+        "200G/lane有四通道及八通道TIA，包含GN1834L/GN1838L系列",
+        "200G/lane有TN1877四通道与TN1887八通道MZM Driver"
+      ],
+      "limitation": "XPO部件能力资料，不证明指定NPO采用这些料号；新闻稿pitch单位疑似错误，本数据库不引用pitch数值",
+      "kind": "issuer_press_release",
+      "readStatus": "read_relevant_sections"
+    },
+    {
+      "id": "AR07",
+      "title": "Broadcom Delivers Industry’s First 400G/lane Optical DSP for Next-Generation AI Networks",
+      "url": "https://investors.broadcom.com/news-releases/news-release-details/broadcom-delivers-industrys-first-400glane-optical-dsp-next",
+      "date": "2026-03-11",
+      "accessed": "2026-10-08",
+      "supports": [
+        "Taurus BCM83640为1.6T 8:4 PAM4 DSP，400G/lane光侧，集成laser driver",
+        "已开始向早期客户送样，支持1.6T至3.2T模块"
+      ],
+      "limitation": "证明400G光lane和电光lane变换的器件路线；产品对应EML/PD可插拔生态，非8×400G硅光NPO完整产品",
+      "kind": "issuer_press_release",
+      "readStatus": "read_relevant_sections"
+    },
+    {
+      "id": "AR08",
+      "title": "Marvell to Showcase Industry-First 2nm Optical Technology Demos at ECOC 2026",
+      "url": "https://investor.marvell.com/news-events/press-releases/detail/1034/marvell-to-showcase-industry-first-2nm-optical-technology-demos-for-ai-data-center-infrastructure-at-ecoc-2026",
+      "date": "2026-09-21",
+      "accessed": "2026-10-08",
+      "supports": [
+        "2nm 400G/lane optical PAM4演示支持向3.2T互连演进"
+      ],
+      "limitation": "演示新闻不证明3.2T 8×400G或6.4T 16×400G NPO成品发布，更不证明价格和内部集成",
+      "kind": "issuer_press_release",
+      "readStatus": "read_relevant_sections"
+    },
+    {
+      "id": "AR09",
+      "title": "GIGALIGHT Announces 3.2T HYBRID Product Technical Solution and Benefits",
+      "url": "https://www.gigalight.com/news-events/insights-10921.html",
+      "date": "2026-09-18",
+      "accessed": "2026-10-08",
+      "supports": [
+        "3.2T路线讨论16条224G级lane及DR8×2硅光、ELS",
+        "增强3.2T NPO列为roadmap"
+      ],
+      "limitation": "正文事件日期2026-09-14，网页日期2026-09-18；具体16-lane设计针对HYBRID可插拔路线，不能硬说已量产的16×200G线性NPO",
+      "kind": "official_roadmap",
+      "readStatus": "read_relevant_sections"
+    },
+    {
+      "id": "AR10",
+      "title": "GIGALIGHT Successfully Launches First-Generation XT-1.6T DR16 NPO Linear Silicon Photonics Engine",
+      "url": "https://www.gigalight.com/news-events/news-10133.html",
+      "date": "2026-03-16",
+      "accessed": "2026-10-08",
+      "supports": [
+        "1.6T NPO为16×100G，采用socket与线性无DSP方案",
+        "EL-OSFP支持16路CW光源，3.2T NPO正在开发"
+      ],
+      "limitation": "该已发布1.6T的lane数不可直接套成16×200G已发布3.2T产品",
+      "kind": "issuer_press_release",
+      "readStatus": "read_relevant_sections"
+    },
+    {
+      "id": "AR11",
+      "title": "Corning Fiber Array Unit Series OEM-039-AEN",
+      "url": "https://www.corning.com/microsites/coc/oem/documents/OEM-039-AEN.pdf",
+      "date": "2019-09-03",
+      "accessed": "2026-10-08",
+      "supports": [
+        "FAU包括V-groove基底、盖板、光纤、粘接结构，可配连接器",
+        "有8/16/32等端口数且可定制，支持边缘耦合或90度转向光栅耦合"
+      ],
+      "limitation": "旧版器件结构规格，仅用来说明FAU组成和容量可变；不是2026年NPO专用FAU报价或具体配套凭证",
+      "kind": "official_product_material",
+      "readStatus": "read_relevant_sections"
+    },
+    {
+      "id": "AR12",
+      "title": "Ciena: Delivering on the promise of CPO/NPO at hyperscale with Vesta 200 6.4T CPX light engine",
+      "url": "https://www.ciena.com/insights/blog/2026/delivering-on-the-promise-of-cpo-npo-at-hyperscale-with-vesta-200-6-4t-cpx-light-engine",
+      "date": "2026-08-10",
+      "accessed": "2026-10-08",
+      "supports": [
+        "Vesta 200 6.4T已发布用于CPO/NPO",
+        "Open CPX兼顾CPO/NPO和外置/集成激光器的架构选择"
+      ],
+      "limitation": "通用架构兼容性不等于每一Vesta料号都支持全部激光器方式；未公开采购BOM",
+      "kind": "official_technical_blog",
+      "readStatus": "read_relevant_sections"
+    },
+    {
+      "id": "AR13",
+      "title": "Ciena: How open ecosystems will advance CPO adoption",
+      "url": "https://www.ciena.com/insights/blog/2026/how-open-ecosystems-advance-cpo-adoption",
+      "date": "2026-05-07",
+      "accessed": "2026-10-08",
+      "supports": [
+        "Open CPX首代支持32条200G双向通道，后续有12.8T和448G/lane路线",
+        "文中1.6T 3nm DSP批量价格预测约$75/颗"
+      ],
+      "limitation": "$75是Ciena给出的预测锚点，非采购发票、非400G/lane Taurus报价；厂商营销视角不等于独立市场验证",
+      "kind": "official_technical_blog",
+      "readStatus": "read_relevant_sections"
+    },
+    {
+      "id": "AR14",
+      "title": "NVIDIA Technical Blog: Inside the NVIDIA Vera Rubin Platform",
+      "url": "https://developer.nvidia.com/blog/inside-the-nvidia-rubin-platform-six-new-chips-one-ai-supercomputer/",
+      "date": "2026-01-05",
+      "accessed": "2026-10-08",
+      "supports": [
+        "Spectrum-6示意32个3.2T光引擎、200G硅光和micro-ring modulator"
+      ],
+      "limitation": "用于说明3.2T、200G级及MRM的相邻CPO路线；不冒充NPO产品，不据图推算细分BOM",
+      "kind": "official_technical_blog",
+      "readStatus": "read_relevant_sections"
+    },
+    {
+      "id": "AR15",
+      "title": "Broadcom Showcases Industry-Leading Solutions for Scaling AI Infrastructure at OFC 2026",
+      "url": "https://investors.broadcom.com/news-releases/news-release-details/broadcom-showcases-industry-leading-solutions-scaling-ai",
+      "date": "2026-03-12",
+      "accessed": "2026-10-08",
+      "supports": [
+        "展会方案包含3.2T VCSEL-based NPO"
+      ],
+      "limitation": "证明NPO也有VCSEL替代路线；未核验该VCSEL方案lane数，不纳入硅光CW/隔离器BOM",
+      "kind": "issuer_press_release",
+      "readStatus": "read_relevant_sections"
+    }
+  ],
+  "unresolvedItems": [
+    {
+      "id": "exact-3200-npo-lanes",
+      "summary": "3.2T 16×200G默认模型有相关厂商路线和CPO参考，尚未以本轮一手资料锁定同封装/同器件树的NPO成品",
+      "consequence": "保留通用示意，不声称某厂商完整拆机"
+    },
+    {
+      "id": "400g-full-npo",
+      "summary": "本轮未核验到明确8×400G或16×400G光lane的完整硅光NPO产品",
+      "consequence": "两个400G选择均为研究情景"
+    },
+    {
+      "id": "public-pic-packages",
+      "summary": "光引擎PIC裸片数与Driver/TIA独立芯片数不公开或与模型不同",
+      "consequence": "以可调整集成假设显示等效颗数"
+    },
+    {
+      "id": "fau-layout",
+      "summary": "整块FAU的芯数、是否收发合一、是否含供光纤未统一",
+      "consequence": "默认8芯分体只是直观比较方案，允许高级设置改16芯"
+    },
+    {
+      "id": "isolator-mandatory",
+      "summary": "不同光源和反馈容忍设计可能改变隔离器配置",
+      "consequence": "通用隔离器树明确示意，不表述为所有NPO统一用量"
+    },
+    {
+      "id": "ipec-material",
+      "summary": "IPEC公开索引有Mao_FF_01_260306.pdf，但当前未取得正文",
+      "sourceUrl": "https://www.ipec-std.org/data-download/page/2",
+      "consequence": "未纳入已读支持来源"
+    },
+    {
+      "id": "nvision-conflict",
+      "summary": "NVISION官方公开文字同时写3.2T、16通道Tx/Rx和112Gbps PAM4，名义速率口径需厂商澄清",
+      "sourceUrl": "https://www.nvision-tech.cn/en/media/2099419343854112768",
+      "consequence": "不将其直接绑定16×200G选择，也不把Tx/Rx相加凑成3.2T"
+    },
+    {
+      "id": "giga-pdf-fetch",
+      "summary": "GIGALIGHT np-26.pdf搜索索引含3.2T 16×200G开发路线，但本轮原PDF抓取超时",
+      "sourceUrl": "https://www.gigalight.com/file/np-26.pdf",
+      "consequence": "不用搜索片段充当完整已读PDF；采用AR09/AR10可读取网页并保留限制"
+    }
+  ],
+  "readCounts": {
+    "supportingSources": 15,
+    "webOrPdfRelevantSectionsRead": 15,
+    "brokerReportsDownloaded": 0,
+    "brokerReportsDownloadQueue": 0,
+    "wechatArticlesDownloaded": 0,
+    "wechatDownloadQueue": 0,
+    "note": "本子任务只核验公开英文一手技术资料与厂商原文；不代表主任务其他来源通道状态"
+  }
+}

@@ -1,0 +1,465 @@
+{
+  "npo": [
+    "NPO",
+    "近封装光学",
+    "近封装光互连",
+    "近封装光子",
+    "Near Packaged Optics",
+    "Near Package Optics"
+  ],
+  "engine": [
+    "光学引擎",
+    "光电引擎",
+    "OE",
+    "Optical Engine",
+    "Photonic Engine"
+  ],
+  "pic": [
+    "光子集成电路",
+    "光子芯片",
+    "硅光芯片",
+    "光子集成芯片",
+    "PIC",
+    "Photonic IC",
+    "Silicon Photonics PIC",
+    "Silicon Photonics Chip"
+  ],
+  "modulator": [
+    "光调制器",
+    "电光调制器",
+    "光学调制器",
+    "Modulator",
+    "Electro Optic Modulator"
+  ],
+  "photodiode": [
+    "PD",
+    "Rx PD",
+    "接收PD",
+    "高速PD",
+    "光电探测器",
+    "光电二极管",
+    "接收光探测器",
+    "探测器",
+    "Photodetector",
+    "Receiver Photodiode",
+    "Receive Photodetector",
+    "RX Detector"
+  ],
+  "waveguide": [
+    "光波导",
+    "光学波导",
+    "Optical Waveguide"
+  ],
+  "coupler": [
+    "光耦合器",
+    "耦合结构",
+    "耦合器",
+    "Optical Coupler",
+    "Edge Coupler",
+    "Grating Coupler"
+  ],
+  "splitter": [
+    "光分路器",
+    "光分束器",
+    "分束器",
+    "光功率分配器",
+    "Power Splitter",
+    "Beam Splitter"
+  ],
+  "phase": [
+    "相位调节",
+    "温度调谐",
+    "相位调谐",
+    "热调谐",
+    "Phase Tuning",
+    "Thermal Tuning",
+    "Phase Shifter",
+    "PIC Heater"
+  ],
+  "eic": [
+    "EIC",
+    "电子集成电路",
+    "电子芯片",
+    "电芯片组",
+    "收发电子芯片",
+    "Electronic Integrated Circuit",
+    "Electronic IC",
+    "Driver TIA",
+    "Driver + TIA",
+    "Tx Rx Electronics"
+  ],
+  "driver": [
+    "驱动器",
+    "调制器驱动",
+    "调制器驱动器",
+    "发射驱动",
+    "发射驱动器",
+    "Tx Driver",
+    "Modulator Driver",
+    "Optical Modulator Driver"
+  ],
+  "tia": [
+    "跨阻放大器",
+    "跨阻抗放大器",
+    "接收放大器",
+    "TIA",
+    "Rx Amplifier",
+    "Receiver Amplifier",
+    "Trans Impedance Amplifier"
+  ],
+  "fau": [
+    "FAU",
+    "光纤阵列",
+    "光纤阵列单元",
+    "信号FAU",
+    "信号光纤阵列",
+    "Fibre Array",
+    "Fibre Array Unit",
+    "Signal Fiber Array"
+  ],
+  "vgroove": [
+    "V槽",
+    "V型槽",
+    "V沟槽",
+    "V沟槽基板",
+    "V Groove",
+    "V Groove Substrate",
+    "V Grooved Substrate"
+  ],
+  "fiber": [
+    "光纤",
+    "数据光纤",
+    "通信光纤",
+    "Signal Fibre",
+    "Data Fiber"
+  ],
+  "lens": [
+    "微透镜",
+    "微型透镜阵列",
+    "Micro Lens Array",
+    "Microlens",
+    "MLA"
+  ],
+  "adhesive": [
+    "光学胶",
+    "光学胶水",
+    "光学粘合剂",
+    "光学黏合剂",
+    "Optical Glue",
+    "Optical Bonding Adhesive"
+  ],
+  "els": [
+    "ELS",
+    "外置光源",
+    "外部光源",
+    "外置激光源",
+    "外置激光光源",
+    "光源",
+    "External Laser Source",
+    "External Light Source"
+  ],
+  "cw": [
+    "CW",
+    "连续波激光器",
+    "连续光激光器",
+    "连续波光源",
+    "激光器",
+    "Continuous Wave Laser",
+    "Continuous Wave Laser Source"
+  ],
+  "laser_die": [
+    "激光裸片",
+    "激光芯片",
+    "磷化铟激光芯片",
+    "激光器芯片",
+    "Laser Chip",
+    "Laser Die",
+    "InP Laser Chip",
+    "Indium Phosphide Laser Die"
+  ],
+  "laser_submount": [
+    "激光热沉",
+    "激光器热沉",
+    "激光载台",
+    "激光器载板",
+    "Submount",
+    "Laser Heat Sink",
+    "Laser Carrier"
+  ],
+  "isolator": [
+    "隔离器",
+    "光学隔离器",
+    "法拉第隔离器",
+    "Optical Isolator",
+    "Faraday Isolator"
+  ],
+  "faraday": [
+    "旋片",
+    "法拉第片",
+    "法拉第旋转片",
+    "法拉第旋转器",
+    "Faraday Rotator",
+    "Faraday Rotation Plate"
+  ],
+  "garnet": [
+    "磁光材料",
+    "磁光晶体",
+    "磁光石榴石",
+    "石榴石晶体",
+    "Magneto Optical Garnet",
+    "Magneto Optic Crystal",
+    "Magneto Optical Material"
+  ],
+  "coating": [
+    "增透膜",
+    "增透镀膜",
+    "抗反射镀膜",
+    "减反膜",
+    "AR Coating",
+    "Antireflection Coating",
+    "Anti Reflective Coating"
+  ],
+  "polarizer": [
+    "起偏器",
+    "起偏片",
+    "偏振片",
+    "Polariser",
+    "Input Polarizer"
+  ],
+  "analyzer": [
+    "检偏器",
+    "检偏片",
+    "Analyser",
+    "Output Polarizer"
+  ],
+  "magnet": [
+    "磁体",
+    "永磁体",
+    "永磁铁",
+    "永久磁铁",
+    "Magnet"
+  ],
+  "collimator": [
+    "准直镜",
+    "准直器",
+    "Collimator",
+    "Collimation Lens"
+  ],
+  "isolator_housing": [
+    "光隔离器外壳",
+    "隔离器外壳",
+    "隔离器封装壳体",
+    "Optical Isolator Housing"
+  ],
+  "pm_fiber": [
+    "保偏光纤",
+    "保偏纤",
+    "供光光纤",
+    "PM Fiber",
+    "PM Fibre",
+    "PMF",
+    "Polarisation Maintaining Fibre"
+  ],
+  "laser_driver": [
+    "激光驱动",
+    "激光驱动器",
+    "激光电流驱动器",
+    "激光器驱动",
+    "Laser Driver",
+    "Laser Diode Driver",
+    "Laser Current Controller"
+  ],
+  "monitor_pd": [
+    "监测PD",
+    "监控PD",
+    "监测探测器",
+    "监控光电二极管",
+    "监测光电二极管",
+    "监控光探测器",
+    "Monitor PD",
+    "MPD",
+    "Monitor Photodetector",
+    "Monitoring Photodiode",
+    "Laser Monitor PD"
+  ],
+  "tec": [
+    "TEC",
+    "热电制冷器",
+    "半导体制冷器",
+    "制冷片",
+    "热电冷却器",
+    "温度控制组件",
+    "Thermoelectric Cooler",
+    "Thermo Electric Cooler",
+    "Temperature Control",
+    "Thermal Electric Cooler"
+  ],
+  "substrate": [
+    "基板",
+    "封装基板",
+    "电连接",
+    "Substrate",
+    "Package Substrate",
+    "Packaging Substrate",
+    "Electrical Interconnect"
+  ],
+  "pcb": [
+    "PCB",
+    "印刷电路板",
+    "电路板",
+    "印制电路板",
+    "HDI",
+    "mSAP",
+    "Printed Circuit Board",
+    "HDI PCB",
+    "mSAP PCB"
+  ],
+  "interposer": [
+    "中介层",
+    "转接层",
+    "精密载板",
+    "中介板",
+    "Interposer",
+    "Carrier",
+    "Precision Carrier"
+  ],
+  "other": [
+    "辅助材料",
+    "配套材料",
+    "配套组件",
+    "Supporting Components",
+    "Supporting Materials"
+  ],
+  "connector": [
+    "光连接器",
+    "电连接器",
+    "光纤连接器",
+    "连接器",
+    "Optical Connector",
+    "Electrical Connector",
+    "Fiber Connector"
+  ],
+  "control": [
+    "控制供电",
+    "控制与电源",
+    "控制电源",
+    "控制电路",
+    "Control",
+    "Control and Power",
+    "Power and Control"
+  ],
+  "mcu": [
+    "MCU",
+    "微控制器",
+    "单片机",
+    "主控芯片",
+    "控制器芯片",
+    "Microcontroller",
+    "Micro Controller",
+    "Control Chip",
+    "Controller"
+  ],
+  "pmic": [
+    "PMIC",
+    "电源管理芯片",
+    "电源管理集成电路",
+    "电源芯片",
+    "Power Management IC",
+    "Power Management Integrated Circuit",
+    "DC DC",
+    "DC to DC Converter"
+  ],
+  "thermal": [
+    "热管理与机械封装",
+    "热管理",
+    "散热封装",
+    "Thermal Management",
+    "Mechanical Packaging",
+    "Thermal Packaging"
+  ],
+  "heatsink": [
+    "热扩散器",
+    "散热片",
+    "Heat Sink",
+    "Heatsink",
+    "Heat Spreader"
+  ],
+  "tim": [
+    "TIM",
+    "热界面材料",
+    "导热材料",
+    "导热介质",
+    "Thermal Interface",
+    "Thermal Interface Material"
+  ],
+  "housing": [
+    "机械外壳",
+    "封装壳体",
+    "外壳",
+    "壳体",
+    "Mechanical Housing",
+    "Package Housing",
+    "Enclosure"
+  ],
+  "pm_fau": [
+    "保偏光纤阵列",
+    "保偏FAU",
+    "保偏阵列",
+    "PM FAU",
+    "PM Fibre Array",
+    "PM Fiber Array Unit",
+    "Polarization Maintaining Fiber Array"
+  ],
+  "els_optics": [
+    "激光整形",
+    "光源滤光",
+    "光束整形",
+    "滤光器",
+    "Beam Shaping",
+    "Laser Shaping",
+    "Optical Filtering",
+    "Laser Filter"
+  ],
+  "tec_controller": [
+    "TEC控制器",
+    "TEC驱动",
+    "温度控制电路",
+    "热电制冷控制器",
+    "TEC Controller",
+    "Temperature Controller",
+    "TEC Driver"
+  ],
+  "ferrule": [
+    "光纤插芯",
+    "连接器插芯",
+    "陶瓷插芯",
+    "Fiber Ferrule",
+    "Fibre Ferrule",
+    "Connector Ferrule"
+  ],
+  "cover_plate": [
+    "光纤阵列盖板",
+    "阵列盖板",
+    "盖板",
+    "FAU Cover Plate",
+    "Fibre Array Cover Plate",
+    "Cover Plate"
+  ],
+  "inp_substrate": [
+    "磷化铟衬底",
+    "磷化铟基片",
+    "InP基片",
+    "衬底",
+    "Indium Phosphide Substrate"
+  ],
+  "solder": [
+    "焊接材料",
+    "键合材料",
+    "焊料",
+    "键合",
+    "Solder",
+    "Bonding Material",
+    "Solder Material",
+    "Bonding"
+  ]
+}
