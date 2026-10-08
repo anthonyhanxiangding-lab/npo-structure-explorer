@@ -1,0 +1,6015 @@
+{
+  "schemaVersion": 1,
+  "version": "1.1.0",
+  "asOf": "2026-10-08",
+  "name": "NPO结构与器件数据库",
+  "scope": "一套标称单向3.2T或6.4T的NPO光互连单元及分摊光源，排除ASIC、系统主板及机箱；结构示意非厂商拆机",
+  "components": [
+    {
+      "id": "npo",
+      "parent": null,
+      "name": "NPO光互连单元",
+      "en": "Near-Packaged Optics",
+      "category": "系统",
+      "unit": "套",
+      "role": "将高速电信号转换为光信号，并接收光信号",
+      "detail": "边界为一套所选带宽的光引擎、连接封装及分摊光源。旁边的交换ASIC不属于本组件树或BOM。",
+      "qtyRule": "one",
+      "sourceIds": [],
+      "vendorLinks": [],
+      "priceEvidence": null,
+      "benchmark_prices": [],
+      "quantityEvidence": null,
+      "checkedAt": "2026-10-08",
+      "aliases": [
+        "NPO",
+        "近封装光学",
+        "近封装光互连",
+        "近封装光子",
+        "Near Packaged Optics",
+        "Near Package Optics"
+      ]
+    },
+    {
+      "id": "engine",
+      "parent": "npo",
+      "name": "光引擎",
+      "en": "Optical Engine",
+      "category": "光电组件",
+      "unit": "组",
+      "role": "完成电光转换与光电转换",
+      "detail": "由PIC、发射驱动及接收放大链组成；光引擎可包含多颗PIC。示意布局不代表某一厂商封装。",
+      "qtyRule": "one",
+      "sourceIds": [],
+      "vendorLinks": [],
+      "priceEvidence": null,
+      "benchmark_prices": [],
+      "quantityEvidence": null,
+      "checkedAt": "2026-10-08",
+      "aliases": [
+        "光学引擎",
+        "光电引擎",
+        "OE",
+        "Optical Engine",
+        "Photonic Engine"
+      ]
+    },
+    {
+      "id": "pic",
+      "parent": "engine",
+      "name": "硅光PIC",
+      "en": "Photonic Integrated Circuit",
+      "category": "光子芯片",
+      "unit": "颗",
+      "role": "集成调制、探测和片上光路",
+      "detail": "用每颗PIC承载的光通道数计算颗数；实际划分取决于芯片设计与良率。",
+      "qtyRule": "pic",
+      "sourceIds": [
+        "WX_NPO_20260927",
+        "SIFO_200",
+        "EPIC_PIC",
+        "SICOYA_PIC",
+        "TOWER_400",
+        "GF_FOTONIX"
+      ],
+      "vendorLinks": [
+        {
+          "name": "SiFotonics",
+          "region": "国内",
+          "role": "硅光PIC与Ge/Si探测器",
+          "region_note": "中国经营实体与海外起源并存；此分组用于产业检索，不代表最终控制人国籍认定",
+          "vendor_id": "sifotonics",
+          "status": "产品能力",
+          "source_ids": [
+            "SIFO_200"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        },
+        {
+          "name": "弘光向尚",
+          "region": "国内",
+          "role": "硅光PIC设计",
+          "vendor_id": "epic",
+          "status": "产品能力",
+          "source_ids": [
+            "EPIC_PIC"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        },
+        {
+          "name": "Sicoya",
+          "region": "海外",
+          "role": "硅光PIC与光引擎",
+          "vendor_id": "sicoya",
+          "status": "产品能力",
+          "source_ids": [
+            "SICOYA_PIC"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        },
+        {
+          "name": "Coherent",
+          "region": "海外",
+          "role": "材料、芯片与光器件一体化",
+          "vendor_id": "coherent",
+          "status": "产品能力",
+          "source_ids": [
+            "TOWER_400"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        },
+        {
+          "name": "GlobalFoundries",
+          "region": "海外",
+          "role": "硅光代工",
+          "vendor_id": "gf",
+          "status": "产品能力",
+          "source_ids": [
+            "GF_FOTONIX"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        },
+        {
+          "name": "Tower Semiconductor",
+          "region": "海外",
+          "role": "硅光代工",
+          "vendor_id": "tower",
+          "status": "产品能力",
+          "source_ids": [
+            "TOWER_400"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        }
+      ],
+      "priceEvidence": {
+        "low": 150,
+        "base": 150,
+        "high": null,
+        "currency": "USD",
+        "unit": "美元/3.2T引擎所用PIC合计",
+        "year": "2026",
+        "status": "source_estimate",
+        "source_ids": [
+          "WX_NPO_20260927"
+        ],
+        "scope": "32×100G外置光源作者模型，原文150+；150仅为近似计算锚点，非所有架构固定价格"
+      },
+      "benchmark_prices": [],
+      "quantityEvidence": "取决于每颗PIC集成通道数及Tx/Rx分立或合一设计",
+      "checkedAt": "2026-10-08",
+      "aliases": [
+        "光子集成电路",
+        "光子芯片",
+        "硅光芯片",
+        "光子集成芯片",
+        "PIC",
+        "Photonic IC",
+        "Silicon Photonics PIC",
+        "Silicon Photonics Chip"
+      ]
+    },
+    {
+      "id": "modulator",
+      "parent": "pic",
+      "name": "调制器",
+      "en": "Optical Modulator",
+      "category": "片上有源光学",
+      "unit": "路",
+      "role": "把电信号编码到连续光上",
+      "detail": "示意采用MZM结构；微环等实现是其他路线。调制器计入PIC，不应再次叠加芯片采购价值。",
+      "qtyRule": "lanes",
+      "sourceIds": [
+        "SIFO_200",
+        "SICOYA_PIC",
+        "TOWER_400",
+        "GF_FOTONIX",
+        "HYPERLIGHT",
+        "AFR_PRODUCTS"
+      ],
+      "vendorLinks": [
+        {
+          "name": "SiFotonics",
+          "region": "国内",
+          "role": "硅光PIC与Ge/Si探测器",
+          "region_note": "中国经营实体与海外起源并存；此分组用于产业检索，不代表最终控制人国籍认定",
+          "vendor_id": "sifotonics",
+          "status": "产品能力",
+          "source_ids": [
+            "SIFO_200"
+          ],
+          "note": "PIC内部调制能力或可选TFLN路线，非额外采购的统一器件"
+        },
+        {
+          "name": "Sicoya",
+          "region": "海外",
+          "role": "硅光PIC与光引擎",
+          "vendor_id": "sicoya",
+          "status": "产品能力",
+          "source_ids": [
+            "SICOYA_PIC"
+          ],
+          "note": "PIC内部调制能力或可选TFLN路线，非额外采购的统一器件"
+        },
+        {
+          "name": "Coherent",
+          "region": "海外",
+          "role": "材料、芯片与光器件一体化",
+          "vendor_id": "coherent",
+          "status": "产品能力",
+          "source_ids": [
+            "TOWER_400"
+          ],
+          "note": "PIC内部调制能力或可选TFLN路线，非额外采购的统一器件"
+        },
+        {
+          "name": "Tower Semiconductor",
+          "region": "海外",
+          "role": "硅光代工",
+          "vendor_id": "tower",
+          "status": "产品能力",
+          "source_ids": [
+            "TOWER_400"
+          ],
+          "note": "PIC内部调制能力或可选TFLN路线，非额外采购的统一器件"
+        },
+        {
+          "name": "GlobalFoundries",
+          "region": "海外",
+          "role": "硅光代工",
+          "vendor_id": "gf",
+          "status": "产品能力",
+          "source_ids": [
+            "GF_FOTONIX"
+          ],
+          "note": "PIC内部调制能力或可选TFLN路线，非额外采购的统一器件"
+        },
+        {
+          "name": "HyperLight",
+          "region": "海外",
+          "role": "薄膜铌酸锂PIC",
+          "vendor_id": "hyperlight",
+          "status": "产品能力",
+          "source_ids": [
+            "HYPERLIGHT"
+          ],
+          "note": "PIC内部调制能力或可选TFLN路线，非额外采购的统一器件"
+        },
+        {
+          "name": "光库科技",
+          "region": "国内",
+          "role": "无源器件、FAU与TFLN调制器",
+          "vendor_id": "afr",
+          "status": "产品能力",
+          "source_ids": [
+            "AFR_PRODUCTS"
+          ],
+          "note": "PIC内部调制能力或可选TFLN路线，非额外采购的统一器件"
+        }
+      ],
+      "priceEvidence": {
+        "low": null,
+        "base": null,
+        "high": null,
+        "currency": "USD",
+        "unit": null,
+        "year": null,
+        "status": "unknown",
+        "source_ids": [],
+        "scope": "未取得适配本NPO配置的独立价格"
+      },
+      "benchmark_prices": [],
+      "quantityEvidence": "每条发射数据通道通常有一个调制功能；不代表一颗独立芯片",
+      "checkedAt": "2026-10-08",
+      "aliases": [
+        "光调制器",
+        "电光调制器",
+        "光学调制器",
+        "Modulator",
+        "Electro Optic Modulator"
+      ]
+    },
+    {
+      "id": "photodiode",
+      "parent": "pic",
+      "name": "光探测器",
+      "en": "Photodiode",
+      "category": "片上有源光学",
+      "unit": "路",
+      "role": "将接收光转换为电流信号",
+      "detail": "示意为接收端探测结构，与TIA配合。独立探测芯片与PIC集成方案的物料边界不同。",
+      "qtyRule": "lanes",
+      "sourceIds": [
+        "SIFO_200",
+        "GF_FOTONIX",
+        "SICOYA_PIC"
+      ],
+      "vendorLinks": [
+        {
+          "name": "SiFotonics",
+          "region": "国内",
+          "role": "硅光PIC与Ge/Si探测器",
+          "region_note": "中国经营实体与海外起源并存；此分组用于产业检索，不代表最终控制人国籍认定",
+          "vendor_id": "sifotonics",
+          "status": "产品能力",
+          "source_ids": [
+            "SIFO_200"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        },
+        {
+          "name": "GlobalFoundries",
+          "region": "海外",
+          "role": "硅光代工",
+          "vendor_id": "gf",
+          "status": "产品能力",
+          "source_ids": [
+            "GF_FOTONIX"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        },
+        {
+          "name": "Sicoya",
+          "region": "海外",
+          "role": "硅光PIC与光引擎",
+          "vendor_id": "sicoya",
+          "status": "产品能力",
+          "source_ids": [
+            "SICOYA_PIC"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        }
+      ],
+      "priceEvidence": {
+        "low": null,
+        "base": null,
+        "high": null,
+        "currency": "USD",
+        "unit": null,
+        "year": null,
+        "status": "unknown",
+        "source_ids": [],
+        "scope": "未取得适配本NPO配置的独立价格"
+      },
+      "benchmark_prices": [],
+      "quantityEvidence": "每条接收数据通道一个探测功能；可集成在PIC内",
+      "checkedAt": "2026-10-08",
+      "aliases": [
+        "PD",
+        "Rx PD",
+        "接收PD",
+        "高速PD",
+        "光电探测器",
+        "光电二极管",
+        "接收光探测器",
+        "探测器",
+        "Photodetector",
+        "Receiver Photodiode",
+        "Receive Photodetector",
+        "RX Detector"
+      ]
+    },
+    {
+      "id": "waveguide",
+      "parent": "pic",
+      "name": "波导",
+      "en": "Waveguide",
+      "category": "片上无源光学",
+      "unit": "组",
+      "role": "约束并传导片上光",
+      "detail": "波导长度与拓扑属于版图参数，页面不把波导段当成独立采购件。",
+      "qtyRule": "pic",
+      "sourceIds": [
+        "GF_FOTONIX",
+        "SICOYA_PIC"
+      ],
+      "vendorLinks": [
+        {
+          "name": "GlobalFoundries",
+          "region": "海外",
+          "role": "硅光代工",
+          "vendor_id": "gf",
+          "status": "产品能力",
+          "source_ids": [
+            "GF_FOTONIX"
+          ],
+          "note": "平台级集成功能；本记录不说明具体版图尺寸或每颗芯片结构"
+        },
+        {
+          "name": "Sicoya",
+          "region": "海外",
+          "role": "硅光PIC与光引擎",
+          "vendor_id": "sicoya",
+          "status": "产品能力",
+          "source_ids": [
+            "SICOYA_PIC"
+          ],
+          "note": "平台级集成功能；本记录不说明具体版图尺寸或每颗芯片结构"
+        }
+      ],
+      "priceEvidence": {
+        "low": null,
+        "base": null,
+        "high": null,
+        "currency": "USD",
+        "unit": null,
+        "year": null,
+        "status": "unknown",
+        "source_ids": [],
+        "scope": "未取得适配本NPO配置的独立价格"
+      },
+      "benchmark_prices": [],
+      "quantityEvidence": "按光路拓扑和长度形成，不用颗数计量",
+      "checkedAt": "2026-10-08",
+      "aliases": [
+        "光波导",
+        "光学波导",
+        "Optical Waveguide"
+      ]
+    },
+    {
+      "id": "coupler",
+      "parent": "pic",
+      "name": "光耦合结构",
+      "en": "Edge / Grating Coupler",
+      "category": "片上无源光学",
+      "unit": "组",
+      "role": "连接片上波导与光纤接口",
+      "detail": "边缘耦合与光栅耦合为替代实现；图中展示一般接口位置。",
+      "qtyRule": "pic",
+      "sourceIds": [
+        "GF_FOTONIX",
+        "SICOYA_PIC"
+      ],
+      "vendorLinks": [
+        {
+          "name": "GlobalFoundries",
+          "region": "海外",
+          "role": "硅光代工",
+          "vendor_id": "gf",
+          "status": "产品能力",
+          "source_ids": [
+            "GF_FOTONIX"
+          ],
+          "note": "平台级集成功能；本记录不说明具体版图尺寸或每颗芯片结构"
+        },
+        {
+          "name": "Sicoya",
+          "region": "海外",
+          "role": "硅光PIC与光引擎",
+          "vendor_id": "sicoya",
+          "status": "产品能力",
+          "source_ids": [
+            "SICOYA_PIC"
+          ],
+          "note": "平台级集成功能；本记录不说明具体版图尺寸或每颗芯片结构"
+        }
+      ],
+      "priceEvidence": {
+        "low": null,
+        "base": null,
+        "high": null,
+        "currency": "USD",
+        "unit": null,
+        "year": null,
+        "status": "unknown",
+        "source_ids": [],
+        "scope": "未取得适配本NPO配置的独立价格"
+      },
+      "benchmark_prices": [],
+      "quantityEvidence": "按PIC外部光端口数配置",
+      "checkedAt": "2026-10-08",
+      "aliases": [
+        "光耦合器",
+        "耦合结构",
+        "耦合器",
+        "Optical Coupler",
+        "Edge Coupler",
+        "Grating Coupler"
+      ]
+    },
+    {
+      "id": "splitter",
+      "parent": "pic",
+      "name": "分光器",
+      "en": "Optical Splitter",
+      "category": "片上无源光学",
+      "unit": "组",
+      "role": "把光源功率分配到调制通道",
+      "detail": "具体分光比受激光功率、插损与链路预算约束。",
+      "qtyRule": "pic",
+      "sourceIds": [
+        "GF_FOTONIX",
+        "SICOYA_PIC"
+      ],
+      "vendorLinks": [
+        {
+          "name": "GlobalFoundries",
+          "region": "海外",
+          "role": "硅光代工",
+          "vendor_id": "gf",
+          "status": "产品能力",
+          "source_ids": [
+            "GF_FOTONIX"
+          ],
+          "note": "平台级集成功能；本记录不说明具体版图尺寸或每颗芯片结构"
+        },
+        {
+          "name": "Sicoya",
+          "region": "海外",
+          "role": "硅光PIC与光引擎",
+          "vendor_id": "sicoya",
+          "status": "产品能力",
+          "source_ids": [
+            "SICOYA_PIC"
+          ],
+          "note": "平台级集成功能；本记录不说明具体版图尺寸或每颗芯片结构"
+        }
+      ],
+      "priceEvidence": {
+        "low": null,
+        "base": null,
+        "high": null,
+        "currency": "USD",
+        "unit": null,
+        "year": null,
+        "status": "unknown",
+        "source_ids": [],
+        "scope": "未取得适配本NPO配置的独立价格"
+      },
+      "benchmark_prices": [],
+      "quantityEvidence": "按激光器到调制通道的供光网络设计",
+      "checkedAt": "2026-10-08",
+      "aliases": [
+        "光分路器",
+        "光分束器",
+        "分束器",
+        "光功率分配器",
+        "Power Splitter",
+        "Beam Splitter"
+      ]
+    },
+    {
+      "id": "phase",
+      "parent": "pic",
+      "name": "相位与温度调节",
+      "en": "Phase / Thermal Tuning",
+      "category": "片上控制结构",
+      "unit": "组",
+      "role": "校准光路工作点",
+      "detail": "加热器与监控结构通常随PIC集成，数量不等于外部芯片颗数。",
+      "qtyRule": "pic",
+      "sourceIds": [
+        "GF_FOTONIX",
+        "SICOYA_PIC"
+      ],
+      "vendorLinks": [
+        {
+          "name": "GlobalFoundries",
+          "region": "海外",
+          "role": "硅光代工",
+          "vendor_id": "gf",
+          "status": "产品能力",
+          "source_ids": [
+            "GF_FOTONIX"
+          ],
+          "note": "平台级集成功能；本记录不说明具体版图尺寸或每颗芯片结构"
+        },
+        {
+          "name": "Sicoya",
+          "region": "海外",
+          "role": "硅光PIC与光引擎",
+          "vendor_id": "sicoya",
+          "status": "产品能力",
+          "source_ids": [
+            "SICOYA_PIC"
+          ],
+          "note": "平台级集成功能；本记录不说明具体版图尺寸或每颗芯片结构"
+        }
+      ],
+      "priceEvidence": {
+        "low": null,
+        "base": null,
+        "high": null,
+        "currency": "USD",
+        "unit": null,
+        "year": null,
+        "status": "unknown",
+        "source_ids": [],
+        "scope": "未取得适配本NPO配置的独立价格"
+      },
+      "benchmark_prices": [],
+      "quantityEvidence": "按需要独立调谐的功能区配置",
+      "checkedAt": "2026-10-08",
+      "aliases": [
+        "相位调节",
+        "温度调谐",
+        "相位调谐",
+        "热调谐",
+        "Phase Tuning",
+        "Thermal Tuning",
+        "Phase Shifter",
+        "PIC Heater"
+      ]
+    },
+    {
+      "id": "eic",
+      "parent": "engine",
+      "name": "EIC · Driver＋TIA",
+      "en": "Tx / Rx Electronics",
+      "category": "有源电芯片组",
+      "unit": "组",
+      "role": "提供发射驱动和接收放大",
+      "detail": "公开资料仅披露Driver与TIA合计。页面按显式工程权重拆分；点击价格可查看公式，不能将分配值视为独立报价。",
+      "qtyRule": "one",
+      "sourceIds": [
+        "MACOM_LINEAR"
+      ],
+      "vendorLinks": [
+        {
+          "name": "MACOM",
+          "region": "海外",
+          "role": "高速模拟电芯片",
+          "vendor_id": "macom",
+          "status": "产品能力",
+          "source_ids": [
+            "MACOM_LINEAR"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        }
+      ],
+      "priceEvidence": {
+        "low": null,
+        "base": null,
+        "high": null,
+        "currency": "USD",
+        "unit": null,
+        "year": null,
+        "status": "unknown",
+        "source_ids": [],
+        "scope": "未取得适配本NPO配置的独立价格"
+      },
+      "benchmark_prices": [],
+      "quantityEvidence": "Driver芯片数=向上取整发射通道数/每颗Driver通道数",
+      "checkedAt": "2026-10-08",
+      "aliases": [
+        "EIC",
+        "电子集成电路",
+        "电子芯片",
+        "电芯片组",
+        "收发电子芯片",
+        "Electronic Integrated Circuit",
+        "Electronic IC",
+        "Driver TIA",
+        "Driver + TIA",
+        "Tx Rx Electronics"
+      ]
+    },
+    {
+      "id": "driver",
+      "parent": "eic",
+      "name": "Driver",
+      "en": "Modulator Driver",
+      "category": "有源电芯片",
+      "unit": "颗",
+      "role": "驱动发射调制器",
+      "detail": "功能通道数等于Tx通道数；封装颗数按每颗集成通道数向上取整。",
+      "qtyRule": "driver",
+      "sourceIds": [
+        "MACOM_LINEAR"
+      ],
+      "vendorLinks": [
+        {
+          "name": "MACOM",
+          "region": "海外",
+          "role": "高速模拟电芯片",
+          "vendor_id": "macom",
+          "status": "产品能力",
+          "source_ids": [
+            "MACOM_LINEAR"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        }
+      ],
+      "priceEvidence": {
+        "low": null,
+        "base": null,
+        "high": null,
+        "currency": "USD",
+        "unit": null,
+        "year": null,
+        "status": "unknown",
+        "source_ids": [],
+        "scope": "未取得适配本NPO配置的独立价格"
+      },
+      "benchmark_prices": [],
+      "quantityEvidence": "Driver芯片数=向上取整发射通道数/每颗Driver通道数",
+      "checkedAt": "2026-10-08",
+      "aliases": [
+        "驱动器",
+        "调制器驱动",
+        "调制器驱动器",
+        "发射驱动",
+        "发射驱动器",
+        "Tx Driver",
+        "Modulator Driver",
+        "Optical Modulator Driver"
+      ]
+    },
+    {
+      "id": "tia",
+      "parent": "eic",
+      "name": "TIA",
+      "en": "Transimpedance Amplifier",
+      "category": "有源电芯片",
+      "unit": "颗",
+      "role": "放大接收探测器的微弱电流",
+      "detail": "功能通道数等于Rx通道数；四通道与八通道封装会改变颗数，不改变总接收通道数。",
+      "qtyRule": "tia",
+      "sourceIds": [
+        "MACOM_200",
+        "MXL_200",
+        "SMTC_TIA"
+      ],
+      "vendorLinks": [
+        {
+          "name": "MACOM",
+          "region": "海外",
+          "role": "高速模拟电芯片",
+          "vendor_id": "macom",
+          "status": "产品能力",
+          "source_ids": [
+            "MACOM_200"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        },
+        {
+          "name": "MaxLinear",
+          "region": "海外",
+          "role": "高速电芯片",
+          "vendor_id": "maxlinear",
+          "status": "产品能力",
+          "source_ids": [
+            "MXL_200"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        },
+        {
+          "name": "Semtech",
+          "region": "海外",
+          "role": "高速模拟电芯片",
+          "vendor_id": "semtech",
+          "status": "产品能力",
+          "source_ids": [
+            "SMTC_TIA"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        }
+      ],
+      "priceEvidence": {
+        "low": null,
+        "base": null,
+        "high": null,
+        "currency": "USD",
+        "unit": null,
+        "year": null,
+        "status": "unknown",
+        "source_ids": [],
+        "scope": "未取得适配本NPO配置的独立价格"
+      },
+      "benchmark_prices": [],
+      "quantityEvidence": "TIA芯片数=向上取整接收通道数/每颗TIA通道数",
+      "checkedAt": "2026-10-08",
+      "aliases": [
+        "跨阻放大器",
+        "跨阻抗放大器",
+        "接收放大器",
+        "TIA",
+        "Rx Amplifier",
+        "Receiver Amplifier",
+        "Trans Impedance Amplifier"
+      ]
+    },
+    {
+      "id": "fau",
+      "parent": "engine",
+      "name": "Fiber Array",
+      "en": "Fiber Array Unit",
+      "category": "无源光学组件",
+      "unit": "组",
+      "role": "将一排光纤精密定位到光引擎",
+      "detail": "Tx与Rx分体排纤的示意模型。每组纤芯容量可调整，光纤根数与FAU组件数分别统计。",
+      "qtyRule": "fau",
+      "sourceIds": [
+        "WX_NPO_20260927",
+        "TFC_2025",
+        "AFR_AI",
+        "SENKO_FA",
+        "MOLEX_ARRAY",
+        "THREEV"
+      ],
+      "vendorLinks": [
+        {
+          "name": "天孚通信",
+          "region": "国内",
+          "role": "光学组件与封装",
+          "vendor_id": "tfc",
+          "status": "产品能力",
+          "source_ids": [
+            "TFC_2025"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        },
+        {
+          "name": "光库科技",
+          "region": "国内",
+          "role": "无源器件、FAU与TFLN调制器",
+          "vendor_id": "afr",
+          "status": "产品能力",
+          "source_ids": [
+            "AFR_AI"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        },
+        {
+          "name": "SENKO",
+          "region": "海外",
+          "role": "光纤阵列及连接",
+          "vendor_id": "senko",
+          "status": "产品能力",
+          "source_ids": [
+            "SENKO_FA"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        },
+        {
+          "name": "Molex",
+          "region": "海外",
+          "role": "光纤阵列与连接器",
+          "vendor_id": "molex",
+          "status": "产品能力",
+          "source_ids": [
+            "MOLEX_ARRAY"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        },
+        {
+          "name": "3V-TECH",
+          "region": "国内",
+          "role": "V槽与光纤阵列",
+          "vendor_id": "threev",
+          "status": "产品能力",
+          "source_ids": [
+            "THREEV"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        }
+      ],
+      "priceEvidence": {
+        "low": null,
+        "base": 80,
+        "high": null,
+        "currency": "USD",
+        "unit": "美元/3.2T引擎侧FAU合计",
+        "year": "2026",
+        "status": "source_estimate",
+        "source_ids": [
+          "WX_NPO_20260927"
+        ],
+        "scope": "作者模型32×100G引擎侧全套FAU，不能理解为每个阵列$80"
+      },
+      "benchmark_prices": [
+        {
+          "id": "glsun_2026h1",
+          "low": null,
+          "base": 60.71,
+          "high": null,
+          "currency": "CNY",
+          "unit": "元/件",
+          "period": "2026H1",
+          "kind": "transaction_reference",
+          "source_ids": [
+            "YINGTANG_20260930"
+          ],
+          "scope": "183件FA平均采购价；通道数和规格未知，不作NPO FAU单价",
+          "eligible_for_default_bom": false
+        }
+      ],
+      "quantityEvidence": "PSM双向链路光纤=Tx+Rx；阵列件数由每阵列容纳纤芯数决定",
+      "checkedAt": "2026-10-08",
+      "aliases": [
+        "FAU",
+        "光纤阵列",
+        "光纤阵列单元",
+        "信号FAU",
+        "信号光纤阵列",
+        "Fibre Array",
+        "Fibre Array Unit",
+        "Signal Fiber Array"
+      ]
+    },
+    {
+      "id": "vgroove",
+      "parent": "fau",
+      "name": "V槽基板",
+      "en": "V-groove Substrate",
+      "category": "精密结构件",
+      "unit": "片",
+      "role": "固定光纤中心距和排列精度",
+      "detail": "常见玻璃或硅基板；本页每FAU一片为装配假设。",
+      "qtyRule": "fau",
+      "sourceIds": [
+        "THREEV",
+        "MOLEX_ARRAY"
+      ],
+      "vendorLinks": [
+        {
+          "name": "3V-TECH",
+          "region": "国内",
+          "role": "V槽与光纤阵列",
+          "vendor_id": "threev",
+          "status": "产品能力",
+          "source_ids": [
+            "THREEV"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        },
+        {
+          "name": "Molex",
+          "region": "海外",
+          "role": "光纤阵列与连接器",
+          "vendor_id": "molex",
+          "status": "产品能力",
+          "source_ids": [
+            "MOLEX_ARRAY"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        }
+      ],
+      "priceEvidence": {
+        "low": null,
+        "base": null,
+        "high": null,
+        "currency": "USD",
+        "unit": null,
+        "year": null,
+        "status": "unknown",
+        "source_ids": [],
+        "scope": "未取得适配本NPO配置的独立价格"
+      },
+      "benchmark_prices": [],
+      "quantityEvidence": "通常按FAU物理阵列件配置",
+      "checkedAt": "2026-10-08",
+      "aliases": [
+        "V槽",
+        "V型槽",
+        "V沟槽",
+        "V沟槽基板",
+        "V Groove",
+        "V Groove Substrate",
+        "V Grooved Substrate"
+      ]
+    },
+    {
+      "id": "fiber",
+      "parent": "fau",
+      "name": "信号光纤",
+      "en": "Signal Fiber",
+      "category": "无源光学",
+      "unit": "根",
+      "role": "传输Tx与Rx光信号",
+      "detail": "当前为并行单波长光链路，信号光纤根数为Tx＋Rx。WDM复用不在当前数量模型内。",
+      "qtyRule": "fibers",
+      "sourceIds": [
+        "CORNING_CPO",
+        "FUJIKURA_PMF",
+        "YOFC_PMF"
+      ],
+      "vendorLinks": [
+        {
+          "name": "Corning",
+          "region": "海外",
+          "role": "光纤与光学材料",
+          "vendor_id": "corning",
+          "status": "产品能力",
+          "source_ids": [
+            "CORNING_CPO"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        },
+        {
+          "name": "Fujikura",
+          "region": "海外",
+          "role": "特种光纤",
+          "vendor_id": "fujikura",
+          "status": "产品能力",
+          "source_ids": [
+            "FUJIKURA_PMF"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        },
+        {
+          "name": "长飞光纤",
+          "region": "国内",
+          "role": "光纤与特种光纤",
+          "vendor_id": "yofc",
+          "status": "产品能力",
+          "source_ids": [
+            "YOFC_PMF"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        }
+      ],
+      "priceEvidence": {
+        "low": null,
+        "base": null,
+        "high": null,
+        "currency": "USD",
+        "unit": null,
+        "year": null,
+        "status": "unknown",
+        "source_ids": [],
+        "scope": "未取得适配本NPO配置的独立价格"
+      },
+      "benchmark_prices": [],
+      "quantityEvidence": "PSM收发独立时每通道Tx一根、Rx一根；长度由布线路径决定",
+      "checkedAt": "2026-10-08",
+      "aliases": [
+        "光纤",
+        "数据光纤",
+        "通信光纤",
+        "Signal Fibre",
+        "Data Fiber"
+      ]
+    },
+    {
+      "id": "lens",
+      "parent": "fau",
+      "name": "微透镜阵列",
+      "en": "Microlens Array",
+      "category": "无源光学",
+      "unit": "组",
+      "role": "整形与耦合阵列光束",
+      "detail": "仅在所选透镜耦合结构中需要；直接耦合FAU可在高级参数关闭。",
+      "qtyRule": "fauLens",
+      "sourceIds": [
+        "FOCUSLIGHT_NPO",
+        "TFC_2025",
+        "OPTOWIDE",
+        "AFR_PRODUCTS"
+      ],
+      "vendorLinks": [
+        {
+          "name": "炬光科技",
+          "region": "国内",
+          "role": "微透镜与激光器材料",
+          "vendor_id": "focuslight",
+          "status": "产品能力",
+          "source_ids": [
+            "FOCUSLIGHT_NPO"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        },
+        {
+          "name": "天孚通信",
+          "region": "国内",
+          "role": "光学组件与封装",
+          "vendor_id": "tfc",
+          "status": "产品能力",
+          "source_ids": [
+            "TFC_2025"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        },
+        {
+          "name": "腾景科技",
+          "region": "国内",
+          "role": "精密光学元件与镀膜",
+          "vendor_id": "optowide",
+          "status": "产品能力",
+          "source_ids": [
+            "OPTOWIDE"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        },
+        {
+          "name": "光库科技",
+          "region": "国内",
+          "role": "无源器件、FAU与TFLN调制器",
+          "vendor_id": "afr",
+          "status": "产品能力",
+          "source_ids": [
+            "AFR_PRODUCTS"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        }
+      ],
+      "priceEvidence": {
+        "low": null,
+        "base": null,
+        "high": null,
+        "currency": "USD",
+        "unit": null,
+        "year": null,
+        "status": "unknown",
+        "source_ids": [],
+        "scope": "未取得适配本NPO配置的独立价格"
+      },
+      "benchmark_prices": [],
+      "quantityEvidence": "按光路或阵列孔径配置；不可简单按通道数推导实物片数",
+      "checkedAt": "2026-10-08",
+      "aliases": [
+        "微透镜",
+        "微型透镜阵列",
+        "Micro Lens Array",
+        "Microlens",
+        "MLA"
+      ]
+    },
+    {
+      "id": "adhesive",
+      "parent": "fau",
+      "name": "光学胶与固定",
+      "en": "Optical Adhesive",
+      "category": "封装材料",
+      "unit": "组",
+      "role": "保持光纤与基板的装配位置",
+      "detail": "胶量与工艺良率不适合直接按每根光纤报价，计为组件中的工艺材料。",
+      "qtyRule": "fau",
+      "sourceIds": [
+        "HENKEL_OPTICAL"
+      ],
+      "vendorLinks": [
+        {
+          "name": "Henkel",
+          "region": "海外",
+          "role": "光学胶与导热材料",
+          "vendor_id": "henkel",
+          "status": "产品能力",
+          "source_ids": [
+            "HENKEL_OPTICAL"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        }
+      ],
+      "priceEvidence": {
+        "low": null,
+        "base": null,
+        "high": null,
+        "currency": "USD",
+        "unit": null,
+        "year": null,
+        "status": "unknown",
+        "source_ids": [],
+        "scope": "未取得适配本NPO配置的独立价格"
+      },
+      "benchmark_prices": [],
+      "quantityEvidence": "按点胶面积、胶层厚度及工艺消耗计量",
+      "checkedAt": "2026-10-08",
+      "aliases": [
+        "光学胶",
+        "光学胶水",
+        "光学粘合剂",
+        "光学黏合剂",
+        "Optical Glue",
+        "Optical Bonding Adhesive"
+      ]
+    },
+    {
+      "id": "els",
+      "parent": "npo",
+      "name": "光源组件",
+      "en": "Laser Source Assembly",
+      "category": "光源子系统",
+      "unit": "套",
+      "role": "为光引擎提供连续光",
+      "detail": "外置方式可多光引擎共享一套ELS；左侧同时显示物理套数及本NPO分摊比例。板载光源是另一封装情景。",
+      "qtyRule": "els",
+      "sourceIds": [
+        "WX_NPO_20260927",
+        "LITE_ELS",
+        "ONET_ELS",
+        "ACCELINK_NPO"
+      ],
+      "vendorLinks": [
+        {
+          "name": "Lumentum",
+          "region": "海外",
+          "role": "InP光芯片与ELS集成",
+          "vendor_id": "lumentum",
+          "status": "产品能力",
+          "source_ids": [
+            "LITE_ELS"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        },
+        {
+          "name": "昂纳科技",
+          "region": "国内",
+          "role": "ELS与无源光器件",
+          "vendor_id": "onet",
+          "status": "产品能力",
+          "source_ids": [
+            "ONET_ELS"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        },
+        {
+          "name": "光迅科技",
+          "region": "国内",
+          "role": "NPO系统与光模块集成",
+          "vendor_id": "accelink",
+          "status": "产品能力",
+          "source_ids": [
+            "ACCELINK_NPO"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        }
+      ],
+      "priceEvidence": {
+        "low": null,
+        "base": 300,
+        "high": null,
+        "currency": "USD",
+        "unit": "美元/一套8颗CW的ELS",
+        "year": "2026",
+        "status": "source_estimate",
+        "source_ids": [
+          "WX_NPO_20260927"
+        ],
+        "scope": "完整ELS材料BOM作者估计；源模型一套供两只引擎"
+      },
+      "benchmark_prices": [
+        {
+          "id": "gs_cpo_els",
+          "low": null,
+          "base": 400,
+          "high": null,
+          "currency": "USD",
+          "unit": "美元/套",
+          "period": "2026",
+          "kind": "broker_estimate",
+          "source_ids": [
+            "GS_CPO_20260417"
+          ],
+          "scope": "8颗300mW CW的ELS采购ASP模型，不是材料BOM",
+          "eligible_for_default_bom": false
+        }
+      ],
+      "quantityEvidence": "源模型为8颗CW/ELS且一套ELS服务两只3.2T光引擎",
+      "checkedAt": "2026-10-08",
+      "aliases": [
+        "ELS",
+        "外置光源",
+        "外部光源",
+        "外置激光源",
+        "外置激光光源",
+        "光源",
+        "External Laser Source",
+        "External Light Source"
+      ]
+    },
+    {
+      "id": "cw",
+      "parent": "els",
+      "name": "CW激光器",
+      "en": "CW Laser",
+      "category": "有源光学器件",
+      "unit": "路",
+      "role": "产生供调制器使用的连续光",
+      "detail": "激光路数按光通道与供光扇出计算。供光能力不只取决于数量，还取决于功率和损耗。",
+      "qtyRule": "cw",
+      "sourceIds": [
+        "WX_NPO_20260927",
+        "LITE_CW",
+        "COHR_CW",
+        "BRCM_CW"
+      ],
+      "vendorLinks": [
+        {
+          "name": "Lumentum",
+          "region": "海外",
+          "role": "InP光芯片与ELS集成",
+          "vendor_id": "lumentum",
+          "status": "产品能力",
+          "source_ids": [
+            "LITE_CW"
+          ],
+          "note": "CW芯片能力；InP外延可自用，本记录不认定对外出售衬底"
+        },
+        {
+          "name": "Coherent",
+          "region": "海外",
+          "role": "材料、芯片与光器件一体化",
+          "vendor_id": "coherent",
+          "status": "产品能力",
+          "source_ids": [
+            "COHR_CW"
+          ],
+          "note": "CW芯片能力；InP外延可自用，本记录不认定对外出售衬底"
+        },
+        {
+          "name": "Broadcom",
+          "region": "海外",
+          "role": "CW光芯片",
+          "vendor_id": "broadcom",
+          "status": "产品能力",
+          "source_ids": [
+            "BRCM_CW"
+          ],
+          "note": "CW芯片能力；InP外延可自用，本记录不认定对外出售衬底"
+        }
+      ],
+      "priceEvidence": {
+        "low": 20,
+        "base": 20,
+        "high": null,
+        "currency": "USD",
+        "unit": "美元/一颗200mW CW参考",
+        "year": "2026",
+        "status": "derived_from_source_estimate",
+        "source_ids": [
+          "WX_NPO_20260927"
+        ],
+        "scope": "由8颗合计160+除以8得到20+；不能用于400mW产品，也未确认裸片/封装层级"
+      },
+      "benchmark_prices": [
+        {
+          "id": "gs_300mw_cw",
+          "low": null,
+          "base": 30,
+          "high": null,
+          "currency": "USD",
+          "unit": "美元/颗",
+          "period": "2026",
+          "kind": "broker_estimate",
+          "source_ids": [
+            "GS_CPO_20260417"
+          ],
+          "scope": "300mW CW采购价值估计，CPO Quantum-X场景，非200mW源模型的材料成本",
+          "eligible_for_default_bom": false
+        }
+      ],
+      "quantityEvidence": "按独立激光腔和供光功率预算计算",
+      "checkedAt": "2026-10-08",
+      "aliases": [
+        "CW",
+        "连续波激光器",
+        "连续光激光器",
+        "连续波光源",
+        "激光器",
+        "Continuous Wave Laser",
+        "Continuous Wave Laser Source"
+      ]
+    },
+    {
+      "id": "laser_die",
+      "parent": "cw",
+      "name": "InP激光芯片",
+      "en": "InP Laser Die",
+      "category": "半导体芯片",
+      "unit": "颗",
+      "role": "通过受激辐射产生激光",
+      "detail": "数量采用每光源路一颗芯片的示意假设；多发射腔或阵列产品需要另行建模。",
+      "qtyRule": "cw",
+      "sourceIds": [
+        "LITE_CW",
+        "COHR_CW",
+        "BRCM_CW"
+      ],
+      "vendorLinks": [
+        {
+          "name": "Lumentum",
+          "region": "海外",
+          "role": "InP光芯片与ELS集成",
+          "vendor_id": "lumentum",
+          "status": "产品能力",
+          "source_ids": [
+            "LITE_CW"
+          ],
+          "note": "CW芯片能力；InP外延可自用，本记录不认定对外出售衬底"
+        },
+        {
+          "name": "Coherent",
+          "region": "海外",
+          "role": "材料、芯片与光器件一体化",
+          "vendor_id": "coherent",
+          "status": "产品能力",
+          "source_ids": [
+            "COHR_CW"
+          ],
+          "note": "CW芯片能力；InP外延可自用，本记录不认定对外出售衬底"
+        },
+        {
+          "name": "Broadcom",
+          "region": "海外",
+          "role": "CW光芯片",
+          "vendor_id": "broadcom",
+          "status": "产品能力",
+          "source_ids": [
+            "BRCM_CW"
+          ],
+          "note": "CW芯片能力；InP外延可自用，本记录不认定对外出售衬底"
+        }
+      ],
+      "priceEvidence": {
+        "low": null,
+        "base": null,
+        "high": null,
+        "currency": "USD",
+        "unit": null,
+        "year": null,
+        "status": "unknown",
+        "source_ids": [],
+        "scope": "未取得适配本NPO配置的独立价格"
+      },
+      "benchmark_prices": [],
+      "quantityEvidence": "按独立激光腔计数，阵列芯片可集成多个激光腔",
+      "checkedAt": "2026-10-08",
+      "aliases": [
+        "激光裸片",
+        "激光芯片",
+        "磷化铟激光芯片",
+        "激光器芯片",
+        "Laser Chip",
+        "Laser Die",
+        "InP Laser Chip",
+        "Indium Phosphide Laser Die"
+      ]
+    },
+    {
+      "id": "laser_submount",
+      "parent": "cw",
+      "name": "热沉与Submount",
+      "en": "Laser Submount",
+      "category": "封装结构件",
+      "unit": "片",
+      "role": "为激光芯片提供安装及导热路径",
+      "detail": "材料和尺寸依功率、封装及散热方案变化。",
+      "qtyRule": "cw",
+      "sourceIds": [
+        "KYOCERA_LD",
+        "SUMI_ALN",
+        "FOCUSLIGHT_MAT",
+        "XINYU_IPO_20260622"
+      ],
+      "vendorLinks": [
+        {
+          "name": "Kyocera",
+          "region": "海外",
+          "role": "陶瓷封装与热沉",
+          "vendor_id": "kyocera",
+          "status": "产品能力",
+          "source_ids": [
+            "KYOCERA_LD"
+          ],
+          "note": "AlN/陶瓷或CuW相关能力；特定激光器用封装型号需另核"
+        },
+        {
+          "name": "Sumitomo Electric",
+          "region": "海外",
+          "role": "AlN材料与热沉",
+          "vendor_id": "sumitomo_electric",
+          "status": "产品能力",
+          "source_ids": [
+            "SUMI_ALN"
+          ],
+          "note": "AlN/陶瓷或CuW相关能力；特定激光器用封装型号需另核"
+        },
+        {
+          "name": "炬光科技",
+          "region": "国内",
+          "role": "微透镜与激光器材料",
+          "vendor_id": "focuslight",
+          "status": "产品能力",
+          "source_ids": [
+            "FOCUSLIGHT_MAT"
+          ],
+          "note": "AlN/陶瓷或CuW相关能力；特定激光器用封装型号需另核"
+        },
+        {
+          "name": "华清电子材料",
+          "region": "国内",
+          "role": "氮化铝陶瓷",
+          "vendor_id": "huaqing",
+          "status": "产品能力",
+          "source_ids": [
+            "XINYU_IPO_20260622"
+          ],
+          "note": "AlN/陶瓷或CuW相关能力；特定激光器用封装型号需另核"
+        },
+        {
+          "name": "鑫宇科技",
+          "region": "国内",
+          "role": "隔离器、磁体与精密结构件",
+          "vendor_id": "xinyu",
+          "status": "产品能力",
+          "source_ids": [
+            "XINYU_IPO_20260622"
+          ],
+          "note": "AlN/陶瓷或CuW相关能力；特定激光器用封装型号需另核"
+        }
+      ],
+      "priceEvidence": {
+        "low": null,
+        "base": null,
+        "high": null,
+        "currency": "USD",
+        "unit": null,
+        "year": null,
+        "status": "unknown",
+        "source_ids": [],
+        "scope": "未取得适配本NPO配置的独立价格"
+      },
+      "benchmark_prices": [],
+      "quantityEvidence": "按裸片或多激光阵列封装配置",
+      "checkedAt": "2026-10-08",
+      "aliases": [
+        "激光热沉",
+        "激光器热沉",
+        "激光载台",
+        "激光器载板",
+        "Submount",
+        "Laser Heat Sink",
+        "Laser Carrier"
+      ]
+    },
+    {
+      "id": "isolator",
+      "parent": "els",
+      "name": "光隔离器",
+      "en": "Optical Isolator",
+      "category": "无源光学组件",
+      "unit": "只",
+      "role": "抑制反射光返回激光器",
+      "detail": "示意为每CW路一个单级隔离器，实际可采用集成或不同级数方案；不是所有NPO架构的通用颗数。",
+      "qtyRule": "isolator",
+      "sourceIds": [
+        "COHR_ISO",
+        "TFC_ISO",
+        "XINYU_IPO_20260622",
+        "AFR_PRODUCTS",
+        "YINGTANG_20260930"
+      ],
+      "vendorLinks": [
+        {
+          "name": "Coherent",
+          "region": "海外",
+          "role": "材料、芯片与光器件一体化",
+          "vendor_id": "coherent",
+          "status": "产品能力",
+          "source_ids": [
+            "COHR_ISO"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        },
+        {
+          "name": "天孚通信",
+          "region": "国内",
+          "role": "光学组件与封装",
+          "vendor_id": "tfc",
+          "status": "产品能力",
+          "source_ids": [
+            "TFC_ISO"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        },
+        {
+          "name": "鑫宇科技",
+          "region": "国内",
+          "role": "隔离器、磁体与精密结构件",
+          "vendor_id": "xinyu",
+          "status": "产品能力",
+          "source_ids": [
+            "XINYU_IPO_20260622"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        },
+        {
+          "name": "光库科技",
+          "region": "国内",
+          "role": "无源器件、FAU与TFLN调制器",
+          "vendor_id": "afr",
+          "status": "产品能力",
+          "source_ids": [
+            "AFR_PRODUCTS"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        },
+        {
+          "name": "光隆光学",
+          "region": "国内",
+          "role": "光器件与磁光元件",
+          "vendor_id": "glsun",
+          "status": "产品能力",
+          "source_ids": [
+            "YINGTANG_20260930"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        }
+      ],
+      "priceEvidence": {
+        "low": null,
+        "base": null,
+        "high": null,
+        "currency": "USD",
+        "unit": null,
+        "year": null,
+        "status": "unknown",
+        "source_ids": [],
+        "scope": "未取得NPO高功率ELS同规格价格；已提供其它产品交易样本作为旁证，不能自动计算占比"
+      },
+      "benchmark_prices": [
+        {
+          "id": "xinyu_2025_avg",
+          "low": null,
+          "base": 8.5214,
+          "high": null,
+          "currency": "CNY",
+          "unit": "元/只",
+          "period": "2025",
+          "kind": "transaction_reference",
+          "source_ids": [
+            "XINYU_IPO_20260622"
+          ],
+          "scope": "隔离器年度混合销售ASP=收入/销量；未细分NPO/功率/通道/级数，不能直接作为NPO器件材料成本",
+          "eligible_for_default_bom": false
+        },
+        {
+          "id": "glsun_2025_inline",
+          "low": null,
+          "base": 70.29,
+          "high": null,
+          "currency": "CNY",
+          "unit": "元/只",
+          "period": "2025",
+          "kind": "transaction_reference",
+          "source_ids": [
+            "YINGTANG_20260930"
+          ],
+          "scope": "光隆集成向光隆光学购入在线隔离器的关联采购样本，型号与NPO不一致",
+          "eligible_for_default_bom": false
+        },
+        {
+          "id": "glsun_2026h1_inline",
+          "low": null,
+          "base": 63.2,
+          "high": null,
+          "currency": "CNY",
+          "unit": "元/只",
+          "period": "2026H1",
+          "kind": "transaction_reference",
+          "source_ids": [
+            "YINGTANG_20260930"
+          ],
+          "scope": "在线隔离器采购样本，非高功率NPO隔离器报价",
+          "eligible_for_default_bom": false
+        }
+      ],
+      "quantityEvidence": "按独立受保护供光路径计数；不等于NPO数据通道数",
+      "checkedAt": "2026-10-08",
+      "aliases": [
+        "隔离器",
+        "Optical Isolator",
+        "光学隔离器",
+        "法拉第隔离器",
+        "Faraday Isolator"
+      ]
+    },
+    {
+      "id": "faraday",
+      "parent": "isolator",
+      "name": "法拉第旋片",
+      "en": "Faraday Rotator",
+      "category": "磁光元件",
+      "unit": "片",
+      "role": "在磁场作用下旋转偏振方向",
+      "detail": "与偏振元件配合实现隔离。当前按单级隔离器一片建模，可调整每隔离器片数。",
+      "qtyRule": "faraday",
+      "sourceIds": [
+        "XINYU_IPO_20260622",
+        "COHR_GARNET",
+        "GRANOPT_FRG"
+      ],
+      "vendorLinks": [
+        {
+          "name": "森一量子",
+          "region": "国内",
+          "role": "法拉第旋光晶体及旋片",
+          "vendor_id": "senyi",
+          "status": "产品能力",
+          "source_ids": [
+            "XINYU_IPO_20260622"
+          ],
+          "note": "旋片或材料能力；当前NPO型号售价未披露"
+        },
+        {
+          "name": "Coherent",
+          "region": "海外",
+          "role": "材料、芯片与光器件一体化",
+          "vendor_id": "coherent",
+          "status": "产品能力",
+          "source_ids": [
+            "COHR_GARNET"
+          ],
+          "note": "旋片或材料能力；当前NPO型号售价未披露"
+        },
+        {
+          "name": "GRANOPT",
+          "region": "海外",
+          "role": "法拉第旋光晶体及旋片",
+          "vendor_id": "granopt",
+          "status": "产品能力",
+          "source_ids": [
+            "GRANOPT_FRG"
+          ],
+          "note": "旋片或材料能力；当前NPO型号售价未披露"
+        }
+      ],
+      "priceEvidence": {
+        "low": null,
+        "base": null,
+        "high": null,
+        "currency": "USD",
+        "unit": null,
+        "year": null,
+        "status": "unknown",
+        "source_ids": [],
+        "scope": "未取得NPO高功率ELS同规格价格；已提供其它产品交易样本作为旁证，不能自动计算占比"
+      },
+      "benchmark_prices": [
+        {
+          "id": "glsun_2025_small",
+          "low": null,
+          "base": 8.88,
+          "high": null,
+          "currency": "CNY",
+          "unit": "元/片",
+          "period": "2025",
+          "kind": "transaction_reference",
+          "source_ids": [
+            "YINGTANG_20260930"
+          ],
+          "scope": "磁光开关用法拉第小片，未提供可对应O波段高速模块的尺寸/波长，不能用作本NPO旋片单价",
+          "eligible_for_default_bom": false
+        },
+        {
+          "id": "glsun_2026h1_small",
+          "low": null,
+          "base": 35.49,
+          "high": null,
+          "currency": "CNY",
+          "unit": "元/片",
+          "period": "2026H1",
+          "kind": "transaction_reference",
+          "source_ids": [
+            "YINGTANG_20260930"
+          ],
+          "scope": "磁光开关用小片，产品组合可不同；不据此判定同型号涨幅",
+          "eligible_for_default_bom": false
+        }
+      ],
+      "quantityEvidence": "单级隔离光路通常一个旋光单元；双级、多束共片另算",
+      "checkedAt": "2026-10-08",
+      "aliases": [
+        "旋片",
+        "法拉第片",
+        "Faraday Rotator",
+        "法拉第旋转片",
+        "法拉第旋转器",
+        "Faraday Rotation Plate"
+      ]
+    },
+    {
+      "id": "garnet",
+      "parent": "faraday",
+      "name": "磁光晶体材料",
+      "en": "Magneto-optic Garnet",
+      "category": "功能材料",
+      "unit": "份",
+      "role": "提供非互易磁光响应",
+      "detail": "薄膜晶体的材料体系、波段与生长工艺不同；原料与加工旋片属于不同价值层。",
+      "qtyRule": "faraday",
+      "sourceIds": [
+        "XINYU_IPO_20260622",
+        "COHR_GARNET",
+        "GRANOPT_FRG"
+      ],
+      "vendorLinks": [
+        {
+          "name": "森一量子",
+          "region": "国内",
+          "role": "法拉第旋光晶体及旋片",
+          "vendor_id": "senyi",
+          "status": "产品能力",
+          "source_ids": [
+            "XINYU_IPO_20260622"
+          ],
+          "note": "旋片或材料能力；当前NPO型号售价未披露"
+        },
+        {
+          "name": "Coherent",
+          "region": "海外",
+          "role": "材料、芯片与光器件一体化",
+          "vendor_id": "coherent",
+          "status": "产品能力",
+          "source_ids": [
+            "COHR_GARNET"
+          ],
+          "note": "旋片或材料能力；当前NPO型号售价未披露"
+        },
+        {
+          "name": "GRANOPT",
+          "region": "海外",
+          "role": "法拉第旋光晶体及旋片",
+          "vendor_id": "granopt",
+          "status": "产品能力",
+          "source_ids": [
+            "GRANOPT_FRG"
+          ],
+          "note": "旋片或材料能力；当前NPO型号售价未披露"
+        }
+      ],
+      "priceEvidence": {
+        "low": null,
+        "base": null,
+        "high": null,
+        "currency": "USD",
+        "unit": null,
+        "year": null,
+        "status": "unknown",
+        "source_ids": [],
+        "scope": "未取得适配本NPO配置的独立价格"
+      },
+      "benchmark_prices": [
+        {
+          "id": "glsun_2025_rotator_material",
+          "low": null,
+          "base": 1110.49,
+          "high": null,
+          "currency": "CNY",
+          "unit": "元/片",
+          "period": "2025",
+          "kind": "transaction_reference",
+          "source_ids": [
+            "YINGTANG_20260930"
+          ],
+          "scope": "磁光开关用法拉第旋转片，尺寸未披露；不可认定为11×11mm大片",
+          "eligible_for_default_bom": false
+        }
+      ],
+      "quantityEvidence": "按有效面积、厚度、切粒良率及后加工折算",
+      "checkedAt": "2026-10-08",
+      "aliases": [
+        "磁光材料",
+        "磁光晶体",
+        "磁光石榴石",
+        "石榴石晶体",
+        "Magneto Optical Garnet",
+        "Magneto Optic Crystal",
+        "Magneto Optical Material"
+      ]
+    },
+    {
+      "id": "coating",
+      "parent": "faraday",
+      "name": "光学镀膜",
+      "en": "Anti-reflection Coating",
+      "category": "表面工艺",
+      "unit": "组",
+      "role": "降低工作波段表面反射",
+      "detail": "镀膜是旋片加工的一部分；没有独立成本资料时只标示包含关系。",
+      "qtyRule": "faraday",
+      "sourceIds": [
+        "COHR_GARNET",
+        "TFC_COATING",
+        "OPTOWIDE"
+      ],
+      "vendorLinks": [
+        {
+          "name": "Coherent",
+          "region": "海外",
+          "role": "材料、芯片与光器件一体化",
+          "vendor_id": "coherent",
+          "status": "产品能力",
+          "source_ids": [
+            "COHR_GARNET"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        },
+        {
+          "name": "天孚通信",
+          "region": "国内",
+          "role": "光学组件与封装",
+          "vendor_id": "tfc",
+          "status": "产品能力",
+          "source_ids": [
+            "TFC_COATING"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        },
+        {
+          "name": "腾景科技",
+          "region": "国内",
+          "role": "精密光学元件与镀膜",
+          "vendor_id": "optowide",
+          "status": "产品能力",
+          "source_ids": [
+            "OPTOWIDE"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        }
+      ],
+      "priceEvidence": {
+        "low": null,
+        "base": null,
+        "high": null,
+        "currency": "USD",
+        "unit": null,
+        "year": null,
+        "status": "unknown",
+        "source_ids": [],
+        "scope": "未取得适配本NPO配置的独立价格"
+      },
+      "benchmark_prices": [],
+      "quantityEvidence": "每个相关光学表面按功能设计",
+      "checkedAt": "2026-10-08",
+      "aliases": [
+        "增透膜",
+        "增透镀膜",
+        "抗反射镀膜",
+        "减反膜",
+        "AR Coating",
+        "Antireflection Coating",
+        "Anti Reflective Coating"
+      ]
+    },
+    {
+      "id": "polarizer",
+      "parent": "isolator",
+      "name": "起偏元件",
+      "en": "Polarizer",
+      "category": "无源光学",
+      "unit": "片",
+      "role": "建立输入偏振方向",
+      "detail": "偏振相关型隔离器的示意结构。其他偏振无关型产品可能采用双折射晶体等不同结构。",
+      "qtyRule": "isolator",
+      "sourceIds": [
+        "XINYU_IPO_20260622"
+      ],
+      "vendorLinks": [
+        {
+          "name": "Coherent",
+          "region": "海外",
+          "role": "偏振元件供应",
+          "vendor_id": "coherent",
+          "status": "已有器件供应记录",
+          "source_ids": [
+            "XINYU_IPO_20260622"
+          ],
+          "note": "鑫宇原材料采购表支持偏振片供货；具体起偏/检偏位置和型号未披露"
+        },
+        {
+          "name": "Corning",
+          "region": "海外",
+          "role": "偏振元件供应",
+          "vendor_id": "corning",
+          "status": "已有器件供应记录",
+          "source_ids": [
+            "XINYU_IPO_20260622"
+          ],
+          "note": "鑫宇原材料采购表支持偏振片供货；具体起偏/检偏位置和型号未披露"
+        },
+        {
+          "name": "HOYA",
+          "region": "海外",
+          "role": "偏振元件供应",
+          "vendor_id": "hoya",
+          "status": "已有器件供应记录",
+          "source_ids": [
+            "XINYU_IPO_20260622"
+          ],
+          "note": "鑫宇原材料采购表支持偏振片供货；具体起偏/检偏位置和型号未披露"
+        },
+        {
+          "name": "新华光",
+          "region": "国内",
+          "role": "偏振元件供应",
+          "vendor_id": "xinhuaguang",
+          "status": "已有器件供应记录",
+          "source_ids": [
+            "XINYU_IPO_20260622"
+          ],
+          "note": "鑫宇原材料采购表支持偏振片供货；具体起偏/检偏位置和型号未披露"
+        },
+        {
+          "name": "上海联肯",
+          "region": "国内",
+          "role": "偏振元件供应",
+          "vendor_id": "lianken",
+          "status": "已有器件供应记录",
+          "source_ids": [
+            "XINYU_IPO_20260622"
+          ],
+          "note": "鑫宇原材料采购表支持偏振片供货；具体起偏/检偏位置和型号未披露"
+        }
+      ],
+      "priceEvidence": {
+        "low": null,
+        "base": null,
+        "high": null,
+        "currency": "USD",
+        "unit": null,
+        "year": null,
+        "status": "unknown",
+        "source_ids": [],
+        "scope": "未取得NPO高功率ELS同规格价格；已提供其它产品交易样本作为旁证，不能自动计算占比"
+      },
+      "benchmark_prices": [],
+      "quantityEvidence": "概念性单级偏振相关隔离器一个输入偏振元件",
+      "checkedAt": "2026-10-08",
+      "aliases": [
+        "起偏器",
+        "起偏片",
+        "偏振片",
+        "Polariser",
+        "Input Polarizer"
+      ]
+    },
+    {
+      "id": "analyzer",
+      "parent": "isolator",
+      "name": "检偏元件",
+      "en": "Analyzer",
+      "category": "无源光学",
+      "unit": "片",
+      "role": "与旋转后的偏振方向配合",
+      "detail": "与起偏元件及法拉第旋片共同构成隔离光路。",
+      "qtyRule": "isolator",
+      "sourceIds": [
+        "XINYU_IPO_20260622"
+      ],
+      "vendorLinks": [
+        {
+          "name": "Coherent",
+          "region": "海外",
+          "role": "偏振元件供应",
+          "vendor_id": "coherent",
+          "status": "已有器件供应记录",
+          "source_ids": [
+            "XINYU_IPO_20260622"
+          ],
+          "note": "鑫宇原材料采购表支持偏振片供货；具体起偏/检偏位置和型号未披露"
+        },
+        {
+          "name": "Corning",
+          "region": "海外",
+          "role": "偏振元件供应",
+          "vendor_id": "corning",
+          "status": "已有器件供应记录",
+          "source_ids": [
+            "XINYU_IPO_20260622"
+          ],
+          "note": "鑫宇原材料采购表支持偏振片供货；具体起偏/检偏位置和型号未披露"
+        },
+        {
+          "name": "HOYA",
+          "region": "海外",
+          "role": "偏振元件供应",
+          "vendor_id": "hoya",
+          "status": "已有器件供应记录",
+          "source_ids": [
+            "XINYU_IPO_20260622"
+          ],
+          "note": "鑫宇原材料采购表支持偏振片供货；具体起偏/检偏位置和型号未披露"
+        },
+        {
+          "name": "新华光",
+          "region": "国内",
+          "role": "偏振元件供应",
+          "vendor_id": "xinhuaguang",
+          "status": "已有器件供应记录",
+          "source_ids": [
+            "XINYU_IPO_20260622"
+          ],
+          "note": "鑫宇原材料采购表支持偏振片供货；具体起偏/检偏位置和型号未披露"
+        },
+        {
+          "name": "上海联肯",
+          "region": "国内",
+          "role": "偏振元件供应",
+          "vendor_id": "lianken",
+          "status": "已有器件供应记录",
+          "source_ids": [
+            "XINYU_IPO_20260622"
+          ],
+          "note": "鑫宇原材料采购表支持偏振片供货；具体起偏/检偏位置和型号未披露"
+        }
+      ],
+      "priceEvidence": {
+        "low": null,
+        "base": null,
+        "high": null,
+        "currency": "USD",
+        "unit": null,
+        "year": null,
+        "status": "unknown",
+        "source_ids": [],
+        "scope": "未取得NPO高功率ELS同规格价格；已提供其它产品交易样本作为旁证，不能自动计算占比"
+      },
+      "benchmark_prices": [],
+      "quantityEvidence": "概念性单级偏振相关隔离器一个输出偏振元件",
+      "checkedAt": "2026-10-08",
+      "aliases": [
+        "检偏器",
+        "检偏片",
+        "Analyser",
+        "Output Polarizer"
+      ]
+    },
+    {
+      "id": "magnet",
+      "parent": "isolator",
+      "name": "永久磁体",
+      "en": "Permanent Magnet",
+      "category": "磁性材料",
+      "unit": "组",
+      "role": "为磁光元件提供工作磁场",
+      "detail": "具体磁路与元件设计相关，示意为一个磁体组件。",
+      "qtyRule": "isolator",
+      "sourceIds": [
+        "XINYU_IPO_20260622"
+      ],
+      "vendorLinks": [
+        {
+          "name": "鑫宇科技",
+          "region": "国内",
+          "role": "隔离器、磁体与精密结构件",
+          "vendor_id": "xinyu",
+          "status": "产品能力",
+          "source_ids": [
+            "XINYU_IPO_20260622"
+          ],
+          "note": "披露稀土永磁体、钐钴磁铁或磁环；特定NPO型号未披露"
+        },
+        {
+          "name": "河南晶方",
+          "region": "国内",
+          "role": "钐钴磁体",
+          "vendor_id": "jingfang",
+          "status": "产品能力",
+          "source_ids": [
+            "XINYU_IPO_20260622"
+          ],
+          "note": "披露稀土永磁体、钐钴磁铁或磁环；特定NPO型号未披露"
+        },
+        {
+          "name": "新乡信达",
+          "region": "国内",
+          "role": "磁环",
+          "vendor_id": "xinda",
+          "status": "产品能力",
+          "source_ids": [
+            "XINYU_IPO_20260622"
+          ],
+          "note": "披露稀土永磁体、钐钴磁铁或磁环；特定NPO型号未披露"
+        }
+      ],
+      "priceEvidence": {
+        "low": null,
+        "base": null,
+        "high": null,
+        "currency": "USD",
+        "unit": null,
+        "year": null,
+        "status": "unknown",
+        "source_ids": [],
+        "scope": "未取得NPO高功率ELS同规格价格；已提供其它产品交易样本作为旁证，不能自动计算占比"
+      },
+      "benchmark_prices": [],
+      "quantityEvidence": "按隔离器磁路设计；不是每个数据通道必需一个",
+      "checkedAt": "2026-10-08",
+      "aliases": [
+        "磁体",
+        "永磁体",
+        "永磁铁",
+        "永久磁铁",
+        "Magnet"
+      ]
+    },
+    {
+      "id": "collimator",
+      "parent": "isolator",
+      "name": "准直透镜",
+      "en": "Collimating Lens",
+      "category": "无源光学",
+      "unit": "片",
+      "role": "将光纤出射光准直并重新耦合",
+      "detail": "每只隔离器两片是本示意的封装假设，芯片级或自由空间方案可能不同。",
+      "qtyRule": "collimator",
+      "sourceIds": [
+        "FOCUSLIGHT_NPO",
+        "AFR_PRODUCTS",
+        "TFC_2025",
+        "YINGTANG_20260930"
+      ],
+      "vendorLinks": [
+        {
+          "name": "炬光科技",
+          "region": "国内",
+          "role": "微透镜与激光器材料",
+          "vendor_id": "focuslight",
+          "status": "产品能力",
+          "source_ids": [
+            "FOCUSLIGHT_NPO"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        },
+        {
+          "name": "光库科技",
+          "region": "国内",
+          "role": "无源器件、FAU与TFLN调制器",
+          "vendor_id": "afr",
+          "status": "产品能力",
+          "source_ids": [
+            "AFR_PRODUCTS"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        },
+        {
+          "name": "天孚通信",
+          "region": "国内",
+          "role": "光学组件与封装",
+          "vendor_id": "tfc",
+          "status": "产品能力",
+          "source_ids": [
+            "TFC_2025"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        },
+        {
+          "name": "光隆光学",
+          "region": "国内",
+          "role": "光器件与磁光元件",
+          "vendor_id": "glsun",
+          "status": "产品能力",
+          "source_ids": [
+            "YINGTANG_20260930"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        }
+      ],
+      "priceEvidence": {
+        "low": null,
+        "base": null,
+        "high": null,
+        "currency": "USD",
+        "unit": null,
+        "year": null,
+        "status": "unknown",
+        "source_ids": [],
+        "scope": "未取得适配本NPO配置的独立价格"
+      },
+      "benchmark_prices": [
+        {
+          "id": "glsun_2025",
+          "low": null,
+          "base": 15.92,
+          "high": null,
+          "currency": "CNY",
+          "unit": "元/只",
+          "period": "2025",
+          "kind": "transaction_reference",
+          "source_ids": [
+            "YINGTANG_20260930"
+          ],
+          "scope": "光隆关联采购准直器样本，型号未知且未匹配NPO",
+          "eligible_for_default_bom": false
+        }
+      ],
+      "quantityEvidence": "按被耦合光路或阵列设计",
+      "checkedAt": "2026-10-08",
+      "aliases": [
+        "准直镜",
+        "准直器",
+        "Collimator",
+        "Collimation Lens"
+      ]
+    },
+    {
+      "id": "isolator_housing",
+      "parent": "isolator",
+      "name": "隔离器壳体",
+      "en": "Isolator Housing",
+      "category": "精密结构件",
+      "unit": "套",
+      "role": "固定内部光学件并保护装配",
+      "detail": "整体隔离器采购价值已经包括内部装配及封装。",
+      "qtyRule": "isolator",
+      "sourceIds": [],
+      "vendorLinks": [],
+      "priceEvidence": null,
+      "benchmark_prices": [],
+      "quantityEvidence": null,
+      "checkedAt": "2026-10-08",
+      "aliases": [
+        "光隔离器外壳",
+        "隔离器外壳",
+        "隔离器封装壳体",
+        "Optical Isolator Housing"
+      ]
+    },
+    {
+      "id": "pm_fiber",
+      "parent": "els",
+      "name": "保偏供光纤",
+      "en": "Polarization-maintaining Fiber",
+      "category": "无源光学",
+      "unit": "根",
+      "role": "输送并保持供光偏振",
+      "detail": "供光纤与信号FAU的Tx/Rx光纤单独计数。",
+      "qtyRule": "cw",
+      "sourceIds": [
+        "CORNING_PMF",
+        "FUJIKURA_PMF",
+        "YOFC_PMF"
+      ],
+      "vendorLinks": [
+        {
+          "name": "Corning",
+          "region": "海外",
+          "role": "光纤与光学材料",
+          "vendor_id": "corning",
+          "status": "产品能力",
+          "source_ids": [
+            "CORNING_PMF"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        },
+        {
+          "name": "Fujikura",
+          "region": "海外",
+          "role": "特种光纤",
+          "vendor_id": "fujikura",
+          "status": "产品能力",
+          "source_ids": [
+            "FUJIKURA_PMF"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        },
+        {
+          "name": "长飞光纤",
+          "region": "国内",
+          "role": "光纤与特种光纤",
+          "vendor_id": "yofc",
+          "status": "产品能力",
+          "source_ids": [
+            "YOFC_PMF"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        }
+      ],
+      "priceEvidence": {
+        "low": null,
+        "base": null,
+        "high": null,
+        "currency": "USD",
+        "unit": null,
+        "year": null,
+        "status": "unknown",
+        "source_ids": [],
+        "scope": "未取得适配本NPO配置的独立价格"
+      },
+      "benchmark_prices": [],
+      "quantityEvidence": "数量受ELS输出端口和分光设计影响；长度依布线",
+      "checkedAt": "2026-10-08",
+      "aliases": [
+        "保偏光纤",
+        "保偏纤",
+        "供光光纤",
+        "PM Fiber",
+        "PM Fibre",
+        "PMF",
+        "Polarisation Maintaining Fibre"
+      ]
+    },
+    {
+      "id": "laser_driver",
+      "parent": "els",
+      "name": "激光电流驱动",
+      "en": "Laser Current Driver",
+      "category": "有源电芯片",
+      "unit": "组",
+      "role": "为CW激光器提供稳定偏置电流",
+      "detail": "与高速调制Driver功能不同，数量采用每路供光一组驱动功能。",
+      "qtyRule": "cw",
+      "sourceIds": [
+        "TI_OPTICAL",
+        "WAVELENGTH_LD"
+      ],
+      "vendorLinks": [
+        {
+          "name": "Texas Instruments",
+          "region": "海外",
+          "role": "电源与模拟控制",
+          "vendor_id": "ti",
+          "status": "产品能力",
+          "source_ids": [
+            "TI_OPTICAL"
+          ],
+          "note": "恒流/恒功率控制能力；具体NPO驱动芯片适配待设计"
+        },
+        {
+          "name": "Wavelength Electronics",
+          "region": "海外",
+          "role": "恒流激光驱动组件",
+          "vendor_id": "wavelength",
+          "status": "产品能力",
+          "source_ids": [
+            "WAVELENGTH_LD"
+          ],
+          "note": "恒流/恒功率控制能力；具体NPO驱动芯片适配待设计"
+        }
+      ],
+      "priceEvidence": {
+        "low": null,
+        "base": null,
+        "high": null,
+        "currency": "USD",
+        "unit": null,
+        "year": null,
+        "status": "unknown",
+        "source_ids": [],
+        "scope": "未取得适配本NPO配置的独立价格"
+      },
+      "benchmark_prices": [],
+      "quantityEvidence": "可单通道或多通道控制，不能认定一激光一颗IC",
+      "checkedAt": "2026-10-08",
+      "aliases": [
+        "激光驱动",
+        "激光驱动器",
+        "激光电流驱动器",
+        "激光器驱动",
+        "Laser Driver",
+        "Laser Diode Driver",
+        "Laser Current Controller"
+      ]
+    },
+    {
+      "id": "monitor_pd",
+      "parent": "els",
+      "name": "监控探测器",
+      "en": "Monitor Photodiode",
+      "category": "有源光学",
+      "unit": "路",
+      "role": "反馈光源输出功率",
+      "detail": "可内置于激光封装，不应默认视为独立采购芯片。",
+      "qtyRule": "cw",
+      "sourceIds": [
+        "HAMAMATSU_PD",
+        "COHERENT_MONITOR_PD",
+        "LUXNET_MONITOR_PD",
+        "DIGIKEY_MTPD1346D100"
+      ],
+      "vendorLinks": [
+        {
+          "name": "Hamamatsu",
+          "region": "海外",
+          "role": "光功率探测器",
+          "vendor_id": "hamamatsu",
+          "status": "产品能力",
+          "source_ids": [
+            "HAMAMATSU_PD"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        },
+        {
+          "name": "Coherent",
+          "region": "海外",
+          "role": "InGaAs监测PD芯片",
+          "vendor_id": "coherent",
+          "status": "产品能力",
+          "source_ids": [
+            "COHERENT_MONITOR_PD"
+          ],
+          "note": "已披露1270至1620nm监测PD芯片能力，未确认本NPO方案供货"
+        }
+      ],
+      "priceEvidence": {
+        "low": null,
+        "base": null,
+        "high": null,
+        "currency": "USD",
+        "unit": null,
+        "year": null,
+        "status": "unknown",
+        "source_ids": [],
+        "scope": "未取得适配本NPO配置的独立价格"
+      },
+      "benchmark_prices": [
+        {
+          "low": 10.35944,
+          "base": 11.6278,
+          "high": 17.63,
+          "currency": "USD",
+          "unit": "美元/颗",
+          "period": "2026-10-08目录价",
+          "scope": "MTPD1346D-100独立TO-46封装，1mm感光区。基准为100颗阶梯$11.6278/颗；1颗$17.63，1,000颗$10.35944。不同于CW封装内集成监测PD，不计入本NPO估价或BOM",
+          "source_ids": [
+            "DIGIKEY_MTPD1346D100"
+          ]
+        }
+      ],
+      "quantityEvidence": "按激光器或监控点设置；可能集成在激光器封装或PIC内",
+      "checkedAt": "2026-10-08",
+      "aliases": [
+        "监测PD",
+        "监控PD",
+        "监测探测器",
+        "监控光电二极管",
+        "Monitor PD",
+        "MPD",
+        "监测光电二极管",
+        "监控光探测器",
+        "Monitor Photodetector",
+        "Monitoring Photodiode",
+        "Laser Monitor PD"
+      ],
+      "estimate": {
+        "low": 1,
+        "base": 3,
+        "high": 5,
+        "currency": "USD",
+        "unit": "路",
+        "year": 2026,
+        "status": "engineering_estimate",
+        "sourceIds": [
+          "COHERENT_MONITOR_PD",
+          "LUXNET_MONITOR_PD",
+          "DIGIKEY_MTPD1346D100"
+        ],
+        "scope": "集成监测PD的数量级假设，按每路CW一个监测点分配光源组件已有预算；不额外增加总BOM，也不叠加计入CW价格",
+        "displayNote": "集成监测功能的工程假设，未取得同规格量产报价",
+        "basis": "厂商资料支持监测PD采用裸片并与激光器共同封装；独立TO-46封装器件目录价约$10至18/颗，仅作为不同封装的参照。$1至5/路区间及$3/路中心为工程假设，并非由目录价按固定折扣推导，也未获供应商报价验证",
+        "checkedAt": "2026-10-08"
+      }
+    },
+    {
+      "id": "tec",
+      "parent": "els",
+      "name": "温控组件",
+      "en": "TEC / Temperature Control",
+      "category": "热电器件",
+      "unit": "组",
+      "role": "稳定光源温度与工作点",
+      "detail": "TEC温控与陶瓷壳体只有组合参考区间。当前拆分值使用明确工程假设，点击价格查看分配过程。",
+      "qtyRule": "els",
+      "sourceIds": [
+        "FERROTEC_TEC",
+        "FUXIN_TEC"
+      ],
+      "vendorLinks": [
+        {
+          "name": "Ferrotec",
+          "region": "海外",
+          "role": "微型TEC",
+          "vendor_id": "ferrotec",
+          "status": "产品能力",
+          "source_ids": [
+            "FERROTEC_TEC"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        },
+        {
+          "name": "富信科技",
+          "region": "国内",
+          "role": "Micro TEC",
+          "vendor_id": "fuxin",
+          "status": "产品能力",
+          "source_ids": [
+            "FUXIN_TEC"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        }
+      ],
+      "priceEvidence": {
+        "low": null,
+        "base": null,
+        "high": null,
+        "currency": "USD",
+        "unit": null,
+        "year": null,
+        "status": "unknown",
+        "source_ids": [],
+        "scope": "未取得适配本NPO配置的独立价格"
+      },
+      "benchmark_prices": [],
+      "quantityEvidence": "按共享温控区数配置",
+      "checkedAt": "2026-10-08",
+      "aliases": [
+        "TEC",
+        "热电制冷器",
+        "半导体制冷器",
+        "制冷片",
+        "热电冷却器",
+        "温度控制组件",
+        "Thermoelectric Cooler",
+        "Thermo Electric Cooler",
+        "Temperature Control",
+        "Thermal Electric Cooler"
+      ]
+    },
+    {
+      "id": "substrate",
+      "parent": "engine",
+      "name": "基板与电连接",
+      "en": "Substrate & Electrical Interconnect",
+      "category": "封装组件",
+      "unit": "套",
+      "role": "支撑光电芯片并完成高速电连接",
+      "detail": "不同NPO结构可能使用有机基板、中介层或不同PCB工艺，不把这些技术全部当成必选叠加。",
+      "qtyRule": "one",
+      "sourceIds": [
+        "WX_NPO_20260927",
+        "FASTPRINT",
+        "SHINKO"
+      ],
+      "vendorLinks": [
+        {
+          "name": "兴森科技",
+          "region": "国内",
+          "role": "mSAP及封装基板",
+          "vendor_id": "fastprint",
+          "status": "产品能力",
+          "source_ids": [
+            "FASTPRINT"
+          ],
+          "note": "光模块mSAP项目与基板能力；未证实本NPO型号供货"
+        },
+        {
+          "name": "Shinko",
+          "region": "海外",
+          "role": "封装基板与光互连研发",
+          "vendor_id": "shinko",
+          "status": "相邻技术能力",
+          "source_ids": [
+            "SHINKO"
+          ],
+          "note": "光互连封装基板研发参照；非源模型mSAP的确认供应方"
+        }
+      ],
+      "priceEvidence": {
+        "low": null,
+        "base": 70,
+        "high": null,
+        "currency": "USD",
+        "unit": "美元/3.2T引擎基板",
+        "year": "2026",
+        "status": "source_estimate",
+        "source_ids": [
+          "WX_NPO_20260927"
+        ],
+        "scope": "作者模型mSAP基板，不含ASIC封装基板或主板"
+      },
+      "benchmark_prices": [],
+      "quantityEvidence": "通常每只光引擎一块主承载基板；多板结构需另设",
+      "checkedAt": "2026-10-08",
+      "aliases": [
+        "基板",
+        "封装基板",
+        "电连接",
+        "Substrate",
+        "Package Substrate",
+        "Packaging Substrate",
+        "Electrical Interconnect"
+      ]
+    },
+    {
+      "id": "pcb",
+      "parent": "substrate",
+      "name": "高密度电路板",
+      "en": "HDI / mSAP PCB",
+      "category": "电互连",
+      "unit": "片",
+      "role": "连接光引擎、电源与系统接口",
+      "detail": "mSAP为参考材料模型中的组合项；并非所有厂商必然采用相同工艺。",
+      "qtyRule": "one",
+      "sourceIds": [
+        "WX_NPO_20260927",
+        "FASTPRINT"
+      ],
+      "vendorLinks": [
+        {
+          "name": "兴森科技",
+          "region": "国内",
+          "role": "mSAP及封装基板",
+          "vendor_id": "fastprint",
+          "status": "产品能力",
+          "source_ids": [
+            "FASTPRINT"
+          ],
+          "note": "PCB/基板能力，未证实本ELS控制板供货"
+        }
+      ],
+      "priceEvidence": {
+        "low": null,
+        "base": 30,
+        "high": null,
+        "currency": "USD",
+        "unit": "美元/一套ELS PCB",
+        "year": "2026",
+        "status": "source_estimate",
+        "source_ids": [
+          "WX_NPO_20260927"
+        ],
+        "scope": "ELS整套PCB参考；未提供是否包含全部控制IC的清单"
+      },
+      "benchmark_prices": [],
+      "quantityEvidence": "按模块板卡数配置",
+      "checkedAt": "2026-10-08",
+      "aliases": [
+        "PCB",
+        "印刷电路板",
+        "电路板",
+        "印制电路板",
+        "HDI",
+        "mSAP",
+        "Printed Circuit Board",
+        "HDI PCB",
+        "mSAP PCB"
+      ]
+    },
+    {
+      "id": "interposer",
+      "parent": "substrate",
+      "name": "中介层与精密载板",
+      "en": "Interposer / Carrier",
+      "category": "先进封装",
+      "unit": "组",
+      "role": "提供芯片间短距离互连",
+      "detail": "在高级参数启用；未启用时仍可浏览器件知识，但数量与BOM不计入。",
+      "qtyRule": "interposer",
+      "sourceIds": [
+        "ASE",
+        "SHINKO"
+      ],
+      "vendorLinks": [
+        {
+          "name": "日月光ASE",
+          "region": "中国台湾",
+          "role": "封装测试服务",
+          "vendor_id": "ase",
+          "status": "相邻技术能力",
+          "source_ids": [
+            "ASE"
+          ],
+          "note": "高密封装服务与光互连能力；并非所有NPO都使用硅中介层"
+        },
+        {
+          "name": "Shinko",
+          "region": "海外",
+          "role": "封装基板与光互连研发",
+          "vendor_id": "shinko",
+          "status": "相邻技术能力",
+          "source_ids": [
+            "SHINKO"
+          ],
+          "note": "高密封装服务与光互连能力；并非所有NPO都使用硅中介层"
+        }
+      ],
+      "priceEvidence": {
+        "low": null,
+        "base": null,
+        "high": null,
+        "currency": "USD",
+        "unit": null,
+        "year": null,
+        "status": "unknown",
+        "source_ids": [],
+        "scope": "未取得适配本NPO配置的独立价格"
+      },
+      "benchmark_prices": [],
+      "quantityEvidence": "依2D/2.5D/3D封装方案；若无独立中介层则为0",
+      "checkedAt": "2026-10-08",
+      "aliases": [
+        "中介层",
+        "转接层",
+        "精密载板",
+        "中介板",
+        "Interposer",
+        "Carrier",
+        "Precision Carrier"
+      ]
+    },
+    {
+      "id": "other",
+      "parent": "engine",
+      "name": "配套与热管理",
+      "en": "Supporting Materials",
+      "category": "配套组件",
+      "unit": "套",
+      "role": "提供控制、连接、机械与散热支持",
+      "detail": "参考BOM仅披露其他材料组合预算。内部组件按明确工程权重分配，子件不再叠加到总额。",
+      "qtyRule": "one",
+      "sourceIds": [
+        "WX_NPO_20260927"
+      ],
+      "vendorLinks": [],
+      "priceEvidence": {
+        "low": null,
+        "base": 40,
+        "high": null,
+        "currency": "USD",
+        "unit": "美元/3.2T引擎辅助材料池",
+        "year": "2026",
+        "status": "source_estimate",
+        "source_ids": [
+          "WX_NPO_20260927"
+        ],
+        "scope": "PCBA、壳体、胶水、散热等合计；没有可验证的细项拆价"
+      },
+      "benchmark_prices": [],
+      "quantityEvidence": "每光引擎一组成本池",
+      "checkedAt": "2026-10-08",
+      "aliases": [
+        "辅助材料",
+        "配套材料",
+        "配套组件",
+        "Supporting Components",
+        "Supporting Materials"
+      ]
+    },
+    {
+      "id": "connector",
+      "parent": "other",
+      "name": "光电连接器",
+      "en": "Optical / Electrical Connector",
+      "category": "连接组件",
+      "unit": "组",
+      "role": "与外部电接口和光纤系统连接",
+      "detail": "组件数量按所选NPO单元一组接口集合表示，不能从带宽直接反推具体插头数。",
+      "qtyRule": "one",
+      "sourceIds": [
+        "MOLEX_CPO",
+        "SENKO_FA",
+        "USCONEC_MT",
+        "TFC_2025"
+      ],
+      "vendorLinks": [
+        {
+          "name": "Molex",
+          "region": "海外",
+          "role": "光纤阵列与连接器",
+          "vendor_id": "molex",
+          "status": "产品能力",
+          "source_ids": [
+            "MOLEX_CPO"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        },
+        {
+          "name": "SENKO",
+          "region": "海外",
+          "role": "光纤阵列及连接",
+          "vendor_id": "senko",
+          "status": "产品能力",
+          "source_ids": [
+            "SENKO_FA"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        },
+        {
+          "name": "US Conec",
+          "region": "海外",
+          "role": "MT插芯与多芯连接器",
+          "vendor_id": "usconec",
+          "status": "产品能力",
+          "source_ids": [
+            "USCONEC_MT"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        },
+        {
+          "name": "天孚通信",
+          "region": "国内",
+          "role": "光学组件与封装",
+          "vendor_id": "tfc",
+          "status": "产品能力",
+          "source_ids": [
+            "TFC_2025"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        }
+      ],
+      "priceEvidence": {
+        "low": null,
+        "base": null,
+        "high": null,
+        "currency": "USD",
+        "unit": null,
+        "year": null,
+        "status": "unknown",
+        "source_ids": [],
+        "scope": "未取得适配本NPO配置的独立价格"
+      },
+      "benchmark_prices": [],
+      "quantityEvidence": "按纤芯端口与连接器每口容量计算，不按比特率直接计算",
+      "checkedAt": "2026-10-08",
+      "aliases": [
+        "光连接器",
+        "电连接器",
+        "光纤连接器",
+        "连接器",
+        "Optical Connector",
+        "Electrical Connector",
+        "Fiber Connector"
+      ]
+    },
+    {
+      "id": "control",
+      "parent": "other",
+      "name": "控制与供电",
+      "en": "Control & Power",
+      "category": "电子组件",
+      "unit": "套",
+      "role": "管理供电、监控和校准",
+      "detail": "没有来源的细分成本并入其他材料，避免加总出重复成本。",
+      "qtyRule": "one",
+      "sourceIds": [],
+      "vendorLinks": [],
+      "priceEvidence": null,
+      "benchmark_prices": [],
+      "quantityEvidence": null,
+      "checkedAt": "2026-10-08",
+      "aliases": [
+        "控制供电",
+        "控制与电源",
+        "控制电源",
+        "控制电路",
+        "Control",
+        "Control and Power",
+        "Power and Control"
+      ]
+    },
+    {
+      "id": "mcu",
+      "parent": "control",
+      "name": "控制芯片",
+      "en": "MCU / Controller",
+      "category": "有源电芯片",
+      "unit": "组",
+      "role": "执行状态管理和校准",
+      "detail": "每NPO一组是功能分组，实际可由系统级控制器共享。",
+      "qtyRule": "one",
+      "sourceIds": [
+        "GIGA_MCU"
+      ],
+      "vendorLinks": [
+        {
+          "name": "兆易创新",
+          "region": "国内",
+          "role": "光模块管理MCU",
+          "vendor_id": "gigadevice",
+          "status": "产品能力",
+          "source_ids": [
+            "GIGA_MCU"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        }
+      ],
+      "priceEvidence": {
+        "low": null,
+        "base": null,
+        "high": null,
+        "currency": "USD",
+        "unit": null,
+        "year": null,
+        "status": "unknown",
+        "source_ids": [],
+        "scope": "未取得适配本NPO配置的独立价格"
+      },
+      "benchmark_prices": [],
+      "quantityEvidence": "按管理域计数，非按光通道数线性增长",
+      "checkedAt": "2026-10-08",
+      "aliases": [
+        "MCU",
+        "微控制器",
+        "单片机",
+        "主控芯片",
+        "控制器芯片",
+        "Microcontroller",
+        "Micro Controller",
+        "Control Chip",
+        "Controller"
+      ]
+    },
+    {
+      "id": "pmic",
+      "parent": "control",
+      "name": "电源管理",
+      "en": "PMIC / DC-DC",
+      "category": "有源电芯片",
+      "unit": "组",
+      "role": "提供多路稳定电源",
+      "detail": "数量为电源功能组，不等于已核定的独立芯片数。",
+      "qtyRule": "one",
+      "sourceIds": [
+        "TI_OPTICAL"
+      ],
+      "vendorLinks": [
+        {
+          "name": "Texas Instruments",
+          "region": "海外",
+          "role": "电源与模拟控制",
+          "vendor_id": "ti",
+          "status": "产品能力",
+          "source_ids": [
+            "TI_OPTICAL"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        }
+      ],
+      "priceEvidence": {
+        "low": null,
+        "base": null,
+        "high": null,
+        "currency": "USD",
+        "unit": null,
+        "year": null,
+        "status": "unknown",
+        "source_ids": [],
+        "scope": "未取得适配本NPO配置的独立价格"
+      },
+      "benchmark_prices": [],
+      "quantityEvidence": "按电压轨、电流和控制域设置",
+      "checkedAt": "2026-10-08",
+      "aliases": [
+        "PMIC",
+        "电源管理芯片",
+        "电源管理集成电路",
+        "电源芯片",
+        "Power Management IC",
+        "Power Management Integrated Circuit",
+        "DC DC",
+        "DC to DC Converter"
+      ]
+    },
+    {
+      "id": "thermal",
+      "parent": "other",
+      "name": "散热与机械封装",
+      "en": "Thermal & Mechanical",
+      "category": "封装组件",
+      "unit": "套",
+      "role": "提供散热路径及机械保护",
+      "detail": "可视化展示功能层级，详细热设计仍需要功耗与环境条件。",
+      "qtyRule": "one",
+      "sourceIds": [
+        "BOYD_COOL",
+        "HENKEL_OPTICAL"
+      ],
+      "vendorLinks": [
+        {
+          "name": "Boyd",
+          "region": "海外",
+          "role": "冷板与热管理",
+          "vendor_id": "boyd",
+          "status": "产品能力",
+          "source_ids": [
+            "BOYD_COOL"
+          ],
+          "note": "导热材料或冷板能力；未确认NPO专用型号"
+        },
+        {
+          "name": "Henkel",
+          "region": "海外",
+          "role": "光学胶与导热材料",
+          "vendor_id": "henkel",
+          "status": "产品能力",
+          "source_ids": [
+            "HENKEL_OPTICAL"
+          ],
+          "note": "导热材料或冷板能力；未确认NPO专用型号"
+        }
+      ],
+      "priceEvidence": {
+        "low": null,
+        "base": null,
+        "high": null,
+        "currency": "USD",
+        "unit": null,
+        "year": null,
+        "status": "unknown",
+        "source_ids": [],
+        "scope": "未取得适配本NPO配置的独立价格"
+      },
+      "benchmark_prices": [],
+      "quantityEvidence": "按热区、覆盖面积与散热功率配置",
+      "checkedAt": "2026-10-08",
+      "aliases": [
+        "热管理与机械封装",
+        "热管理",
+        "散热封装",
+        "Thermal Management",
+        "Mechanical Packaging",
+        "Thermal Packaging"
+      ]
+    },
+    {
+      "id": "heatsink",
+      "parent": "thermal",
+      "name": "散热器",
+      "en": "Heat Spreader / Sink",
+      "category": "结构件",
+      "unit": "组",
+      "role": "把芯片热量传向系统冷却侧",
+      "detail": "散热面积与功耗相关，不按光通道等比例确定外形。",
+      "qtyRule": "one",
+      "sourceIds": [
+        "BOYD_COOL"
+      ],
+      "vendorLinks": [
+        {
+          "name": "Boyd",
+          "region": "海外",
+          "role": "冷板与热管理",
+          "vendor_id": "boyd",
+          "status": "产品能力",
+          "source_ids": [
+            "BOYD_COOL"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        }
+      ],
+      "priceEvidence": {
+        "low": null,
+        "base": null,
+        "high": null,
+        "currency": "USD",
+        "unit": null,
+        "year": null,
+        "status": "unknown",
+        "source_ids": [],
+        "scope": "未取得适配本NPO配置的独立价格"
+      },
+      "benchmark_prices": [],
+      "quantityEvidence": "按热区和机构设计",
+      "checkedAt": "2026-10-08",
+      "aliases": [
+        "热扩散器",
+        "散热片",
+        "Heat Sink",
+        "Heatsink",
+        "Heat Spreader"
+      ]
+    },
+    {
+      "id": "tim",
+      "parent": "thermal",
+      "name": "导热界面材料",
+      "en": "Thermal Interface Material",
+      "category": "材料",
+      "unit": "组",
+      "role": "填充接触界面并降低热阻",
+      "detail": "在封装组合成本内，缺少拆分资料时不生成独立报价。",
+      "qtyRule": "one",
+      "sourceIds": [
+        "INDIUM_TIM",
+        "HENKEL_OPTICAL"
+      ],
+      "vendorLinks": [
+        {
+          "name": "Indium Corporation",
+          "region": "海外",
+          "role": "焊接与TIM材料",
+          "vendor_id": "indium",
+          "status": "产品能力",
+          "source_ids": [
+            "INDIUM_TIM"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        },
+        {
+          "name": "Henkel",
+          "region": "海外",
+          "role": "光学胶与导热材料",
+          "vendor_id": "henkel",
+          "status": "产品能力",
+          "source_ids": [
+            "HENKEL_OPTICAL"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        }
+      ],
+      "priceEvidence": {
+        "low": null,
+        "base": null,
+        "high": null,
+        "currency": "USD",
+        "unit": null,
+        "year": null,
+        "status": "unknown",
+        "source_ids": [],
+        "scope": "未取得适配本NPO配置的独立价格"
+      },
+      "benchmark_prices": [],
+      "quantityEvidence": "按接触面积与胶层/片材厚度计量",
+      "checkedAt": "2026-10-08",
+      "aliases": [
+        "TIM",
+        "热界面材料",
+        "导热材料",
+        "导热介质",
+        "Thermal Interface",
+        "Thermal Interface Material"
+      ]
+    },
+    {
+      "id": "housing",
+      "parent": "thermal",
+      "name": "封装外壳",
+      "en": "Mechanical Housing",
+      "category": "结构件",
+      "unit": "套",
+      "role": "保护器件并保持装配精度",
+      "detail": "示意外形不代表某家产品的尺寸或实物拆解。",
+      "qtyRule": "one",
+      "sourceIds": [
+        "KYOCERA_PKG",
+        "XINYU_IPO_20260622",
+        "TFC_2025"
+      ],
+      "vendorLinks": [
+        {
+          "name": "Kyocera",
+          "region": "海外",
+          "role": "陶瓷封装与热沉",
+          "vendor_id": "kyocera",
+          "status": "产品能力",
+          "source_ids": [
+            "KYOCERA_PKG"
+          ],
+          "note": "管壳或精密封装结构能力；未确认模型中金属外壳供应商"
+        },
+        {
+          "name": "鑫宇科技",
+          "region": "国内",
+          "role": "隔离器、磁体与精密结构件",
+          "vendor_id": "xinyu",
+          "status": "产品能力",
+          "source_ids": [
+            "XINYU_IPO_20260622"
+          ],
+          "note": "管壳或精密封装结构能力；未确认模型中金属外壳供应商"
+        },
+        {
+          "name": "天孚通信",
+          "region": "国内",
+          "role": "光学组件与封装",
+          "vendor_id": "tfc",
+          "status": "产品能力",
+          "source_ids": [
+            "TFC_2025"
+          ],
+          "note": "管壳或精密封装结构能力；未确认模型中金属外壳供应商"
+        }
+      ],
+      "priceEvidence": {
+        "low": null,
+        "base": null,
+        "high": null,
+        "currency": "USD",
+        "unit": null,
+        "year": null,
+        "status": "unknown",
+        "source_ids": [],
+        "scope": "未取得适配本NPO配置的独立价格"
+      },
+      "benchmark_prices": [],
+      "quantityEvidence": "按独立模块/封装壳体计数",
+      "checkedAt": "2026-10-08",
+      "aliases": [
+        "机械外壳",
+        "封装壳体",
+        "外壳",
+        "壳体",
+        "Mechanical Housing",
+        "Package Housing",
+        "Enclosure"
+      ]
+    },
+    {
+      "id": "pm_fau",
+      "parent": "els",
+      "name": "保偏供光FAU",
+      "en": "PM Fiber Array",
+      "qtyRule": "els",
+      "unit": "组",
+      "role": "定位供光端的保偏光纤阵列",
+      "detail": "供光FAU与信号Tx/Rx FAU分别统计；按8路保偏阵列与ELS等比例分摊，不能把保偏光纤根数当成FAU组件数。",
+      "category": "材料与配套",
+      "sourceIds": [
+        "WX_NPO_20260927",
+        "AFR_AI",
+        "SENKO_FA",
+        "TFC_ISO"
+      ],
+      "vendorLinks": [
+        {
+          "name": "光库科技",
+          "region": "国内",
+          "role": "无源器件、FAU与TFLN调制器",
+          "vendor_id": "afr",
+          "status": "产品能力",
+          "source_ids": [
+            "AFR_AI"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        },
+        {
+          "name": "SENKO",
+          "region": "海外",
+          "role": "光纤阵列及连接",
+          "vendor_id": "senko",
+          "status": "产品能力",
+          "source_ids": [
+            "SENKO_FA"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        },
+        {
+          "name": "天孚通信",
+          "region": "国内",
+          "role": "光学组件与封装",
+          "vendor_id": "tfc",
+          "status": "产品能力",
+          "source_ids": [
+            "TFC_ISO"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        }
+      ],
+      "priceEvidence": {
+        "low": null,
+        "base": 30,
+        "high": null,
+        "currency": "USD",
+        "unit": "美元/一套8路PM-FAU",
+        "year": "2026",
+        "status": "source_estimate",
+        "source_ids": [
+          "WX_NPO_20260927"
+        ],
+        "scope": "ELS侧8路保偏光纤FAU，不能当作外部裸保偏光纤每米价格"
+      },
+      "benchmark_prices": [],
+      "quantityEvidence": "按ELS供光端口与每阵列容量配置",
+      "checkedAt": "2026-10-08",
+      "aliases": [
+        "保偏光纤阵列",
+        "保偏FAU",
+        "保偏阵列",
+        "PM FAU",
+        "PM Fibre Array",
+        "PM Fiber Array Unit",
+        "Polarization Maintaining Fiber Array"
+      ]
+    },
+    {
+      "id": "els_optics",
+      "parent": "els",
+      "name": "光源整形与滤光",
+      "en": "Laser Shaping & Filter",
+      "qtyRule": "els",
+      "unit": "组",
+      "role": "整形、准直并筛选供光光谱",
+      "detail": "来源仅披露组合预算，不等同于隔离器本身的采购成本。",
+      "category": "材料与配套",
+      "sourceIds": [
+        "WX_NPO_20260927",
+        "FOCUSLIGHT_NPO",
+        "TFC_2025",
+        "AFR_PRODUCTS"
+      ],
+      "vendorLinks": [
+        {
+          "name": "炬光科技",
+          "region": "国内",
+          "role": "微透镜与激光器材料",
+          "vendor_id": "focuslight",
+          "status": "产品能力",
+          "source_ids": [
+            "FOCUSLIGHT_NPO"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        },
+        {
+          "name": "天孚通信",
+          "region": "国内",
+          "role": "光学组件与封装",
+          "vendor_id": "tfc",
+          "status": "产品能力",
+          "source_ids": [
+            "TFC_2025"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        },
+        {
+          "name": "光库科技",
+          "region": "国内",
+          "role": "无源器件、FAU与TFLN调制器",
+          "vendor_id": "afr",
+          "status": "产品能力",
+          "source_ids": [
+            "AFR_PRODUCTS"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        }
+      ],
+      "priceEvidence": {
+        "low": null,
+        "base": 30,
+        "high": null,
+        "currency": "USD",
+        "unit": "美元/一套ELS准直透镜与滤光片合计",
+        "year": "2026",
+        "status": "source_estimate",
+        "source_ids": [
+          "WX_NPO_20260927"
+        ],
+        "scope": "源模型组合项；未披露隔离器是否已包括，禁止任意拆分"
+      },
+      "benchmark_prices": [],
+      "quantityEvidence": "按被供光路径配置",
+      "checkedAt": "2026-10-08",
+      "aliases": [
+        "激光整形",
+        "光源滤光",
+        "光束整形",
+        "滤光器",
+        "Beam Shaping",
+        "Laser Shaping",
+        "Optical Filtering",
+        "Laser Filter"
+      ]
+    },
+    {
+      "id": "tec_controller",
+      "parent": "els",
+      "name": "温控电路",
+      "en": "TEC Controller",
+      "qtyRule": "els",
+      "unit": "组",
+      "role": "根据监测反馈调节光源温度",
+      "detail": "TEC制冷片、温控电路和陶瓷壳体组合价格不强行拆分。",
+      "category": "材料与配套",
+      "sourceIds": [
+        "ADI_TEC",
+        "TI_OPTICAL"
+      ],
+      "vendorLinks": [
+        {
+          "name": "Analog Devices",
+          "region": "海外",
+          "role": "模拟控制与TEC控制器",
+          "vendor_id": "adi",
+          "status": "产品能力",
+          "source_ids": [
+            "ADI_TEC"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        },
+        {
+          "name": "Texas Instruments",
+          "region": "海外",
+          "role": "电源与模拟控制",
+          "vendor_id": "ti",
+          "status": "产品能力",
+          "source_ids": [
+            "TI_OPTICAL"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        }
+      ],
+      "priceEvidence": {
+        "low": null,
+        "base": null,
+        "high": null,
+        "currency": "USD",
+        "unit": null,
+        "year": null,
+        "status": "unknown",
+        "source_ids": [],
+        "scope": "未取得适配本NPO配置的独立价格"
+      },
+      "benchmark_prices": [
+        {
+          "id": "max1978_1ku",
+          "low": null,
+          "base": 23.23,
+          "high": null,
+          "currency": "USD",
+          "unit": "美元/颗",
+          "period": "2026-10-08查询",
+          "kind": "catalogue_reference",
+          "source_ids": [
+            "ADI_TEC"
+          ],
+          "scope": "MAX1978网页1ku起始目录价；具体旧款控制IC，不作为NPO默认料号或量产协议价",
+          "eligible_for_default_bom": false
+        }
+      ],
+      "quantityEvidence": "按独立温控区设置",
+      "checkedAt": "2026-10-08",
+      "aliases": [
+        "TEC控制器",
+        "TEC驱动",
+        "温度控制电路",
+        "热电制冷控制器",
+        "TEC Controller",
+        "Temperature Controller",
+        "TEC Driver"
+      ]
+    },
+    {
+      "id": "ferrule",
+      "parent": "connector",
+      "name": "插芯",
+      "en": "Optical Ferrule",
+      "qtyRule": "one",
+      "unit": "组",
+      "role": "精密定位连接器光纤端面",
+      "detail": "数量为接口集合的功能组，具体连接器端口数仍需型号资料。",
+      "category": "材料与配套",
+      "sourceIds": [
+        "USCONEC_MT"
+      ],
+      "vendorLinks": [
+        {
+          "name": "US Conec",
+          "region": "海外",
+          "role": "MT插芯与多芯连接器",
+          "vendor_id": "usconec",
+          "status": "产品能力",
+          "source_ids": [
+            "USCONEC_MT"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        }
+      ],
+      "priceEvidence": {
+        "low": null,
+        "base": null,
+        "high": null,
+        "currency": "USD",
+        "unit": null,
+        "year": null,
+        "status": "unknown",
+        "source_ids": [],
+        "scope": "未取得适配本NPO配置的独立价格"
+      },
+      "benchmark_prices": [],
+      "quantityEvidence": "每物理连接器端配置对应插芯",
+      "checkedAt": "2026-10-08",
+      "aliases": [
+        "光纤插芯",
+        "连接器插芯",
+        "陶瓷插芯",
+        "Fiber Ferrule",
+        "Fibre Ferrule",
+        "Connector Ferrule"
+      ]
+    },
+    {
+      "id": "cover_plate",
+      "parent": "fau",
+      "name": "FAU盖板",
+      "en": "Fiber Array Cover Plate",
+      "qtyRule": "fau",
+      "unit": "片",
+      "role": "约束并保护V槽中的光纤",
+      "detail": "每FAU一片是装配示意假设。",
+      "category": "材料与配套",
+      "sourceIds": [
+        "THREEV",
+        "MOLEX_ARRAY"
+      ],
+      "vendorLinks": [
+        {
+          "name": "3V-TECH",
+          "region": "国内",
+          "role": "V槽与光纤阵列",
+          "vendor_id": "threev",
+          "status": "产品能力",
+          "source_ids": [
+            "THREEV"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        },
+        {
+          "name": "Molex",
+          "region": "海外",
+          "role": "光纤阵列与连接器",
+          "vendor_id": "molex",
+          "status": "产品能力",
+          "source_ids": [
+            "MOLEX_ARRAY"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        }
+      ],
+      "priceEvidence": {
+        "low": null,
+        "base": null,
+        "high": null,
+        "currency": "USD",
+        "unit": null,
+        "year": null,
+        "status": "unknown",
+        "source_ids": [],
+        "scope": "未取得适配本NPO配置的独立价格"
+      },
+      "benchmark_prices": [],
+      "quantityEvidence": "通常每阵列一组，依结构变化",
+      "checkedAt": "2026-10-08",
+      "aliases": [
+        "光纤阵列盖板",
+        "阵列盖板",
+        "盖板",
+        "FAU Cover Plate",
+        "Fibre Array Cover Plate",
+        "Cover Plate"
+      ]
+    },
+    {
+      "id": "inp_substrate",
+      "parent": "laser_die",
+      "name": "InP衬底",
+      "en": "InP Substrate",
+      "qtyRule": "cw",
+      "unit": "份",
+      "role": "提供激光外延结构的半导体衬底",
+      "detail": "衬底属于芯片内部材料，不将晶圆采购价当成单颗芯片材料价。",
+      "category": "材料与配套",
+      "sourceIds": [
+        "LITE_CW",
+        "COHR_CW",
+        "BRCM_CW"
+      ],
+      "vendorLinks": [
+        {
+          "name": "Lumentum",
+          "region": "海外",
+          "role": "InP光芯片与ELS集成",
+          "vendor_id": "lumentum",
+          "status": "产品能力",
+          "source_ids": [
+            "LITE_CW"
+          ],
+          "note": "CW芯片能力；InP外延可自用，本记录不认定对外出售衬底"
+        },
+        {
+          "name": "Coherent",
+          "region": "海外",
+          "role": "材料、芯片与光器件一体化",
+          "vendor_id": "coherent",
+          "status": "产品能力",
+          "source_ids": [
+            "COHR_CW"
+          ],
+          "note": "CW芯片能力；InP外延可自用，本记录不认定对外出售衬底"
+        },
+        {
+          "name": "Broadcom",
+          "region": "海外",
+          "role": "CW光芯片",
+          "vendor_id": "broadcom",
+          "status": "产品能力",
+          "source_ids": [
+            "BRCM_CW"
+          ],
+          "note": "CW芯片能力；InP外延可自用，本记录不认定对外出售衬底"
+        }
+      ],
+      "priceEvidence": {
+        "low": null,
+        "base": null,
+        "high": null,
+        "currency": "USD",
+        "unit": null,
+        "year": null,
+        "status": "unknown",
+        "source_ids": [],
+        "scope": "未取得适配本NPO配置的独立价格"
+      },
+      "benchmark_prices": [],
+      "quantityEvidence": "按晶圆有效芯片数和良率分摊",
+      "checkedAt": "2026-10-08",
+      "aliases": [
+        "磷化铟衬底",
+        "磷化铟基片",
+        "InP基片",
+        "衬底",
+        "Indium Phosphide Substrate"
+      ]
+    },
+    {
+      "id": "solder",
+      "parent": "substrate",
+      "name": "焊料与键合",
+      "en": "Solder & Bonding",
+      "qtyRule": "one",
+      "unit": "组",
+      "role": "建立芯片及基板间的电与热连接",
+      "detail": "计为本单元装配材料，不按焊点任意估单价。",
+      "category": "材料与配套",
+      "sourceIds": [
+        "INDIUM_TIM",
+        "FOCUSLIGHT_MAT"
+      ],
+      "vendorLinks": [
+        {
+          "name": "Indium Corporation",
+          "region": "海外",
+          "role": "焊接与TIM材料",
+          "vendor_id": "indium",
+          "status": "产品能力",
+          "source_ids": [
+            "INDIUM_TIM"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        },
+        {
+          "name": "炬光科技",
+          "region": "国内",
+          "role": "微透镜与激光器材料",
+          "vendor_id": "focuslight",
+          "status": "产品能力",
+          "source_ids": [
+            "FOCUSLIGHT_MAT"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        }
+      ],
+      "priceEvidence": {
+        "low": null,
+        "base": null,
+        "high": null,
+        "currency": "USD",
+        "unit": null,
+        "year": null,
+        "status": "unknown",
+        "source_ids": [],
+        "scope": "未取得适配本NPO配置的独立价格"
+      },
+      "benchmark_prices": [],
+      "quantityEvidence": "按焊点数/焊接面积和工艺损耗计量",
+      "checkedAt": "2026-10-08",
+      "aliases": [
+        "焊接材料",
+        "键合材料",
+        "焊料",
+        "键合",
+        "Solder",
+        "Bonding Material",
+        "Solder Material",
+        "Bonding"
+      ]
+    }
+  ],
+  "vendors": {
+    "coherent": {
+      "name": "Coherent",
+      "region": "海外",
+      "role": "材料、芯片与光器件一体化"
+    },
+    "lumentum": {
+      "name": "Lumentum",
+      "region": "海外",
+      "role": "InP光芯片与ELS集成"
+    },
+    "broadcom": {
+      "name": "Broadcom",
+      "region": "海外",
+      "role": "CW光芯片"
+    },
+    "macom": {
+      "name": "MACOM",
+      "region": "海外",
+      "role": "高速模拟电芯片"
+    },
+    "maxlinear": {
+      "name": "MaxLinear",
+      "region": "海外",
+      "role": "高速电芯片"
+    },
+    "semtech": {
+      "name": "Semtech",
+      "region": "海外",
+      "role": "高速模拟电芯片"
+    },
+    "sifotonics": {
+      "name": "SiFotonics",
+      "region": "国内",
+      "role": "硅光PIC与Ge/Si探测器",
+      "region_note": "中国经营实体与海外起源并存；此分组用于产业检索，不代表最终控制人国籍认定"
+    },
+    "epic": {
+      "name": "弘光向尚",
+      "region": "国内",
+      "role": "硅光PIC设计"
+    },
+    "sicoya": {
+      "name": "Sicoya",
+      "region": "海外",
+      "role": "硅光PIC与光引擎"
+    },
+    "gf": {
+      "name": "GlobalFoundries",
+      "region": "海外",
+      "role": "硅光代工"
+    },
+    "tower": {
+      "name": "Tower Semiconductor",
+      "region": "海外",
+      "role": "硅光代工"
+    },
+    "hyperlight": {
+      "name": "HyperLight",
+      "region": "海外",
+      "role": "薄膜铌酸锂PIC"
+    },
+    "tfc": {
+      "name": "天孚通信",
+      "region": "国内",
+      "role": "光学组件与封装"
+    },
+    "afr": {
+      "name": "光库科技",
+      "region": "国内",
+      "role": "无源器件、FAU与TFLN调制器"
+    },
+    "senko": {
+      "name": "SENKO",
+      "region": "海外",
+      "role": "光纤阵列及连接"
+    },
+    "molex": {
+      "name": "Molex",
+      "region": "海外",
+      "role": "光纤阵列与连接器"
+    },
+    "threev": {
+      "name": "3V-TECH",
+      "region": "国内",
+      "role": "V槽与光纤阵列"
+    },
+    "fujikura": {
+      "name": "Fujikura",
+      "region": "海外",
+      "role": "特种光纤"
+    },
+    "corning": {
+      "name": "Corning",
+      "region": "海外",
+      "role": "光纤与光学材料"
+    },
+    "yofc": {
+      "name": "长飞光纤",
+      "region": "国内",
+      "role": "光纤与特种光纤"
+    },
+    "usconec": {
+      "name": "US Conec",
+      "region": "海外",
+      "role": "MT插芯与多芯连接器"
+    },
+    "senyi": {
+      "name": "森一量子",
+      "region": "国内",
+      "role": "法拉第旋光晶体及旋片"
+    },
+    "granopt": {
+      "name": "GRANOPT",
+      "region": "海外",
+      "role": "法拉第旋光晶体及旋片"
+    },
+    "xinyu": {
+      "name": "鑫宇科技",
+      "region": "国内",
+      "role": "隔离器、磁体与精密结构件"
+    },
+    "hoya": {
+      "name": "HOYA",
+      "region": "海外",
+      "role": "偏振光学材料"
+    },
+    "xinhuaguang": {
+      "name": "新华光",
+      "region": "国内",
+      "role": "偏振光学材料"
+    },
+    "lianken": {
+      "name": "上海联肯",
+      "region": "国内",
+      "role": "偏振光学元件"
+    },
+    "jingfang": {
+      "name": "河南晶方",
+      "region": "国内",
+      "role": "钐钴磁体"
+    },
+    "xinda": {
+      "name": "新乡信达",
+      "region": "国内",
+      "role": "磁环"
+    },
+    "huaqing": {
+      "name": "华清电子材料",
+      "region": "国内",
+      "role": "氮化铝陶瓷"
+    },
+    "focuslight": {
+      "name": "炬光科技",
+      "region": "国内",
+      "role": "微透镜与激光器材料"
+    },
+    "optowide": {
+      "name": "腾景科技",
+      "region": "国内",
+      "role": "精密光学元件与镀膜"
+    },
+    "kyocera": {
+      "name": "Kyocera",
+      "region": "海外",
+      "role": "陶瓷封装与热沉"
+    },
+    "sumitomo_electric": {
+      "name": "Sumitomo Electric",
+      "region": "海外",
+      "role": "AlN材料与热沉"
+    },
+    "shinko": {
+      "name": "Shinko",
+      "region": "海外",
+      "role": "封装基板与光互连研发"
+    },
+    "ase": {
+      "name": "日月光ASE",
+      "region": "中国台湾",
+      "role": "封装测试服务"
+    },
+    "fastprint": {
+      "name": "兴森科技",
+      "region": "国内",
+      "role": "mSAP及封装基板"
+    },
+    "ti": {
+      "name": "Texas Instruments",
+      "region": "海外",
+      "role": "电源与模拟控制"
+    },
+    "gigadevice": {
+      "name": "兆易创新",
+      "region": "国内",
+      "role": "光模块管理MCU"
+    },
+    "adi": {
+      "name": "Analog Devices",
+      "region": "海外",
+      "role": "模拟控制与TEC控制器"
+    },
+    "wavelength": {
+      "name": "Wavelength Electronics",
+      "region": "海外",
+      "role": "恒流激光驱动组件"
+    },
+    "ferrotec": {
+      "name": "Ferrotec",
+      "region": "海外",
+      "role": "微型TEC"
+    },
+    "fuxin": {
+      "name": "富信科技",
+      "region": "国内",
+      "role": "Micro TEC"
+    },
+    "henkel": {
+      "name": "Henkel",
+      "region": "海外",
+      "role": "光学胶与导热材料"
+    },
+    "indium": {
+      "name": "Indium Corporation",
+      "region": "海外",
+      "role": "焊接与TIM材料"
+    },
+    "boyd": {
+      "name": "Boyd",
+      "region": "海外",
+      "role": "冷板与热管理"
+    },
+    "hamamatsu": {
+      "name": "Hamamatsu",
+      "region": "海外",
+      "role": "光功率探测器"
+    },
+    "onet": {
+      "name": "昂纳科技",
+      "region": "国内",
+      "role": "ELS与无源光器件"
+    },
+    "accelink": {
+      "name": "光迅科技",
+      "region": "国内",
+      "role": "NPO系统与光模块集成"
+    },
+    "glsun": {
+      "name": "光隆光学",
+      "region": "国内",
+      "role": "光器件与磁光元件"
+    }
+  },
+  "definitions": [
+    {
+      "id": "capacity",
+      "term": "3.2T/6.4T",
+      "meaning": "按一个方向的名义带宽定义。全双工有同速Tx和Rx，不能把1.6T Tx＋1.6T Rx改名为3.2T",
+      "sourceIds": [
+        "AR02"
+      ]
+    },
+    {
+      "id": "opticalLane",
+      "term": "光lane",
+      "meaning": "独立调制的数据通道。本模型默认并行单模、一条波长占用一条Tx或Rx纤芯；如果引入WDM，lane数与光纤根数需分开计算",
+      "sourceIds": [
+        "AR01",
+        "AR02"
+      ]
+    },
+    {
+      "id": "electricalLane",
+      "term": "电lane",
+      "meaning": "主机与光引擎之间的高速差分电通道。每方向单独计数。名义200G与器件212/224Gb/s级规格不可当作不同总带宽相加",
+      "sourceIds": [
+        "AR01",
+        "AR02",
+        "AR07"
+      ]
+    },
+    {
+      "id": "port",
+      "term": "端口",
+      "meaning": "多个光lane可以组成一个协议端口。8×400GBASE-DR4表示8个400G端口，合计32条100G级光lane；不表示8条400G光lane",
+      "sourceIds": [
+        "AR01"
+      ]
+    },
+    {
+      "id": "npo",
+      "term": "NPO",
+      "meaning": "本网页约定光引擎为ASIC封装外、邻近ASIC的独立模块。主机ASIC为环境参照，不属于NPO模块BOM。光引擎内部PIC与EIC的集成仍属于NPO内部封装",
+      "sourceIds": [
+        "AR04",
+        "AR12"
+      ]
+    },
+    {
+      "id": "els",
+      "term": "ELS/ELSFP",
+      "meaning": "ELS是供光功能，ELSFP是一种外置可插拔光源形态。CW供光路数不必等于数据lane数，一路激光可通过分光供多个调制器",
+      "sourceIds": [
+        "AR01",
+        "AR02"
+      ]
+    },
+    {
+      "id": "packageVsChannel",
+      "term": "芯片颗数与通道数",
+      "meaning": "Driver/TIA可多通道集成于一颗裸片或同一EIC。一条lane需要一个功能通道，不一定需要一颗独立芯片",
+      "sourceIds": [
+        "AR05",
+        "AR06"
+      ]
+    },
+    {
+      "id": "fiberVsFau",
+      "term": "光纤数与FAU总成数",
+      "meaning": "FAU容纳多根光纤。Tx/Rx是否合并在同一FAU、供光纤是否另配FAU、PIC版图和耦合方式都会影响总成数量",
+      "sourceIds": [
+        "AR02",
+        "AR11"
+      ]
+    }
+  ],
+  "quantityRules": [
+    {
+      "id": "q-optical",
+      "quantity": "opticalTxLanes=opticalRxLanes",
+      "formula": "capacityGbps / opticalLaneGbps",
+      "kind": "functional_channel",
+      "sourceIds": [
+        "AR02"
+      ],
+      "note": "Tx和Rx均为该值，不将两方向相加成名义速率"
+    },
+    {
+      "id": "q-electrical",
+      "quantity": "electricalTxLanes=electricalRxLanes",
+      "formula": "capacityGbps / electricalLaneGbps",
+      "kind": "functional_channel",
+      "sourceIds": [
+        "AR02",
+        "AR07"
+      ],
+      "note": "若光电lane速率不同，必须显式包含lane映射机制"
+    },
+    {
+      "id": "q-driver",
+      "quantity": "driverPackages",
+      "formula": "ceil(opticalTxLanes / driverChannelsPerPackage)",
+      "kind": "physical_assembly",
+      "sourceIds": [
+        "AR06"
+      ],
+      "note": "默认每颗4lane是模型假设；可选8lane；与DSP/EIC集成时改标功能通道且禁重复成本"
+    },
+    {
+      "id": "q-tia",
+      "quantity": "tiaPackages",
+      "formula": "ceil(opticalRxLanes / tiaChannelsPerPackage)",
+      "kind": "physical_assembly",
+      "sourceIds": [
+        "AR06"
+      ],
+      "note": "默认每颗4lane，可选8lane；未知真实集成关系时标等效颗数"
+    },
+    {
+      "id": "q-pic",
+      "quantity": "picDies",
+      "formula": "ceil(max(opticalTxLanes,opticalRxLanes) / picDuplexLanesPerDie)",
+      "kind": "physical_assembly",
+      "sourceIds": [
+        "AR05"
+      ],
+      "note": "8收发lane/裸片仅建模假设，不能冒充Marvell/Ciena裸片数量"
+    },
+    {
+      "id": "q-modulator",
+      "quantity": "modulatorChannels",
+      "formula": "opticalTxLanes",
+      "kind": "integrated_feature",
+      "sourceIds": [
+        "AR02",
+        "AR05"
+      ],
+      "note": "包含于PIC价值，不另加完整采购成本；MZM与MRM是替代项"
+    },
+    {
+      "id": "q-pd",
+      "quantity": "photodetectorChannels",
+      "formula": "opticalRxLanes",
+      "kind": "integrated_feature",
+      "sourceIds": [
+        "AR02",
+        "AR05"
+      ],
+      "note": "包含于PIC；不同PD阵列可为独立裸片，需具体设计覆盖"
+    },
+    {
+      "id": "q-fiber",
+      "quantity": "signalFibers",
+      "formula": "ceil(opticalTxLanes / wavelengthsPerSignalFiber) + ceil(opticalRxLanes / wavelengthsPerSignalFiber)",
+      "kind": "integrated_feature",
+      "sourceIds": [
+        "AR01",
+        "AR02"
+      ],
+      "note": "默认并行单模，因此为2×opticalLane；不含ELS供光纤"
+    },
+    {
+      "id": "q-fau",
+      "quantity": "signalFauAssemblies",
+      "formula": "ceil(txSignalFibers / signalFauFibersPerAssembly) + ceil(rxSignalFibers / signalFauFibersPerAssembly)",
+      "kind": "physical_assembly",
+      "sourceIds": [
+        "AR11"
+      ],
+      "note": "默认Tx/Rx分开且8芯/总成；16光lane时4组，8光lane时2组；若换16芯总成则数量可能不变，但使用纤芯数会变"
+    },
+    {
+      "id": "q-cw",
+      "quantity": "activeCwPaths",
+      "formula": "ceil(opticalTxLanes / txLanesPerCwPath)",
+      "kind": "functional_channel",
+      "sourceIds": [
+        "AR01",
+        "AR02"
+      ],
+      "note": "默认1路供4Tx，6.4T×200G的8路有Ciena图示依据；其他速率按该比率缩放仍为假设"
+    },
+    {
+      "id": "q-els-physical",
+      "quantity": "elsModulesPhysical",
+      "formula": "ceil(activeCwPaths / cwPathsPerElsModule)",
+      "kind": "physical_assembly",
+      "sourceIds": [
+        "AR02"
+      ],
+      "note": "仅外置光源模式显示；不足8路也需完整一盒，独占采购按完整盒计"
+    },
+    {
+      "id": "q-els-allocated",
+      "quantity": "elsModuleAllocatedEquivalent",
+      "formula": "activeCwPaths / cwPathsPerElsModule",
+      "kind": "allocated_share",
+      "sourceIds": [
+        "AR02"
+      ],
+      "note": "仅共享供光模式可用；3.2T的0.5盒是共享资源折算，不是物理半盒；未用通道能否复用须由实际系统决定"
+    },
+    {
+      "id": "q-isolator",
+      "quantity": "isolators",
+      "formula": "activeCwPaths * isolatorsPerCwPath",
+      "kind": "physical_assembly",
+      "sourceIds": [],
+      "note": "仅分立单路隔离器参考模型。阵列隔离器/集成光源/无隔离路线数量不同，不能声称所有NPO都必须如此"
+    },
+    {
+      "id": "q-faraday",
+      "quantity": "faradayRotators",
+      "formula": "isolators * stagesPerIsolator * faradayRotatorsPerSingleStageIsolator",
+      "kind": "integrated_feature",
+      "sourceIds": [],
+      "note": "单级偏振相关隔离器示意；材料或组件占比只能在有支持的成本分配下显示"
+    },
+    {
+      "id": "q-gearbox",
+      "quantity": "gearboxEquivalentPackages",
+      "formula": "electricalLaneGbps == opticalLaneGbps ? 0 : ceil(capacityGbps / 1600)",
+      "kind": "physical_assembly",
+      "sourceIds": [
+        "AR07"
+      ],
+      "note": "1.6T等效8:4映射块数量，3.2T为2、6.4T为4；只是速率守恒模型，非承诺可用的硅光NPO料号"
+    },
+    {
+      "id": "q-control",
+      "quantity": "engineControlSet",
+      "formula": "1",
+      "kind": "physical_assembly",
+      "sourceIds": [
+        "AR05"
+      ],
+      "note": "MCU/EEPROM/PMIC/监控需按采购集成情况合并，不能盲随lane逐一倍增"
+    },
+    {
+      "id": "q-packaging",
+      "quantity": "moduleSubstrateAndLidSet",
+      "formula": "1",
+      "kind": "physical_assembly",
+      "sourceIds": [
+        "AR01"
+      ],
+      "note": "同一NPO模块的基板及盖板按一套示意；尺寸与面积可随集成方案变化，不应必然线性翻倍"
+    }
+  ],
+  "architectures": [
+    {
+      "id": "npo3200-16x200",
+      "label": "3.2T · 16×200G",
+      "capacityGbps": 3200,
+      "capacityBasis": "per_direction",
+      "opticalLaneGbps": 200,
+      "opticalTxLanes": 16,
+      "opticalRxLanes": 16,
+      "electricalLaneGbps": 200,
+      "electricalTxLanes": 16,
+      "electricalRxLanes": 16,
+      "electricalSelectionVisible": false,
+      "signalMode": "linear",
+      "opticalTopology": "parallel_single_mode",
+      "laserPlacementOptions": [
+        "external_els",
+        "module_integrated_cw"
+      ],
+      "defaultLaserPlacement": "external_els",
+      "status": "roadmap_referenced_generic_model",
+      "displayStatus": "通用16×200G示意，含厂商路线参考",
+      "sourceIds": [
+        "AR05",
+        "AR09",
+        "AR10",
+        "AR14"
+      ],
+      "quantityAssumptions": [
+        "driver/tia每颗4lane",
+        "PIC每颗8路双向光lane",
+        "信号FAU每组8芯且Tx/Rx分体",
+        "每路CW供4条Tx lane",
+        "8路ELS按实际供光路数分摊"
+      ],
+      "defaultQuantities": {
+        "npoModule": 1,
+        "opticalTxFunctionalChannels": 16,
+        "opticalRxFunctionalChannels": 16,
+        "driverEquivalentPackages": 4,
+        "tiaEquivalentPackages": 4,
+        "picEquivalentDies": 2,
+        "signalFauAssemblies": 4,
+        "signalFibers": 32,
+        "activeCwPaths": 4,
+        "elsSupplyFibers": 4,
+        "elsPhysicalModules": 1,
+        "elsAllocatedEquivalent": 0.5,
+        "gearbox1p6TEquivalentPackages": 0
+      },
+      "limitations": [
+        "BOM、PIC/EIC颗数及FAU拆分为可调整模型，不对应任一厂商完整拆机",
+        "ELS内置/外置切换是位置和结构假设，不是所有参考厂商都支持这两种选项"
+      ]
+    },
+    {
+      "id": "npo3200-8x400",
+      "label": "3.2T · 8×400G",
+      "capacityGbps": 3200,
+      "capacityBasis": "per_direction",
+      "opticalLaneGbps": 400,
+      "opticalTxLanes": 8,
+      "opticalRxLanes": 8,
+      "electricalLaneGbps": 400,
+      "electricalTxLanes": 8,
+      "electricalRxLanes": 8,
+      "electricalSelectionVisible": false,
+      "signalMode": "future_matched_rate",
+      "opticalTopology": "parallel_single_mode",
+      "laserPlacementOptions": [
+        "external_els",
+        "module_integrated_cw"
+      ],
+      "defaultLaserPlacement": "external_els",
+      "status": "scenario",
+      "displayStatus": "400G光、电通道同速的前瞻研究情景",
+      "sourceIds": [
+        "AR07",
+        "AR08"
+      ],
+      "quantityAssumptions": [
+        "driver/tia每颗4lane",
+        "PIC每颗8路双向光lane",
+        "信号FAU每组8芯且Tx/Rx分体",
+        "每路CW供4条Tx lane",
+        "8路ELS按实际供光路数分摊"
+      ],
+      "defaultQuantities": {
+        "npoModule": 1,
+        "opticalTxFunctionalChannels": 8,
+        "opticalRxFunctionalChannels": 8,
+        "driverEquivalentPackages": 2,
+        "tiaEquivalentPackages": 2,
+        "picEquivalentDies": 1,
+        "signalFauAssemblies": 2,
+        "signalFibers": 16,
+        "activeCwPaths": 2,
+        "elsSupplyFibers": 2,
+        "elsPhysicalModules": 1,
+        "elsAllocatedEquivalent": 0.25,
+        "gearbox1p6TEquivalentPackages": 0
+      },
+      "limitations": [
+        "电侧自动保持200G，2:1电光速率映射需gearbox，数量是1.6T等效块，不代表已可采购NPO设计",
+        "400G器件性能、功率及单价均需独立验证，不能按200G模型减少lane后当作实际报价",
+        "本应用采用400G电侧同步升级的研究假设，取消200G电侧2:1转换路径；不对应Taurus具体产品。"
+      ]
+    },
+    {
+      "id": "npo6400-32x200",
+      "label": "6.4T · 32×200G",
+      "capacityGbps": 6400,
+      "capacityBasis": "per_direction",
+      "opticalLaneGbps": 200,
+      "opticalTxLanes": 32,
+      "opticalRxLanes": 32,
+      "electricalLaneGbps": 200,
+      "electricalTxLanes": 32,
+      "electricalRxLanes": 32,
+      "electricalSelectionVisible": false,
+      "signalMode": "linear",
+      "opticalTopology": "parallel_single_mode",
+      "laserPlacementOptions": [
+        "external_els",
+        "module_integrated_cw"
+      ],
+      "defaultLaserPlacement": "external_els",
+      "status": "product_referenced_generic_model",
+      "displayStatus": "已有32×200G NPO产品参考",
+      "sourceIds": [
+        "AR02",
+        "AR03",
+        "AR04"
+      ],
+      "quantityAssumptions": [
+        "driver/tia每颗4lane",
+        "PIC每颗8路双向光lane",
+        "信号FAU每组8芯且Tx/Rx分体",
+        "每路CW供4条Tx lane",
+        "8路ELS按实际供光路数分摊"
+      ],
+      "defaultQuantities": {
+        "npoModule": 1,
+        "opticalTxFunctionalChannels": 32,
+        "opticalRxFunctionalChannels": 32,
+        "driverEquivalentPackages": 8,
+        "tiaEquivalentPackages": 8,
+        "picEquivalentDies": 4,
+        "signalFauAssemblies": 8,
+        "signalFibers": 64,
+        "activeCwPaths": 8,
+        "elsSupplyFibers": 8,
+        "elsPhysicalModules": 1,
+        "elsAllocatedEquivalent": 1,
+        "gearbox1p6TEquivalentPackages": 0
+      },
+      "limitations": [
+        "BOM、PIC/EIC颗数及FAU拆分为可调整模型，不对应任一厂商完整拆机",
+        "ELS内置/外置切换是位置和结构假设，不是所有参考厂商都支持这两种选项"
+      ]
+    },
+    {
+      "id": "npo6400-16x400",
+      "label": "6.4T · 16×400G",
+      "capacityGbps": 6400,
+      "capacityBasis": "per_direction",
+      "opticalLaneGbps": 400,
+      "opticalTxLanes": 16,
+      "opticalRxLanes": 16,
+      "electricalLaneGbps": 400,
+      "electricalTxLanes": 16,
+      "electricalRxLanes": 16,
+      "electricalSelectionVisible": false,
+      "signalMode": "future_matched_rate",
+      "opticalTopology": "parallel_single_mode",
+      "laserPlacementOptions": [
+        "external_els",
+        "module_integrated_cw"
+      ],
+      "defaultLaserPlacement": "external_els",
+      "status": "scenario",
+      "displayStatus": "400G光、电通道同速的前瞻研究情景",
+      "sourceIds": [
+        "AR07",
+        "AR08"
+      ],
+      "quantityAssumptions": [
+        "driver/tia每颗4lane",
+        "PIC每颗8路双向光lane",
+        "信号FAU每组8芯且Tx/Rx分体",
+        "每路CW供4条Tx lane",
+        "8路ELS按实际供光路数分摊"
+      ],
+      "defaultQuantities": {
+        "npoModule": 1,
+        "opticalTxFunctionalChannels": 16,
+        "opticalRxFunctionalChannels": 16,
+        "driverEquivalentPackages": 4,
+        "tiaEquivalentPackages": 4,
+        "picEquivalentDies": 2,
+        "signalFauAssemblies": 4,
+        "signalFibers": 32,
+        "activeCwPaths": 4,
+        "elsSupplyFibers": 4,
+        "elsPhysicalModules": 1,
+        "elsAllocatedEquivalent": 0.5,
+        "gearbox1p6TEquivalentPackages": 0
+      },
+      "limitations": [
+        "电侧自动保持200G，2:1电光速率映射需gearbox，数量是1.6T等效块，不代表已可采购NPO设计",
+        "400G器件性能、功率及单价均需独立验证，不能按200G模型减少lane后当作实际报价",
+        "本应用采用400G电侧同步升级的研究假设，取消200G电侧2:1转换路径；不对应Taurus具体产品。"
+      ]
+    }
+  ],
+  "vendorRoutes": [
+    {
+      "id": "route-ciena-6400",
+      "vendor": "Ciena",
+      "region": "海外",
+      "product": "Vesta 200 6.4T CPX",
+      "status": "product",
+      "architectureIds": [
+        "npo6400-32x200"
+      ],
+      "binding": "exact_lane_architecture",
+      "display": "Ciena Vesta 200：32×200G，CPO/NPO光引擎",
+      "sourceIds": [
+        "AR02",
+        "AR12"
+      ],
+      "caveat": "本模型默认芯片颗数和FAU拆分不代表Vesta真实设计"
+    },
+    {
+      "id": "route-eoptolink-6400",
+      "vendor": "新易盛Eoptolink",
+      "region": "中国",
+      "product": "6.4T NPO",
+      "status": "product",
+      "architectureIds": [
+        "npo6400-32x200"
+      ],
+      "binding": "exact_lane_architecture",
+      "display": "新易盛：6.4T NPO，32×200G，已发布",
+      "sourceIds": [
+        "AR03"
+      ],
+      "caveat": "发布稿没有量产数量与内部采购BOM"
+    },
+    {
+      "id": "route-marvell-6400",
+      "vendor": "Marvell",
+      "region": "海外",
+      "product": "6.4T 3D Silicon Photonics Light Engine",
+      "status": "demonstration",
+      "architectureIds": [
+        "npo6400-32x200"
+      ],
+      "binding": "adjacent_cpo_reference",
+      "display": "Marvell：32×200G的CPO评估光引擎",
+      "sourceIds": [
+        "AR04"
+      ],
+      "caveat": "参考光lane组织，不作为NPO发布产品"
+    },
+    {
+      "id": "route-giga-3200",
+      "vendor": "易飞扬GIGALIGHT",
+      "region": "中国",
+      "product": "3.2T NPO roadmap / HYBRID DR8×2 reference",
+      "status": "roadmap",
+      "architectureIds": [
+        "npo3200-16x200"
+      ],
+      "binding": "roadmap_related",
+      "display": "易飞扬：3.2T NPO路线，16通道HYBRID为相邻设计参考",
+      "sourceIds": [
+        "AR09",
+        "AR10"
+      ],
+      "caveat": "未把3.2T NPO路线升级为量产或确切16×200G线性产品"
+    },
+    {
+      "id": "route-nvidia-3200",
+      "vendor": "NVIDIA",
+      "region": "海外",
+      "product": "Spectrum-6 3.2T optical engine",
+      "status": "reference",
+      "architectureIds": [
+        "npo3200-16x200"
+      ],
+      "binding": "adjacent_cpo_reference",
+      "display": "NVIDIA：3.2T/200G级CPO光引擎参考",
+      "sourceIds": [
+        "AR14"
+      ],
+      "caveat": "CPO而非NPO，不能由总速率反推出相同BOM"
+    },
+    {
+      "id": "route-broadcom-400",
+      "vendor": "Broadcom",
+      "region": "海外",
+      "product": "Taurus BCM83640",
+      "status": "sampling",
+      "architectureIds": [
+        "npo3200-8x400",
+        "npo6400-16x400"
+      ],
+      "binding": "enabling_component_only",
+      "display": "Broadcom Taurus：400G光lane及8:4电光变换器件参考",
+      "sourceIds": [
+        "AR07"
+      ],
+      "caveat": "未核验8×400G或16×400G硅光NPO整机；该DSP集成EML laser driver，不可叠加同功能外置Driver成本"
+    },
+    {
+      "id": "route-marvell-400",
+      "vendor": "Marvell",
+      "region": "海外",
+      "product": "2nm 400G/lane optical PAM4",
+      "status": "demonstration",
+      "architectureIds": [
+        "npo3200-8x400",
+        "npo6400-16x400"
+      ],
+      "binding": "enabling_technology_only",
+      "display": "Marvell：400G/lane光PAM4演示参考",
+      "sourceIds": [
+        "AR08"
+      ],
+      "caveat": "速率技术演示，不表示对应NPO成品"
+    },
+    {
+      "id": "route-broadcom-vcsel",
+      "vendor": "Broadcom",
+      "region": "海外",
+      "product": "3.2T VCSEL NPO",
+      "status": "demonstration",
+      "architectureIds": [],
+      "binding": "alternative_technology",
+      "display": "Broadcom：VCSEL 3.2T NPO替代路线",
+      "sourceIds": [
+        "AR15"
+      ],
+      "caveat": "与硅光CW＋MZM/MRM方案不同，不应显示ELS/隔离器为强制BOM"
+    }
+  ],
+  "sources": [
+    {
+      "id": "WX_NPO_20260927",
+      "title": "新参者手记｜光通信入门：从华为超节点看NPO发展",
+      "url": "https://mp.weixin.qq.com/s?src=11&timestamp=1791134645&ver=7006&signature=5eELKGbtvi-BUYnIoiArjECfGhs10XACfre3awySYbE9fATqUWz8YFs48Iqn1yHjWvSI0Hjf3WeXIst9ArA1KiZgnVXqrKPh5IpXSDF6R5jqDjmNSJiP4xaQoYV1xNFK&new=1",
+      "date": "2026-09-27",
+      "accessed": "2026-10-08",
+      "type": "wechat_estimate",
+      "supports": [
+        "3.2T光引擎与ELS分项参考BOM",
+        "一套ELS服务两只3.2T光引擎"
+      ],
+      "scope": "作者产业交流/测算，未提供底层报价；正文对应32×100G路线。原文表格约数，不是供应商报价或审计成本",
+      "locator": "已复用并阅读全文，图003、004、005已逐张目视核对"
+    },
+    {
+      "id": "GS_CPO_20260417",
+      "title": "Goldman Sachs｜Optical Networking: the next mega-trend in AI infrastructure",
+      "url": "https://www.goldmansachs.com/pdfs/insights/goldman-sachs-research/optical-networking-the-next-mega-trend-in-ai-infrastructure/report.pdf",
+      "date": "2026-04-17",
+      "accessed": "2026-10-08",
+      "type": "broker_estimate",
+      "supports": [
+        "Quantum-X CPO系统采购模型：ELS $400，300mW CW $30/颗，8颗/ELS"
+      ],
+      "scope": "券商产业调查估计；CPO采购价值，不是NPO材料BOM；本次复读原表本地截图",
+      "locator": "PDF第19页/印刷第18页/Exhibit 22"
+    },
+    {
+      "id": "XINYU_IPO_20260622",
+      "title": "鑫宇科技｜招股说明书申报稿",
+      "url": "https://pdf.dfcfw.com/pdf/H2_AN202606221823744671_1.pdf",
+      "date": "2026-06-22",
+      "accessed": "2026-10-08",
+      "type": "filing",
+      "supports": [
+        "隔离器销售量与收入",
+        "法拉第旋片、偏振片、磁体、氮化铝供应商",
+        "陶瓷与精密金属结构件能力"
+      ],
+      "scope": "2025年产品混合ASP，未细分NPO用型号；供应商对应鑫宇采购，不能推定特定NPO客户关系",
+      "locator": "本地原PDF第104、108、109、110页重新提取核验"
+    },
+    {
+      "id": "YINGTANG_20260930",
+      "title": "英唐智控｜重组审核问询回复",
+      "url": "https://file.finance.sina.com.cn/211.154.219.97:9494/MRGG/CNSESZ_STOCK/2026/2026-9/2026-09-30/12628418.PDF",
+      "date": "2026-09-30",
+      "accessed": "2026-10-08",
+      "type": "filing",
+      "supports": [
+        "光隆集成采购法拉第小片、在线隔离器、FA及准直器的交易样本"
+      ],
+      "scope": "法拉第小片用于磁光开关，规格未对应高速模块O波段旋片；不纳入NPO默认BOM",
+      "locator": "复读本地已提取原文PDF第41-44页"
+    },
+    {
+      "id": "COHR_GARNET",
+      "title": "Coherent｜Magneto-optic LPE Garnet Faraday Rotator Crystals",
+      "url": "https://www.coherent.com/content/dam/coherent/site/en/resources/datasheet/optics/magneto-optic-lpe-garnet-faraday-rotator-crystals-ds.pdf",
+      "date": null,
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "通信波段BIG厚膜、Faraday旋光片及定制AR镀膜"
+      ],
+      "scope": "用于通信磁光材料产品能力；不与工业激光TGG混用",
+      "locator": "FLL Garnet产品说明"
+    },
+    {
+      "id": "COHR_ISO",
+      "title": "Coherent｜Free Space Isolators",
+      "url": "https://www.coherent.com/networking/communication-components/passive-components/free-space-isolators",
+      "date": null,
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "O-band/C-band自由空间隔离器、单级和双级器件"
+      ],
+      "scope": "产品能力，未给出NPO成交价",
+      "locator": null
+    },
+    {
+      "id": "COHR_SHAPE",
+      "title": "Coherent｜PhotonLink SHAPE",
+      "url": "https://www.coherent.com/networking/photonlink/shape",
+      "date": null,
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "磁光石榴石晶体生长与隔离器垂直能力"
+      ],
+      "scope": "平台产品展示，非客户采购明细",
+      "locator": null
+    },
+    {
+      "id": "COHR_CW",
+      "title": "Coherent｜Samples Low-Noise 400mW CW Lasers",
+      "url": "https://www.coherent.com/news/press-releases/coherent-samples-low-noise-400mw-cw-lasers",
+      "date": "2025-09-25",
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "1311nm 400mW CW chip-on-carrier样品产品"
+      ],
+      "scope": "当时公告为送样且计划2026Q3量产；不能由计划直接认定已量产",
+      "locator": null
+    },
+    {
+      "id": "LITE_CW",
+      "title": "Lumentum｜UHP Laser Sources for CPO",
+      "url": "https://www.lumentum.com/en/products/data-center/cw-lasers/uhp-lasers-cpo",
+      "date": null,
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "1311nm高功率InP CW激光器与ELSFP集成"
+      ],
+      "scope": "性能随温度变化，不把CW光功率当成调制通道速率",
+      "locator": null
+    },
+    {
+      "id": "LITE_ELS",
+      "title": "Lumentum｜DWDM ELSFP Laser Module for OCI MSA",
+      "url": "https://investor.lumentum.com/financial-news-releases/news-details/2026/Lumentum-to-Demonstrate-DWDM-ELSFP-Laser-Module-for-OCI-MSA-Applications-at-ECOC-2026/default.aspx",
+      "date": "2026-09-21",
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "八波长DWDM ELSFP演示，面向CPO/NPO"
+      ],
+      "scope": "演示方案；八波长不等于本模型八条独立空间通道",
+      "locator": null
+    },
+    {
+      "id": "BRCM_CW",
+      "title": "Broadcom｜CW Lasers for Silicon Photonics Applications",
+      "url": "https://www.broadcom.com/products/fiber-optic-modules-components/components-broadband/long-reach-inp-die/cw-lasers",
+      "date": null,
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "1.3um及O-band CWDM高功率CW激光裸片"
+      ],
+      "scope": "产品能力，非指定NPO供货",
+      "locator": null
+    },
+    {
+      "id": "MACOM_LINEAR",
+      "title": "MACOM｜PURE DRIVE Linear Optical Solutions",
+      "url": "https://www.macom.com/pure-drive-linear-architecture",
+      "date": null,
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "线性SiPh Driver与TIA产品平台",
+        "4通道器件实例"
+      ],
+      "scope": "涵盖多种速率与光学路线，需按具体料号匹配",
+      "locator": null
+    },
+    {
+      "id": "MACOM_200",
+      "title": "MACOM｜200G per Lane Products at OFC",
+      "url": "https://ir.macom.com/node/18821/pdf",
+      "date": null,
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "212Gbps/lane线性Driver及TIA演示"
+      ],
+      "scope": "演示能力，非NPO整机物料清单",
+      "locator": null
+    },
+    {
+      "id": "MXL_200",
+      "title": "MaxLinear｜Washington 200G TIA availability",
+      "url": "https://www.maxlinear.com/news/press-releases/2026/maxlinear-announces-availability-of-washington-200g-tia-for-next-generation-ai-data-center-connectiv",
+      "date": "2026-04-30",
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "四通道200G/lane TIA，I2C、PD偏置和RSSI"
+      ],
+      "scope": "明确4通道芯片支持数量示意；本文不认定所有NPO固定使用4通道颗粒",
+      "locator": null
+    },
+    {
+      "id": "SMTC_TIA",
+      "title": "Semtech｜High-Performance TIAs for 1.6T AI Data Centers",
+      "url": "https://www.semtech.com/company/press/semtech-unveils-high-performance-tias-for-1.6t-ai-data-centers",
+      "date": null,
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "GN1834D等200G/lane TIA产品"
+      ],
+      "scope": "用于1.6T光模块的器件能力；NPO仍需线性链路与封装适配",
+      "locator": null
+    },
+    {
+      "id": "SIFO_200",
+      "title": "SiFotonics｜CIOE 2024 Silicon Photonics Products",
+      "url": "https://www.sifotonics.com/en/news_details.html?id=133",
+      "date": "2024-09-09",
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "200G Ge/Si PIN PD及4×200G SiPho MZM PIC"
+      ],
+      "scope": "产品展示，未证明本模型所有速率的量产供货",
+      "locator": null
+    },
+    {
+      "id": "EPIC_PIC",
+      "title": "弘光向尚｜硅光芯片及光引擎产品",
+      "url": "https://bjepic.com/",
+      "date": null,
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "400G/800G/1.6T/3.2T硅光PIC产品系列"
+      ],
+      "scope": "产品能力，不同速率/接口不能等同",
+      "locator": null
+    },
+    {
+      "id": "SICOYA_PIC",
+      "title": "Sicoya｜Silicon Photonic Products",
+      "url": "https://sicoya.com/en/silicon-photonic-components/",
+      "date": null,
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "收发硅光裸片与电光芯片堆叠组件"
+      ],
+      "scope": "产品能力，未给出本模型价格",
+      "locator": null
+    },
+    {
+      "id": "GF_FOTONIX",
+      "title": "GlobalFoundries｜Silicon Photonics",
+      "url": "https://gf.com/technologies/silicon-photonics/",
+      "date": null,
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "硅光代工平台、调制器与集成光电探测器"
+      ],
+      "scope": "代工服务供应商；与PIC设计厂分开",
+      "locator": null
+    },
+    {
+      "id": "TOWER_400",
+      "title": "Tower Semiconductor and Coherent｜400Gbps/lane silicon modulator demonstration",
+      "url": "https://towersemi.com/2026/03/23/03232026/",
+      "date": "2026-03-23",
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "生产就绪SiPho工艺上的400G/lane硅调制器演示"
+      ],
+      "scope": "单通道技术演示不直接等于3.2T NPO量产产品",
+      "locator": null
+    },
+    {
+      "id": "HYPERLIGHT",
+      "title": "HyperLight｜TFLN Chiplet platform",
+      "url": "https://hyperlightcorp.com/",
+      "date": null,
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "400G/lane及448Gbps/lane TFLN PIC方向"
+      ],
+      "scope": "薄膜铌酸锂是可选调制路线，不混作纯硅材料",
+      "locator": null
+    },
+    {
+      "id": "TFC_2025",
+      "title": "天孚通信｜OFC2025光引擎系列产品",
+      "url": "https://www.tfcsz.com/news/974.html",
+      "date": "2025",
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "CPO/高速模块FAU、POSA、透镜、棱镜和光纤组件"
+      ],
+      "scope": "产品能力，未确认某一家NPO订单",
+      "locator": null
+    },
+    {
+      "id": "TFC_ISO",
+      "title": "天孚通信｜OFC2019产品介绍",
+      "url": "https://www.tfcsz.com/news/444.html",
+      "date": null,
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "保偏尾纤隔离器、保偏FA隔离器、保偏组件隔离器"
+      ],
+      "scope": "历史量产能力，不代表最新NPO型号",
+      "locator": null
+    },
+    {
+      "id": "TFC_COATING",
+      "title": "天孚通信｜解决方案",
+      "url": "https://www.tfcsz.com/solution.html",
+      "date": null,
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "光学镀膜、塑料透镜与光纤阵列方案"
+      ],
+      "scope": "产品平台能力",
+      "locator": null
+    },
+    {
+      "id": "AFR_AI",
+      "title": "光库科技｜AI数据中心光器件",
+      "url": "https://www.afrlaser.com/AI-and-Data-Centers/",
+      "date": null,
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "NPO/CPO准直FAU、ELS保偏跳线、边缘/光栅耦合阵列"
+      ],
+      "scope": "直接列NPO/CPO应用；未提供价格",
+      "locator": null
+    },
+    {
+      "id": "AFR_PRODUCTS",
+      "title": "光库科技｜产品中心",
+      "url": "https://www.afrlaser.com/products/",
+      "date": null,
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "隔离器、铌酸锂调制器、光探测器、分束器、准直器及保偏组件"
+      ],
+      "scope": "规格和适用波长需按料号核验",
+      "locator": null
+    },
+    {
+      "id": "SENKO_FA",
+      "title": "SENKO｜Fiber Array Assemblies",
+      "url": "https://www.senko.com/product/fiber-array/",
+      "date": null,
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "1-128纤芯、SM/MM/PM、边缘和光栅耦合FA"
+      ],
+      "scope": "纤芯数量不等于阵列组件实物个数",
+      "locator": null
+    },
+    {
+      "id": "MOLEX_ARRAY",
+      "title": "Molex｜Optical Assemblies and Arrays",
+      "url": "https://www.molex.com/en-us/products/optical-solutions/optical-fiber/optical-arrays",
+      "date": null,
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "一维V-groove和二维光纤阵列"
+      ],
+      "scope": "产品能力，非特定NPO供货",
+      "locator": null
+    },
+    {
+      "id": "MOLEX_CPO",
+      "title": "Molex｜Co-Packaged Optics for AI Data Centers",
+      "url": "https://www.molex.com/en-us/industries-applications/data-center-connector-solutions/near-asic/co-packaged-optics",
+      "date": null,
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "近封装光接口、ELSFP连接与可拆卸光纤封装"
+      ],
+      "scope": "连接件能力，非完整ELS光源厂家",
+      "locator": null
+    },
+    {
+      "id": "THREEV",
+      "title": "3V-TECH｜Optical Fiber V Groove",
+      "url": "https://www.fiber-array.com/product/optical-fiber-v-groove-customized/",
+      "date": null,
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "石英/玻璃V槽、不同通道与间距定制"
+      ],
+      "scope": "制造能力；客户、批量与认证未知",
+      "locator": null
+    },
+    {
+      "id": "FUJIKURA_PMF",
+      "title": "Fujikura｜Specialty Fibers",
+      "url": "https://www.optic-product.fujikura.com/specialty-fibers/",
+      "date": null,
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "PANDA PMF与硅光耦合特种单模光纤"
+      ],
+      "scope": "PMF与普通SMF分别计量",
+      "locator": null
+    },
+    {
+      "id": "CORNING_PMF",
+      "title": "Corning｜PANDA Polarization Maintaining Fiber",
+      "url": "https://www.corning.com/oem-solutions/worldwide/en/home/products-solutions/optical-communication-components/specialty-fiber/panda-polarization-maintaining-fiber.html",
+      "date": null,
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "400-1550nm PMF及光纤耦合应用"
+      ],
+      "scope": "按具体波段、弯曲和包层规格选型",
+      "locator": null
+    },
+    {
+      "id": "CORNING_CPO",
+      "title": "Corning｜Specialty Fiber",
+      "url": "https://www.corning.com/oem-solutions/worldwide/en/home/products-solutions/optical-communication-components/specialty-fiber.html",
+      "date": null,
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "O-band CPO FlexConnect与SMF/PMF选择"
+      ],
+      "scope": "光纤能力，不代表其供应所有NPO线缆",
+      "locator": null
+    },
+    {
+      "id": "YOFC_PMF",
+      "title": "长飞｜特种光纤产品手册",
+      "url": "https://yofc.com/upload/20181105/1crhdcq8d1bjdrtir.pdf",
+      "date": null,
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "1310nm/1550nm PMF，激光器尾纤和偏振敏感器件应用"
+      ],
+      "scope": "历史产品手册用于能力，不用于当前市场份额",
+      "locator": null
+    },
+    {
+      "id": "USCONEC_MT",
+      "title": "US Conec｜MT Ferrules",
+      "url": "https://www.usconec.com/ferrules/mt",
+      "date": null,
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "12/16及多排MT插芯，单模和多模"
+      ],
+      "scope": "插芯是连接器子件，不重复加到整机BOM",
+      "locator": null
+    },
+    {
+      "id": "SENYI_FRG",
+      "title": "森一量子｜产品中心",
+      "url": "https://www.senyitech.com/product/1.html",
+      "date": null,
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "FRG功能晶体产品"
+      ],
+      "scope": "与鑫宇采购记录交叉验证；未披露NPO专用品价格",
+      "locator": null
+    },
+    {
+      "id": "GRANOPT_FRG",
+      "title": "GRANOPT｜Faraday Rotator technical manual G005",
+      "url": "https://www.granopt.jp/en/images/GRANOPT-G005-E.pdf",
+      "date": "2013",
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "Faraday旋光片和自保持磁性材料类型"
+      ],
+      "scope": "材料原理和产品类型；老手册不说明当前产量",
+      "locator": null
+    },
+    {
+      "id": "FOCUSLIGHT_NPO",
+      "title": "炬光科技｜Near Packaged Optics",
+      "url": "https://www.focuslight.com/application/optical-communication/near-packaged-optics-npo/",
+      "date": null,
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "NPO微透镜、阵列、准直/耦合光学"
+      ],
+      "scope": "明确NPO用途；未证明任一特定客户供货",
+      "locator": null
+    },
+    {
+      "id": "FOCUSLIGHT_MAT",
+      "title": "炬光科技｜Diode Laser Materials and Products",
+      "url": "https://www.focuslight.com/product/",
+      "date": null,
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "AuSn预沉积AlN/CuW激光器热沉与微透镜"
+      ],
+      "scope": "材料与工艺能力",
+      "locator": null
+    },
+    {
+      "id": "OPTOWIDE",
+      "title": "腾景科技｜Optical Components Technology",
+      "url": "https://www.optowide.com/en/page-27439.html",
+      "date": null,
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "透镜、偏振元件、光学键合与镀膜能力"
+      ],
+      "scope": "通用光学能力，不把AR产品认作NPO订单",
+      "locator": null
+    },
+    {
+      "id": "KYOCERA_LD",
+      "title": "Kyocera｜Thin-Film Submounts for Laser Diodes",
+      "url": "https://global.kyocera.com/prdct/semicon/search_application/detail/submount.html",
+      "date": null,
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "光通信AlN激光器热沉基座"
+      ],
+      "scope": "陶瓷热沉与有机mSAP基板是不同节点",
+      "locator": null
+    },
+    {
+      "id": "KYOCERA_PKG",
+      "title": "Kyocera｜Ceramic Packages for Optical Communications",
+      "url": "https://global.kyocera.com/prdct/semicon/search_application/detail/fo.html",
+      "date": null,
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "陶瓷光通信管壳、盖板、LTCC及热沉"
+      ],
+      "scope": "工艺产品能力，非特定NPO封装",
+      "locator": null
+    },
+    {
+      "id": "SUMI_ALN",
+      "title": "Sumitomo Electric｜Aluminum Nitride",
+      "url": "https://sumitomoelectric.com/products/aln",
+      "date": null,
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "激光器用AlN submount与金属化电路"
+      ],
+      "scope": "住友电工与住友金属矿山分开",
+      "locator": null
+    },
+    {
+      "id": "SHINKO",
+      "title": "Shinko｜Substrate with Optical Waveguides",
+      "url": "https://www.shinko.co.jp/english/product/package/substrate/co-pkg.php",
+      "date": null,
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "带聚合物光波导FC-BGA基板研发"
+      ],
+      "scope": "研发中的CPO相邻技术，不认定现用NPO mSAP供货",
+      "locator": null
+    },
+    {
+      "id": "ASE",
+      "title": "ASE｜Silicon Photonics",
+      "url": "https://ase.aseglobal.com/silicon-photonics/",
+      "date": null,
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "OBO/CPO/光I/O异质封装能力"
+      ],
+      "scope": "封装服务，非某颗芯片或原材料的额外独立采购项",
+      "locator": null
+    },
+    {
+      "id": "FASTPRINT",
+      "title": "兴森科技｜2026向特定对象发行预案",
+      "url": "https://disc.static.szse.cn/disc/disk03/finalpage/2026-06-24/c1deaba4-4c94-4eec-a463-a7ddd5704a38.PDF",
+      "date": "2026-06-24",
+      "accessed": "2026-10-08",
+      "type": "filing",
+      "supports": [
+        "高速光模块mSAP基板扩产项目"
+      ],
+      "scope": "计划项目；不写成现有NPO产能或确认供货",
+      "locator": "第二节，高阶mSAP基板项目"
+    },
+    {
+      "id": "TI_OPTICAL",
+      "title": "Texas Instruments｜Optical Module Design Resources",
+      "url": "https://www.ti.com/solution/optical-module",
+      "date": null,
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "激光偏置/光监控/供电管理设计"
+      ],
+      "scope": "辅助模拟与电源器件平台，不是200G线性Driver/TIA替代品",
+      "locator": null
+    },
+    {
+      "id": "TI_POWER",
+      "title": "Texas Instruments｜Optical Module Power White Paper",
+      "url": "https://www.ti.com/lit/wp/sluaad9/sluaad9.pdf",
+      "date": "2021-03-22",
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "光模块MCU、I/O、激光偏置供电架构"
+      ],
+      "scope": "通用架构，不把历史器件定为NPO必用",
+      "locator": null
+    },
+    {
+      "id": "GIGA_MCU",
+      "title": "兆易创新｜GD32E512/511/501 Optical Module MCUs",
+      "url": "https://www.gigadevice.com/product/mcu/specific-mcus/gd32e512-511-501-series",
+      "date": null,
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "高速光模块管理MCU、ADC、DAC、I2C等"
+      ],
+      "scope": "管理MCU与高速信号DSP不同",
+      "locator": null
+    },
+    {
+      "id": "ADI_TEC",
+      "title": "Analog Devices｜MAX1978",
+      "url": "https://www.analog.com/en/products/max1978.html",
+      "date": null,
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "TEC温度控制器与激光模块应用；目录1ku起价$23.23"
+      ],
+      "scope": "目录价属于具体传统控制IC，不替代NPO整套温控BOM",
+      "locator": null
+    },
+    {
+      "id": "WAVELENGTH_LD",
+      "title": "Wavelength Electronics｜Laser Diode Driver Datasheets",
+      "url": "https://www.teamwavelength.com/support/datasheets/",
+      "date": null,
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "恒流/恒功率激光器驱动组件"
+      ],
+      "scope": "实验/通用驱动能力，非NPO量产裸片供应确认",
+      "locator": null
+    },
+    {
+      "id": "FERROTEC_TEC",
+      "title": "Ferrotec｜Telecom-grade Peltier Modules",
+      "url": "https://thermal.ferrotec.com/products/peltier-thermoelectric-cooler-modules/telecom/",
+      "date": null,
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "微型通信级TEC与定制几何尺寸"
+      ],
+      "scope": "产品能力，无本模型采购价",
+      "locator": null
+    },
+    {
+      "id": "FUXIN_TEC",
+      "title": "富信科技｜Micro TEC相关澄清声明",
+      "url": "https://fuxin-cn.com/Home/fxnews/1573.html?l=1033",
+      "date": "2026-06-28",
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "确认Micro TEC产品；否认网传新增重大客户与大额订单"
+      ],
+      "scope": "仅采用产品存在信息，不采信传闻客户或订单",
+      "locator": null
+    },
+    {
+      "id": "HENKEL_OPTICAL",
+      "title": "Henkel｜Optical Adhesives and Thermal Materials",
+      "url": "https://next.henkel-adhesives.com/us/en/industries/data-and-telecommunications/optical.html",
+      "date": null,
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "精密光学对准胶、芯片胶和导热材料"
+      ],
+      "scope": "材料能力；未给出单位引擎用量",
+      "locator": null
+    },
+    {
+      "id": "INDIUM_TIM",
+      "title": "Indium Corporation｜Thermal Interface Materials",
+      "url": "https://www.indium.com/products/thermal-interface-materials/",
+      "date": null,
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "金属TIM、焊料与导热界面材料"
+      ],
+      "scope": "按面积/厚度和工艺计价，不能固定每通道一个",
+      "locator": null
+    },
+    {
+      "id": "BOYD_COOL",
+      "title": "Boyd｜Liquid Cooling Systems",
+      "url": "https://www.boydcorp.com/thermal/liquid-cooling-systems.html",
+      "date": null,
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "网络/数据中心冷板与热管理"
+      ],
+      "scope": "整机共同冷板不能全额计入单个NPO",
+      "locator": null
+    },
+    {
+      "id": "HAMAMATSU_PD",
+      "title": "Hamamatsu｜InGaAs Photodiodes",
+      "url": "https://www.hamamatsu.com/eu/en/product/optical-sensors/photodiodes/ingaas-photodiode.html",
+      "date": null,
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "近红外InGaAs光功率检测器件"
+      ],
+      "scope": "低速监控PD与高速接收PD分开",
+      "locator": null
+    },
+    {
+      "id": "ONET_ELS",
+      "title": "昂纳｜ELSFP Module with CW Laser",
+      "url": "https://en.o-netcom.com/prod_view.aspx?FId=t3%3A106%3A3&Id=322&TypeId=106",
+      "date": "2023-03",
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "4/8通道CW ELSFP、保偏盲插接口、冷却或非冷却选项"
+      ],
+      "scope": "官方公开产品页面；不是特定NPO型号报价",
+      "locator": null
+    },
+    {
+      "id": "ACCELINK_NPO",
+      "title": "光迅科技｜3.2T NPO系统验证",
+      "url": "https://www.accelink.com/en/lighting_your_dreams/2033807728727584770.html",
+      "date": "2026-03-17",
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "OE、ELSFP和FMU-Shuffle系统方案"
+      ],
+      "scope": "公司的验证与产品声明；不推定所有部件自产",
+      "locator": null
+    },
+    {
+      "id": "AR01",
+      "title": "OIF Implementation Agreement for a 3.2Tb/s Co-Packaged Module 01.0",
+      "url": "https://www.oiforum.com/wp-content/uploads/OIF-Co-Packaging-3.2T-Module-01.0.pdf",
+      "date": "2023-03-29",
+      "accessed": "2026-10-08",
+      "supports": [
+        "8×400GBASE-DR4/FR4表示8个端口，每端口含4条100G级光lane",
+        "主机侧32×106.25Gb/s，ELS使用4或8根PM供光纤，分别每路供8或4个发射器",
+        "有内置与外置激光器选项，图示DSP/Driver/TIA是逻辑功能块"
+      ],
+      "limitation": "该标准为100G/lane代际CPO模块规范，不能当成16×200G或8×400G光lane的NPO产品；没有限定PIC和FAU颗数",
+      "kind": "standard",
+      "readStatus": "read_relevant_sections"
+    },
+    {
+      "id": "AR02",
+      "title": "Ciena Vesta 200 6.4T CPX Optical Engine Infobrief",
+      "url": "https://www.ciena.com/__data/assets/pdf_file/0031/171679/vesta_200_6-4T_cpx_optical_engine_IB.pdf",
+      "date": "2026-01",
+      "accessed": "2026-10-08",
+      "supports": [
+        "32×200G，32 Tx＋32 Rx optical lanes及32电入＋32电出",
+        "支持NPO/CPO、线性驱动、ELS，示意8根外置光源纤",
+        "32条lane可分组成DR1/DR2/DR4/DR8端口"
+      ],
+      "limitation": "日期为页脚1.2026版本；功能框图未披露EIC/PIC裸片数、FAU总成数或芯片供应商",
+      "kind": "official_product_material",
+      "readStatus": "read_relevant_sections"
+    },
+    {
+      "id": "AR03",
+      "title": "Eoptolink Unveils High-Density 6.4T NPO Solution at OFC 2026",
+      "url": "https://www.prnewswire.com/news-releases/eoptolink-unveils-high-density-6-4t-npo-solution-at-ofc-2026--302713256.html",
+      "date": "2026-03-13",
+      "accessed": "2026-10-08",
+      "supports": [
+        "新易盛发布6.4T NPO，32 lanes×200Gbps、硅光方案"
+      ],
+      "limitation": "发行人发布稿，发布与展示计划不证明量产或大规模交付；未披露PIC/EIC/FAU细目",
+      "kind": "issuer_press_release",
+      "readStatus": "read_relevant_sections"
+    },
+    {
+      "id": "AR04",
+      "title": "Marvell: The evolution of AI interconnects",
+      "url": "https://www.marvell.com/blogs/the-evolution-of-ai-interconnects.html",
+      "date": "2025-03-17",
+      "accessed": "2026-10-08",
+      "supports": [
+        "NPO/OBO将光引擎直接放进系统并缩短电路径，CPO则在芯片封装离开之前完成光转换",
+        "6.4T 3D硅光引擎含32条200G电/光通道，供CPO系统评估",
+        "Marvell Ara为8×200G电侧及8×200G光侧"
+      ],
+      "limitation": "Marvell 6.4T为CPO评估资料，不等于同规格NPO量产；NPO边界定义在行业资料间存在差异",
+      "kind": "official_technical_blog",
+      "readStatus": "read_relevant_sections"
+    },
+    {
+      "id": "AR05",
+      "title": "Marvell Demonstrates Silicon Photonics Light Engine for Low-power, Rack-scale Interconnect in AI Networks",
+      "url": "https://www.marvell.com/company/newsroom/marvell-demonstrates-silicon-photonics-light-engine-for-low-power-rack-scale-interconnect-in-ai-networks.html",
+      "date": "2025-03-31",
+      "accessed": "2026-10-08",
+      "supports": [
+        "1.6T DR8光引擎支持8×200G电/光通道",
+        "同一封装集成Driver/TIA/PIC/MCU，向部分客户送样"
+      ],
+      "limitation": "为1.6T LPO/OBO及CPO基础器件；不可直接当作3.2T NPO确切BOM",
+      "kind": "issuer_press_release",
+      "readStatus": "read_relevant_sections"
+    },
+    {
+      "id": "AR06",
+      "title": "Semtech Advances Next-Gen AI Optical Interconnects for XPO",
+      "url": "https://investors.semtech.com/news/semtech-advances-next-gen-ai-optical-interconnects-for-xpo/0e9a14e5-17ff-4788-801a-05a8c619bb58",
+      "date": "2026-09-21",
+      "accessed": "2026-10-08",
+      "supports": [
+        "200G/lane有四通道及八通道TIA，包含GN1834L/GN1838L系列",
+        "200G/lane有TN1877四通道与TN1887八通道MZM Driver"
+      ],
+      "limitation": "XPO部件能力资料，不证明指定NPO采用这些料号；新闻稿pitch单位疑似错误，本数据库不引用pitch数值",
+      "kind": "issuer_press_release",
+      "readStatus": "read_relevant_sections"
+    },
+    {
+      "id": "AR07",
+      "title": "Broadcom Delivers Industry’s First 400G/lane Optical DSP for Next-Generation AI Networks",
+      "url": "https://investors.broadcom.com/news-releases/news-release-details/broadcom-delivers-industrys-first-400glane-optical-dsp-next",
+      "date": "2026-03-11",
+      "accessed": "2026-10-08",
+      "supports": [
+        "Taurus BCM83640为1.6T 8:4 PAM4 DSP，400G/lane光侧，集成laser driver",
+        "已开始向早期客户送样，支持1.6T至3.2T模块"
+      ],
+      "limitation": "证明400G光lane和电光lane变换的器件路线；产品对应EML/PD可插拔生态，非8×400G硅光NPO完整产品",
+      "kind": "issuer_press_release",
+      "readStatus": "read_relevant_sections"
+    },
+    {
+      "id": "AR08",
+      "title": "Marvell to Showcase Industry-First 2nm Optical Technology Demos at ECOC 2026",
+      "url": "https://investor.marvell.com/news-events/press-releases/detail/1034/marvell-to-showcase-industry-first-2nm-optical-technology-demos-for-ai-data-center-infrastructure-at-ecoc-2026",
+      "date": "2026-09-21",
+      "accessed": "2026-10-08",
+      "supports": [
+        "2nm 400G/lane optical PAM4演示支持向3.2T互连演进"
+      ],
+      "limitation": "演示新闻不证明3.2T 8×400G或6.4T 16×400G NPO成品发布，更不证明价格和内部集成",
+      "kind": "issuer_press_release",
+      "readStatus": "read_relevant_sections"
+    },
+    {
+      "id": "AR09",
+      "title": "GIGALIGHT Announces 3.2T HYBRID Product Technical Solution and Benefits",
+      "url": "https://www.gigalight.com/news-events/insights-10921.html",
+      "date": "2026-09-18",
+      "accessed": "2026-10-08",
+      "supports": [
+        "3.2T路线讨论16条224G级lane及DR8×2硅光、ELS",
+        "增强3.2T NPO列为roadmap"
+      ],
+      "limitation": "正文事件日期2026-09-14，网页日期2026-09-18；具体16-lane设计针对HYBRID可插拔路线，不能硬说已量产的16×200G线性NPO",
+      "kind": "official_roadmap",
+      "readStatus": "read_relevant_sections"
+    },
+    {
+      "id": "AR10",
+      "title": "GIGALIGHT Successfully Launches First-Generation XT-1.6T DR16 NPO Linear Silicon Photonics Engine",
+      "url": "https://www.gigalight.com/news-events/news-10133.html",
+      "date": "2026-03-16",
+      "accessed": "2026-10-08",
+      "supports": [
+        "1.6T NPO为16×100G，采用socket与线性无DSP方案",
+        "EL-OSFP支持16路CW光源，3.2T NPO正在开发"
+      ],
+      "limitation": "该已发布1.6T的lane数不可直接套成16×200G已发布3.2T产品",
+      "kind": "issuer_press_release",
+      "readStatus": "read_relevant_sections"
+    },
+    {
+      "id": "AR11",
+      "title": "Corning Fiber Array Unit Series OEM-039-AEN",
+      "url": "https://www.corning.com/microsites/coc/oem/documents/OEM-039-AEN.pdf",
+      "date": "2019-09-03",
+      "accessed": "2026-10-08",
+      "supports": [
+        "FAU包括V-groove基底、盖板、光纤、粘接结构，可配连接器",
+        "有8/16/32等端口数且可定制，支持边缘耦合或90度转向光栅耦合"
+      ],
+      "limitation": "旧版器件结构规格，仅用来说明FAU组成和容量可变；不是2026年NPO专用FAU报价或具体配套凭证",
+      "kind": "official_product_material",
+      "readStatus": "read_relevant_sections"
+    },
+    {
+      "id": "AR12",
+      "title": "Ciena: Delivering on the promise of CPO/NPO at hyperscale with Vesta 200 6.4T CPX light engine",
+      "url": "https://www.ciena.com/insights/blog/2026/delivering-on-the-promise-of-cpo-npo-at-hyperscale-with-vesta-200-6-4t-cpx-light-engine",
+      "date": "2026-08-10",
+      "accessed": "2026-10-08",
+      "supports": [
+        "Vesta 200 6.4T已发布用于CPO/NPO",
+        "Open CPX兼顾CPO/NPO和外置/集成激光器的架构选择"
+      ],
+      "limitation": "通用架构兼容性不等于每一Vesta料号都支持全部激光器方式；未公开采购BOM",
+      "kind": "official_technical_blog",
+      "readStatus": "read_relevant_sections"
+    },
+    {
+      "id": "AR13",
+      "title": "Ciena: How open ecosystems will advance CPO adoption",
+      "url": "https://www.ciena.com/insights/blog/2026/how-open-ecosystems-advance-cpo-adoption",
+      "date": "2026-05-07",
+      "accessed": "2026-10-08",
+      "supports": [
+        "Open CPX首代支持32条200G双向通道，后续有12.8T和448G/lane路线",
+        "文中1.6T 3nm DSP批量价格预测约$75/颗"
+      ],
+      "limitation": "$75是Ciena给出的预测锚点，非采购发票、非400G/lane Taurus报价；厂商营销视角不等于独立市场验证",
+      "kind": "official_technical_blog",
+      "readStatus": "read_relevant_sections"
+    },
+    {
+      "id": "AR14",
+      "title": "NVIDIA Technical Blog: Inside the NVIDIA Vera Rubin Platform",
+      "url": "https://developer.nvidia.com/blog/inside-the-nvidia-rubin-platform-six-new-chips-one-ai-supercomputer/",
+      "date": "2026-01-05",
+      "accessed": "2026-10-08",
+      "supports": [
+        "Spectrum-6示意32个3.2T光引擎、200G硅光和micro-ring modulator"
+      ],
+      "limitation": "用于说明3.2T、200G级及MRM的相邻CPO路线；不冒充NPO产品，不据图推算细分BOM",
+      "kind": "official_technical_blog",
+      "readStatus": "read_relevant_sections"
+    },
+    {
+      "id": "AR15",
+      "title": "Broadcom Showcases Industry-Leading Solutions for Scaling AI Infrastructure at OFC 2026",
+      "url": "https://investors.broadcom.com/news-releases/news-release-details/broadcom-showcases-industry-leading-solutions-scaling-ai",
+      "date": "2026-03-12",
+      "accessed": "2026-10-08",
+      "supports": [
+        "展会方案包含3.2T VCSEL-based NPO"
+      ],
+      "limitation": "证明NPO也有VCSEL替代路线；未核验该VCSEL方案lane数，不纳入硅光CW/隔离器BOM",
+      "kind": "issuer_press_release",
+      "readStatus": "read_relevant_sections"
+    },
+    {
+      "id": "COHERENT_MONITOR_PD",
+      "title": "Coherent｜Top-Illuminated Monitor Photodiode Chips",
+      "url": "https://www.coherent.com/networking/optoelectronic-devices/inp-optoelectronics/monitor-pds",
+      "date": null,
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "InGaAs监测PD芯片覆盖1270至1620nm，支持收发器集成",
+        "监测PD产品能力"
+      ],
+      "scope": "未披露价格或本NPO方案的供货关系；不能验证工程估价区间"
+    },
+    {
+      "id": "LUXNET_MONITOR_PD",
+      "title": "华星光通｜Monitor Photodiode芯片目录",
+      "url": "https://www.luxnetcorp.com.tw/chip?page=1",
+      "date": null,
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "DI0A-7031及DI0A-7025监测芯片可与FP/DFB激光器共同封装，监测后端面出光"
+      ],
+      "scope": "仅支持器件形态及集成方式，未提供NPO适配器件报价"
+    },
+    {
+      "id": "DIGIKEY_MTPD1346D100",
+      "title": "DigiKey｜Marktech MTPD1346D-100目录价格",
+      "url": "https://www.digikey.com/en/products/detail/marktech-optoelectronics/MTPD1346D-100/5866635",
+      "date": null,
+      "accessed": "2026-10-08",
+      "type": "distributor_catalog",
+      "supports": [
+        "独立TO-46封装InGaAs PD目录单价：1颗$17.63，100颗$11.6278，1,000颗$10.35944"
+      ],
+      "scope": "1mm感光区独立封装器件；目录价会变动，不是集成监测裸片或NPO量产报价，不能直接换算$1至5工程假设"
+    }
+  ],
+  "referenceBOM": {
+    "id": "wx_3p2t_32x100_external",
+    "name": "3.2T外置光源公开测算参考",
+    "status": "source_estimate",
+    "source_ids": [
+      "WX_NPO_20260927"
+    ],
+    "rate_tbps": 3.2,
+    "optical_lanes_per_direction": 32,
+    "lane_gbps": 100,
+    "external_els": true,
+    "currency": "USD",
+    "engine_bom_base": 500,
+    "els_bom_base": 300,
+    "engines_per_els": 2,
+    "allocated_els_bom": 150,
+    "npo_bom_base": 650,
+    "npo_scope": "一只光引擎及其分摊的ELS材料；不含ASIC、主板、机箱与系统冷却",
+    "engine_line_items": [
+      {
+        "id": "pic",
+        "base": 150,
+        "note": "原文150+"
+      },
+      {
+        "id": "driver_tia_32x100",
+        "base": 160
+      },
+      {
+        "id": "substrate",
+        "base": 70
+      },
+      {
+        "id": "fau",
+        "base": 80
+      },
+      {
+        "id": "other_engine",
+        "base": 40
+      }
+    ],
+    "els_line_items": [
+      {
+        "id": "cw",
+        "quantity": 8,
+        "base": 160,
+        "note": "原文160+"
+      },
+      {
+        "id": "pcb",
+        "base": 30
+      },
+      {
+        "id": "els_optics",
+        "base": 30
+      },
+      {
+        "id": "els_tec_ceramic",
+        "low": 40,
+        "base": null,
+        "high": 50
+      },
+      {
+        "id": "pm_fau",
+        "base": 30
+      }
+    ],
+    "rounding_note": "原始BOM均为近似值且有150+与160+。650是500+300/2参考锚点，不是精确报价；ELS子项约290-300+，不强制虚构差额项",
+    "reference_shares": {
+      "pic": 0.23076923076923078,
+      "driver_tia_32x100": 0.24615384615384617,
+      "substrate": 0.1076923076923077,
+      "fau": 0.12307692307692308,
+      "other_engine": 0.06153846153846154,
+      "allocated_els": 0.23076923076923078
+    },
+    "excluded_prices": {
+      "engine_selling_price": 1200,
+      "els_selling_price": 450,
+      "allocated_procurement_value": 1425,
+      "note": "这些是作者售价/采购价值，不能用于本材料BOM分母"
+    },
+    "scenario_scaling_policy": "32×100G参考场景之外，数量按显式工程配置实时计算；未经证据支持不得将200G/400G单通道价格沿用100G，更不能仅按带宽线性翻倍生成完整BOM。若应用允许用户假设，须标明情景值并保留来源锚点。"
+  },
+  "pricePools": {
+    "driver_tia_32x100": {
+      "name": "Driver+TIA合计",
+      "low": null,
+      "base": 160,
+      "high": null,
+      "currency": "USD",
+      "unit": "美元/32×100G引擎",
+      "source_ids": [
+        "WX_NPO_20260927"
+      ],
+      "members": [
+        "driver",
+        "tia"
+      ],
+      "allocation": "来源仅披露合计；新valuation_model允许显式50:50工程分配，不能标为分项披露或报价"
+    },
+    "els_tec_ceramic": {
+      "name": "TEC温控与陶瓷管壳合计",
+      "low": 40,
+      "base": null,
+      "high": 50,
+      "currency": "USD",
+      "unit": "美元/8颗CW的完整ELS",
+      "source_ids": [
+        "WX_NPO_20260927"
+      ],
+      "members": [
+        "tec",
+        "tec_controller",
+        "laser_submount"
+      ],
+      "allocation": "组合项区间；不得把全部40-50标成TEC制冷片价格，也不将中值45视为披露"
+    },
+    "other_engine": {
+      "name": "引擎其他材料池",
+      "low": null,
+      "base": 40,
+      "high": null,
+      "currency": "USD",
+      "unit": "美元/32×100G引擎",
+      "source_ids": [
+        "WX_NPO_20260927"
+      ],
+      "members": [
+        "housing",
+        "mcu",
+        "pmic",
+        "thermal",
+        "heatsink",
+        "tim",
+        "adhesive"
+      ],
+      "allocation": "没有细分报价，子件只显示包含于材料池"
+    },
+    "pic_integrated": {
+      "name": "PIC内部集成功能",
+      "low": 150,
+      "base": 150,
+      "high": null,
+      "currency": "USD",
+      "unit": "美元/32×100G引擎PIC合计",
+      "source_ids": [
+        "WX_NPO_20260927"
+      ],
+      "members": [
+        "modulator",
+        "photodiode",
+        "splitter",
+        "coupler",
+        "waveguide",
+        "heater"
+      ],
+      "allocation": "来源为不可分离PIC合计；新valuation_model仅提供可追溯的功能预算分配，不能视为独立售价"
+    },
+    "fau_aggregate": {
+      "name": "引擎侧FAU合计",
+      "low": null,
+      "base": 80,
+      "high": null,
+      "currency": "USD",
+      "unit": "美元/32×100G引擎全套FAU",
+      "source_ids": [
+        "WX_NPO_20260927"
+      ],
+      "members": [
+        "vgroove",
+        "cover_plate",
+        "fiber",
+        "lens"
+      ],
+      "allocation": "来源为FAU全套合计；新valuation_model仅按显式权重分配细件，不视为独立报价"
+    }
+  },
+  "priceAnchor": {
+    "sourceId": "WX_NPO_20260927",
+    "baseline": {
+      "rate": 3.2,
+      "lanes": 32,
+      "laneRate": 100,
+      "fauCapacity": 8,
+      "cwFanout": 8
+    },
+    "groups": {
+      "pic": {
+        "amount": 150,
+        "scaling": "bandwidth"
+      },
+      "eic": {
+        "amount": 160,
+        "scaling": "lanes"
+      },
+      "fau": {
+        "amount": 80,
+        "scaling": "lanes"
+      },
+      "substrate": {
+        "amount": 70,
+        "scaling": "bandwidth"
+      },
+      "other": {
+        "amount": 40,
+        "scaling": "bandwidth"
+      },
+      "els": {
+        "amount": 300,
+        "scaling": "laserAllocation"
+      }
+    },
+    "description": "原始BOM均为近似值且有150+与160+。650是500+300/2参考锚点，不是精确报价；ELS子项约290-300+，不强制虚构差额项"
+  },
+  "researchStatus": "研报下载：0/0，复用1份高盛原表；公众号文章下载：0/0，复用并阅读1篇微信原文；复读2份公司披露。指定浏览器访问限制阻止本轮新增搜狗微信检索。 本轮局部更新：新增核对监测PD厂商网页及独立封装目录价，$1至5/路为工程假设；未新增下载研报或公众号文章，当前接口未能确认Codex工作台窗口。",
+  "updatePolicy": "本次核验快照。修改database.json后执行npm run build，重新生成内嵌数据HTML与SQLite。没有设置定期自动更新。",
+  "researchAssumptions": {
+    "pricing": "一级预算依现有32×100G参考测算缩放，细项使用显式工程权重或单价假设分配；未计高速器件与良率溢价，不等于当前厂商报价",
+    "quantities": "芯片和FAU集成度、供光扇出、隔离级数均为可调整假设",
+    "arch400G": "电光同速400G前瞻情景，未绑定到具体NPO产品",
+    "monitorPD": "厂商资料支持监测PD采用裸片并与激光器共同封装；独立TO-46封装器件目录价约$10至18/颗，仅作为不同封装的参照。$1至5/路区间及$3/路中心为工程假设，并非由目录价按固定折扣推导，也未获供应商报价验证",
+    "componentAllocation": "上级预算约束下的功能及器件价值分配。六个一级池沿用现有来源参考；末级权重是可修改工程假设，不是厂商报价。当前数量为0的权重留在父级未拆分余额。"
+  },
+  "provenance": {
+    "costSourceFile": "research/cost-suppliers.json",
+    "architectureSourceFile": "research/architecture.json"
+  },
+  "valuationModel": {
+    "version": "1.0.0",
+    "status": "engineering_allocation",
+    "asOf": "2026-10-08",
+    "description": "上级预算约束下的功能及器件价值分配。六个一级池沿用现有来源参考；末级权重是可修改工程假设，不是厂商报价。当前数量为0的权重留在父级未拆分余额。",
+    "sourceIds": [
+      "WX_NPO_20260927"
+    ],
+    "rules": {
+      "pic": {
+        "weights": {
+          "modulator": 40,
+          "photodiode": 20,
+          "waveguide": 10,
+          "coupler": 10,
+          "splitter": 5,
+          "phase": 5
+        },
+        "reserveWeight": 10,
+        "basis": "按PIC集成功能分配芯片预算；权重是工程假设，不代表功能可独立采购或真实芯片面积比例"
+      },
+      "eic": {
+        "weights": {
+          "driver": 50,
+          "tia": 50
+        },
+        "reserveWeight": 0,
+        "basis": "来源仅披露Driver与TIA合计；Tx驱动和Rx放大各分配一半为展示假设，不是已披露的分项价格"
+      },
+      "fau": {
+        "weights": {
+          "vgroove": 20,
+          "fiber": 10,
+          "lens": 15,
+          "adhesive": 10,
+          "cover_plate": 5
+        },
+        "reserveWeight": 40,
+        "basis": "FAU细件按工程权重分配；保留40份未拆分预算，不把精密装配和测试全部归给材料"
+      },
+      "substrate": {
+        "weights": {
+          "pcb": 60,
+          "interposer": 20,
+          "solder": 10
+        },
+        "reserveWeight": 10,
+        "basis": "光引擎基板内部预算分配；此PCB不是来源ELS控制PCB的30美元组合项；未配置中介层的权重保留为未拆分预算"
+      },
+      "other": {
+        "weights": {
+          "connector": 20,
+          "control": 25,
+          "thermal": 45
+        },
+        "reserveWeight": 10,
+        "basis": "配套与热管理组合预算内部的工程分配，不对应独立报价"
+      },
+      "connector": {
+        "weights": {
+          "ferrule": 50
+        },
+        "reserveWeight": 50,
+        "basis": "插芯分配连接器预算的一半，其余结构和装配保留未拆分"
+      },
+      "control": {
+        "weights": {
+          "mcu": 60,
+          "pmic": 40
+        },
+        "reserveWeight": 0,
+        "basis": "控制与供电预算按60比40分配给控制芯片及电源管理，比例未获器件报价验证"
+      },
+      "thermal": {
+        "weights": {
+          "heatsink": 45,
+          "tim": 10,
+          "housing": 35
+        },
+        "reserveWeight": 10,
+        "basis": "散热器、导热材料、外壳按工程权重分配，保留未拆分预算"
+      },
+      "cw": {
+        "weights": {
+          "laser_die": 70,
+          "laser_submount": 20
+        },
+        "reserveWeight": 10,
+        "basis": "CW净预算中按70份激光芯片、20份热沉与Submount、10份未拆分分配；监测PD已在光源层单列，不能重复加入"
+      },
+      "laser_die": {
+        "weights": {
+          "inp_substrate": 35
+        },
+        "reserveWeight": 65,
+        "basis": "InP衬底分配芯片净预算的35%为工程假设；剩余65%未拆分，不能据此推断材料毛利或实际行业价值份额"
+      },
+      "isolator": {
+        "weights": {
+          "faraday": 40,
+          "polarizer": 10,
+          "analyzer": 10,
+          "magnet": 10,
+          "collimator": 10,
+          "isolator_housing": 10
+        },
+        "reserveWeight": 10,
+        "basis": "隔离器内部材料与器件分配假设；本模型令法拉第旋片占40%，缺少同规格量产拆价验证"
+      },
+      "faraday": {
+        "weights": {
+          "garnet": 65,
+          "coating": 15
+        },
+        "reserveWeight": 20,
+        "basis": "旋片预算按65份磁光晶体、15份镀膜、20份未拆分分配，未取得材料加工同口径拆价"
+      },
+      "els": {
+        "weights": {
+          "cw": 136,
+          "isolator": 18,
+          "pm_fiber": 6,
+          "laser_driver": 15,
+          "tec": 36,
+          "pm_fau": 24,
+          "els_optics": 12,
+          "tec_controller": 6
+        },
+        "reserveWeight": 23,
+        "basis": "先扣已单列的监测PD，再按以下默认预算权重分配光源剩余预算。来源组合项和当前结构树不完全对应，拆分及包含关系均为工程假设；保留23份未拆分余额",
+        "weightNotes": {
+          "cw": "默认权重136＝原CW组合参考160−8个监测点×假设3。将监测PD从CW组合中单列是防止重复计算的建模选择，来源未确认该包含关系；当前值不等于原文20+/颗CW参考价",
+          "isolator": "默认权重18＝整形滤光组合参考30×假设60%。将隔离器归入这一组合仅为建模选择，来源未确认包含关系",
+          "els_optics": "默认权重12＝整形滤光组合参考30×假设40%，与单列隔离器共用该组合预算",
+          "pm_fau": "默认权重24＝8路保偏FAU组合参考30×假设80%，当前净分配已扣除单列供光纤",
+          "pm_fiber": "默认权重6＝8路保偏FAU组合参考30×假设20%，不是公开裸光纤单价",
+          "laser_driver": "默认权重15＝ELS控制PCB组合参考30×假设50%；来源没有逐项IC清单",
+          "tec_controller": "默认权重6＝ELS控制PCB组合参考30×假设20%；来源没有逐项IC清单",
+          "tec": "默认权重36＝TEC及陶瓷组合参考区间40至50的假设中值45×80%；45不是原文披露单值，当前分配也不是独立TEC报价"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,11 @@
+node_modules/
+qa/
+*.zip
+.DS_Store
+__pycache__/
+*.pyc
+
+# Local illustration deliverables and historical research handoff notes
+NPO*示意图_*.png
+research/*-notes.md
+research/*-prompt-*.md

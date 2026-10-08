@@ -1,0 +1,23 @@
+{
+  "name": "npo-structure-explorer",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Offline NPO component explorer",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node scripts/test-model.mjs && node scripts/test-search.mjs",
+    "test:browser": "node scripts/render-qa.cjs",
+    "package": "python3 scripts/package-delivery.py"
+  },
+  "dependencies": {
+    "esbuild": "0.28.2",
+    "three": "0.186.1"
+  },
+  "devDependencies": {
+    "playwright": "1.62.1"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
