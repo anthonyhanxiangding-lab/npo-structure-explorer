@@ -57,6 +57,7 @@ function result(passed,extra={}){
   page.on('pageerror',e=>errors.push(String(e)));page.on('console',m=>{if(m.type()==='error')errors.push(m.text())});
   await page.route(/^https?:/,r=>{requests.push(r.request().url());r.abort()});
   await page.addInitScript(()=>{try{localStorage.removeItem('npo-explorer-v1')}catch{}});
+  const loadedArtifactHash=crypto.createHash('sha256').update(fs.readFileSync(artifact)).digest('hex');
   await page.goto(pathToFileURL(artifact).href);
   await page.waitForFunction(()=>window.NPO);
   assert(await page.evaluate(()=>!!NPO.scene),'3D scene initialized');
@@ -175,6 +176,7 @@ function result(passed,extra={}){
   await page.setViewportSize({width:390,height:844});await page.waitForTimeout(1000);await page.screenshot({path:qaPath('06-mobile.png'),fullPage:true});
   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+2),'mobile overflow');mark('mobile width');
   assert.equal(requests.length,0,'must not request external network');assert.equal(errors.length,0,errors.join('\n'));
+  assert.equal(loadedArtifactHash,crypto.createHash('sha256').update(fs.readFileSync(artifact)).digest('hex'),'Artifact must remain unchanged during QA');
   fs.writeFileSync(qaPath('browser-results.json'),JSON.stringify(result(true),null,2)+'\n');
   console.log(JSON.stringify({passed:true,checks:checks.length,qaDir,artifact}));
 })().catch(async e=>{

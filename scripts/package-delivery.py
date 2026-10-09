@@ -18,14 +18,21 @@ if not artifact.is_file():
  raise SystemExit(f'Generated HTML is missing: {artifact}. Run npm run build and browser QA before packaging.')
 if receipt.get('artifactSha256')!=hashlib.sha256(artifact.read_bytes()).hexdigest():
  raise SystemExit(f'Browser QA does not match the current HTML: {receipt_path}. Rerun node scripts/render-qa.cjs before packaging.')
-qa_images=sorted(qa.glob('0*.png'))
+ui_path=qa/'ui-results.json'
+if not ui_path.is_file():
+ raise SystemExit('Run node scripts/test-ui.cjs before packaging')
+ui_receipt=json.loads(ui_path.read_text(encoding='utf-8'))
+if ui_receipt.get('passed') is not True or ui_receipt.get('errors')!=[] or ui_receipt.get('artifactSha256')!=hashlib.sha256(artifact.read_bytes()).hexdigest():
+ raise SystemExit('UI QA does not match current HTML')
+files['qa/ui-results.json']=ui_path
+qa_images=sorted(qa.glob('[0-9][0-9]-*.png'))
 if not qa_images:
  raise SystemExit(f'Browser QA screenshots are missing from {qa}. Rerun node scripts/render-qa.cjs using the same NPO_QA_DIR before packaging.')
 files['qa/browser-results.json']=receipt_path
 files.update({'qa/'+p.name:p for p in qa_images})
 manifest={n:{'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for n,p in sorted(files.items())}
 (qa/'delivery-manifest.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2))
-target=root/'NPO结构探索器_源码与数据库_20261008.zip'
+target=root/'NPO结构探索器_源码与数据库_20261009.zip'
 with zipfile.ZipFile(target,'w',zipfile.ZIP_DEFLATED) as z:
  for n,p in files.items():z.write(p,n)
  z.write(qa/'delivery-manifest.json','qa/delivery-manifest.json')
