@@ -2,6 +2,30 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
+const SIGNAL_COLORS = { tx: '#138dac', rx: '#8754ba', cw: '#c48d20' };
+const SIGNAL_COMPONENTS = {
+  tx: new Set(['driver', 'modulator']),
+  rx: new Set(['photodiode', 'tia']),
+  cw: new Set(['els', 'cw', 'laser_die', 'inp_substrate', 'laser_submount', 'laser_driver', 'monitor_pd', 'isolator', 'faraday', 'garnet', 'coating', 'polarizer', 'analyzer', 'magnet', 'collimator', 'isolator_housing', 'pm_fiber', 'pm_fau', 'els_optics', 'tec', 'tec_controller']),
+};
+export const normalizeSignalPath = value => ['tx', 'rx', 'cw'].includes(value) ? value : 'all';
+export function signalModesForComponent(id) {
+  if (['pic', 'engine', 'waveguide', 'coupler'].includes(id)) return ['tx', 'rx', 'cw'];
+  if (['phase', 'splitter'].includes(id)) return ['tx', 'cw'];
+  if (['fau', 'fiber', 'lens'].includes(id)) return ['tx', 'rx'];
+  return Object.entries(SIGNAL_COMPONENTS).filter(([, ids]) => ids.has(id)).map(([mode]) => mode);
+}
+// One bidirectional channel has distinct Tx and Rx paths. A receive detector
+// terminates its receive waveguide; it is never downstream of the Tx modulator.
+export function picChannelLayout(channelCount) {
+  const count = Math.max(1, Math.min(64, Math.floor(Number(channelCount) || 1)));
+  return Array.from({ length: count }, (_, index) => ({
+    txZ: -0.82 + (index + 0.5) * 0.66 / count,
+    rxZ: 0.16 + (index + 0.5) * 0.66 / count,
+    pitch: 0.66 / count,
+  }));
+}
+
 /**
  * Procedural, deliberately unscaled NPO engineering study.
  * Every solid belongs to a semantic part; no downloaded models or textures.
@@ -9,7 +33,7 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 export function createScene(container, { onSelect, onEnter, onHover } = {}) {
   const state = {
     selectedId: null, viewId: 'npo', config: { rate: 3.2, laneRate: 200, lanes: 16, laser: 'external' },
-    quantities: {}, nodes: {}, explode: 0.18,
+    quantities: {}, nodes: {}, explode: 0.18, signalPath: 'all',
   };
   const scene = new THREE.Scene();
   scene.background = new THREE.Color('#f3f5f7');
@@ -125,6 +149,7 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
     m.receiveShadow = true;
     if (id) m.userData.id = id;
     m.material.userData.baseOpacity = m.material.opacity;
+    if (m.material.color) m.material.userData.baseColor = m.material.color.clone();
     m.material.userData.baseTransparent = m.material.transparent;
     if (m.material.emissive) m.material.userData.baseEmissive = m.material.emissive.clone();
     parent.add(m);
@@ -158,6 +183,42 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
     return part(new THREE.TubeGeometry(path, segments, radius, 7, false), mat, parent, [0, 0, 0], id);
   }
   function straight(parent, a, b, radius, mat, id) { return tube(parent, [a, b], radius, mat, id, 1); }
+  function signalTag(object, modes) {
+    object.userData.signalPaths = Array.isArray(modes) ? modes : [modes];
+    return object;
+  }
+  function signalRoute(parent, mode, points, text = '', labelPosition = null, radius = 0.021) {
+    const route = signalTag(group(null, parent), mode);
+    route.userData.decorative = true;
+    route.userData.signalRoute = mode;
+    const mat = material(SIGNAL_COLORS[mode], 0.12, 0.38);
+    mat.emissive.set(SIGNAL_COLORS[mode]);
+    mat.emissiveIntensity = 0.35;
+    tube(route, points, radius, mat, null, Math.max(18, points.length * 7));
+    const end = new THREE.Vector3(...points[points.length - 1]);
+    const previous = new THREE.Vector3(...points[points.length - 2]);
+    const direction = end.clone().sub(previous).normalize();
+    const length = radius * 7.5;
+    const tip = part(new THREE.ConeGeometry(radius * 3.1, length, 16), mat, route, end.clone().addScaledVector(direction, -length / 2).toArray());
+    tip.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), direction);
+    if (text) label(route, text, labelPosition || points[Math.floor(points.length / 2)], null, -1);
+    route.traverse(o => { o.userData.excludeFromFit = true; });
+    mat.dispose();
+    return route;
+  }
+  function signalModesForObject(object) {
+    let cursor = object;
+    while (cursor && cursor !== currentRoot?.parent) {
+      if (cursor.userData.signalPaths) return cursor.userData.signalPaths;
+      cursor = cursor.parent;
+    }
+    return signalModesForComponent(semanticId(object));
+  }
+  function refreshSignalRoutes() {
+    currentRoot?.traverse(o => {
+      if (o.userData.signalRoute) o.visible = state.signalPath === 'all' || o.userData.signalRoute === state.signalPath;
+    });
+  }
   function edges(mesh, color = '#304d61', opacity = 0.35) {
     const line = new THREE.LineSegments(new THREE.EdgesGeometry(mesh.geometry), new THREE.LineBasicMaterial({ color, transparent: true, opacity }));
     line.userData.decorative = true;
@@ -240,9 +301,6 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
     return g;
   }
 
-  function wavePath(parent, id, a, b, z, width = 0.018) {
-    return tube(parent, [[a, 0.01, z], [a + (b - a) * 0.23, 0.01, z], [a + (b - a) * 0.4, 0.01, z + 0.045], [b, 0.01, z + 0.045]], width, palette.gold, id, 26);
-  }
   function pic(parent, pos = [0, 0, 0], detailed = false, channelCount = null) {
     const g = group('pic', parent, pos);
     const base = group(null, g);
@@ -250,30 +308,39 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
     box(base, [3.76, 0.008, 1.87], [0, 0.061, 0], palette.darkSilver);
     const count = channelCount ?? Math.min(lanes(), Number(state.config.picChannels) || 8);
     const optical = movable(group(null, g, [0, 0.071, 0]), [0, detailed ? 0.34 : 0.05, 0]);
-    for (let i = 0; i < count; i++) {
-      const z = -0.82 + i * 1.64 / Math.max(count - 1, 1);
-      wavePath(optical, 'waveguide', -1.8, 1.8, z, detailed ? 0.012 : 0.009);
-      box(optical, [0.48, 0.018, 0.035], [-0.76, 0.029, z], palette.cyan, 'modulator');
-      box(optical, [0.21, 0.038, 0.045], [0.76, 0.03, z + 0.045], palette.maroon, 'photodiode');
-      box(optical, [0.22, 0.008, 0.032], [1.65, 0.023, z + 0.045], palette.gold, 'coupler');
-      if (i % 2 === 0) {
-        box(optical, [0.22, 0.014, 0.032], [0.16, 0.026, z + 0.03], palette.blue, 'phase');
-        tube(optical, [[-1.64, 0.025, z], [-1.45, 0.025, z], [-1.29, 0.025, z - 0.035]], 0.01, palette.gold, 'splitter', 18);
+    const layout = picChannelLayout(count);
+    for (const { txZ, rxZ, pitch } of layout) {
+      const guideRadius = Math.min(detailed ? 0.011 : 0.008, pitch * 0.105);
+      const arm = pitch * 0.22;
+      const tx = signalTag(group(null, optical), 'tx');
+      const rx = signalTag(group(null, optical), 'rx');
+      // Separate transmit and receive rows: MZM on Tx, terminating PD on Rx.
+      signalTag(straight(tx, [-1.8, 0.017, txZ], [-1.0, 0.017, txZ], guideRadius, palette.gold, 'waveguide'), ['cw', 'tx']);
+      for (const side of [-1, 1]) {
+        tube(tx, [[-1, 0.017, txZ], [-0.72, 0.017, txZ + side * arm], [0.27, 0.017, txZ + side * arm], [0.54, 0.017, txZ]], guideRadius, palette.gold, 'modulator', 20);
+        box(tx, [0.93, 0.022, arm * 0.6], [-0.23, 0.035, txZ + side * arm], palette.cyan, 'modulator');
       }
-      if (detailed && i % 4 === 0) {
-        torus(optical, 0.07, 0.009, [-0.15, 0.025, z], palette.gold, 'modulator', 'y');
-      }
+      straight(tx, [0.54, 0.017, txZ], [1.8, 0.017, txZ], guideRadius, palette.gold, 'waveguide');
+      box(tx, [0.2, 0.012, pitch * 0.42], [1.67, 0.025, txZ], palette.gold, 'coupler');
+      signalTag(box(tx, [0.16, 0.012, pitch * 0.3], [-1.58, 0.025, txZ], palette.gold, 'splitter'), 'cw');
+      box(tx, [0.2, 0.009, pitch * 0.3], [0.94, 0.035, txZ], palette.blue, 'phase');
+      straight(rx, [1.8, 0.017, rxZ], [0.6, 0.017, rxZ], guideRadius, palette.cyan, 'waveguide');
+      box(rx, [0.2, 0.012, pitch * 0.42], [1.67, 0.025, rxZ], palette.gold, 'coupler');
+      box(rx, [0.27, 0.038, pitch * 0.54], [0.46, 0.03, rxZ], palette.maroon, 'photodiode');
     }
     for (let i = 0; i < 20; i++) {
       const x = -1.75 + i * 3.5 / 19;
       for (const z of [-0.955, 0.955]) box(g, [0.085, 0.016, 0.058], [x, 0.069, z], palette.gold, 'pic');
     }
     if (detailed) {
-      label(g, `单颗PIC · ${count}路结构示意`, [-1.2, 0.72, -1], 'pic', 0);
-      label(optical, '调制器', [-0.8, 0.35, 0.65], 'modulator', 1);
-      label(optical, '光电探测器', [0.77, 0.3, -0.75], 'photodiode', 1);
-      label(optical, '片上波导', [0, 0.18, 0.4], 'waveguide', 2);
-      label(optical, '光耦合结构', [1.7, 0.24, 0.7], 'coupler', 2);
+      label(g, `单颗PIC · ${count}Tx＋${count}Rx结构示意`, [-0.5, 0.7, -1], 'pic', 0);
+      label(optical, '调制器 · MZM示意', [-0.5, 0.31, -0.74], 'modulator', 1);
+      label(optical, '接收PD', [0.48, 0.33, 0.7], 'photodiode', 1);
+      label(optical, '片上波导', [0.94, 0.18, 0.08], 'waveguide', 2);
+      label(optical, 'Tx / Rx光接口', [1.7, 0.29, 0.02], 'coupler', 2);
+      signalRoute(optical, 'tx', [[-0.98, 0.17, -0.95], [0.6, 0.17, -0.95], [1.87, 0.17, -0.95]], 'Tx发射输出', [0.83, 0.37, -1.12], 0.015);
+      signalRoute(optical, 'rx', [[1.87, 0.17, 0.96], [0.65, 0.17, 0.96], [0.46, 0.17, 0.64]], 'Rx输入至PD', [1.45, 0.38, 1.04], 0.015);
+      signalRoute(optical, 'cw', [[-2.16, 0.17, -0.82], [-1.8, 0.17, -0.82], [-1.55, 0.17, -0.52]], 'CW供光至Tx', [-1.77, 0.39, 0.0], 0.015);
     }
     return g;
   }
@@ -320,10 +387,11 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
         const end = detailed ? length / 2 + 1.6 : length / 2 + 0.68;
         const tx = fiberIndex < count / 2;
         const jacket = pm ? palette.gold : tx ? palette.glass : palette.glass;
-        tube(fibers, [[tip, fiberY, z], [0, fiberY, z], [length / 2 + 0.38, fiberY, z], [end, fiberY + (detailed ? 0.1 : 0.04), z]], radius, jacket, fiberId, 24);
-        straight(fibers, [tip, fiberY, z], [length / 2 + 0.2, fiberY, z], radius * 0.22, pm || tx ? palette.gold : palette.cyan, fiberId);
-        cylinder(fibers, radius * 0.92, 0.009, [tip, fiberY, z], pm || tx ? palette.gold : palette.cyan, fiberId, 'x', 12);
-        if (detailed && !pm && state.config.fauLens !== false && q('lens', 1) > 0) sphere(fibers, radius * 1.12, [tip - 0.18, fiberY, z], palette.glass, 'lens', [0.55, 1, 1]);
+        const strand = signalTag(group(fiberId, fibers), pm ? 'cw' : tx ? 'tx' : 'rx');
+        tube(strand, [[tip, fiberY, z], [0, fiberY, z], [length / 2 + 0.38, fiberY, z], [end, fiberY + (detailed ? 0.1 : 0.04), z]], radius, jacket, fiberId, 24);
+        straight(strand, [tip, fiberY, z], [length / 2 + 0.2, fiberY, z], radius * 0.22, pm || tx ? palette.gold : palette.cyan, fiberId);
+        cylinder(strand, radius * 0.92, 0.009, [tip, fiberY, z], pm || tx ? palette.gold : palette.cyan, fiberId, 'x', 12);
+        if (detailed && !pm && state.config.fauLens !== false && q('lens', 1) > 0) sphere(strand, radius * 1.12, [tip - 0.18, fiberY, z], palette.glass, 'lens', [0.55, 1, 1]);
         fiberIndex++;
       }
       const lid = movable(group(pm ? id : 'cover_plate', segment, [0, detailed ? 0.64 : 0.24, 0]), [0, detailed ? 0.76 : 0.17, 0]);
@@ -419,6 +487,9 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
       label(array, 'Fiber Array', [0.1, 0.54, 0.7], 'fau', 0);
       label(base, '封装基板', [-2.7, 0.3, 1.3], 'substrate', 2);
       label(thermal, '散热结构 · 示意', [0.8, 0.83, -0.4], 'thermal', 2);
+      signalRoute(g, 'tx', [[-1.6, 1.14, -1.54], [-1.6, 1.14, -0.7], [0.45, 1.14, -0.7], [2.82, 1.14, -0.7]], 'Tx：Driver → 调制器 → FAU', [0.8, 1.52, -1.65]);
+      signalRoute(g, 'rx', [[2.82, 1.0, 0.8], [0.48, 1.0, 0.8], [-0.2, 1.0, 0.78], [-0.2, 1.0, 1.42]], 'Rx：FAU → PD → TIA', [0.9, 1.43, 1.57]);
+      signalRoute(g, 'cw', [[-3.02, 0.88, -0.2], [-2.2, 0.88, -0.2], [-1.53, 0.88, -0.56]], 'CW供光至PIC', [-2.46, 1.26, 0.45]);
     }
     return g;
   }
@@ -549,8 +620,8 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
     if (detailed) {
       label(die, 'CW激光芯片', [0.1, 0.35, 0], 'laser_die', 0);
       label(submount, '激光器热沉 / Submount', [0.25, 0.23, 0.68], 'laser_submount', 1);
-      label(cooler, 'TEC', [-0.5, 0.1, 0.6], 'tec', 1);
-      label(cap, '金属封装 · 剖开示意', [0, 0.98, -0.1], 'cw', 2);
+      label(cooler, 'TEC · 热路径示意', [-0.5, 0.1, 0.6], 'tec', 1);
+      label(cap, '封装位置示意 · 非通用封装', [0, 0.98, -0.1], 'cw', 2);
       label(pd, '监控PD', [-0.22, 0.29, 0], 'monitor_pd', 2);
     }
     return g;
@@ -565,7 +636,7 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
     laser.scale.setScalar(0.75);
     const iso = movable(isolator(g, [0.7, 0.79, -0.2], false), [0, detailed ? 0.82 : 0.05, 0]);
     const drive = movable(chip(g, 'laser_driver', [-0.82, 0.41, 0.76], [1.1, 0.15, 0.5], 6), [0, detailed ? 0.5 : 0.04, 0.2]);
-    chip(g, 'monitor_pd', [0.64, 0.41, 0.72], [0.38, 0.09, 0.35], 3);
+    // The single illustrated CW already contains its monitor PD.
     chip(g, 'tec_controller', [0.05, 0.41, 0.72], [0.45, 0.1, 0.36], 4);
     const supplyArray = fau(g, [1.58, 0.48, 0.61], false, true);
     supplyArray.scale.setScalar(0.29);
@@ -581,7 +652,7 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
       label(iso, '光隔离器', [0.4, 1.18, 0], 'isolator', 0);
       label(drive, '激光驱动', [0, 0.32, 0.4], 'laser_driver', 1);
       label(output, '保偏光纤', [2.5, 0.94, 0.55], 'pm_fiber', 1);
-      label(lid, 'ELS外壳 · 单路光源展开示意', [1.1, 0.3, -0.7], 'els', 2);
+      label(lid, 'ELS单路展开示意 · 实际封装依方案', [1.1, 0.3, -0.7], 'els', 2);
       label(supplyArray, '保偏供光FAU', [0, 0.95, 0], 'pm_fau', 2);
     }
     return g;
@@ -645,7 +716,7 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
     const count = signalFibers();
     for (let i = 0; i < count; i++) {
       const z = -0.9 + i * 1.8 / Math.max(count - 1, 1);
-      tube(root, [[0.94, 0.83, z - 0.15], [1.35, 0.83, z - 0.08], [connectorPos[0] - 1.02, 0.82, z + connectorPos[2]], [connectorPos[0] - 0.53, 0.68, z + connectorPos[2]]], Math.min(0.022, 0.39 / count), palette.cyan, 'fiber', 28);
+      signalTag(tube(root, [[0.94, 0.83, z - 0.15], [1.35, 0.83, z - 0.08], [connectorPos[0] - 1.02, 0.82, z + connectorPos[2]], [connectorPos[0] - 0.53, 0.68, z + connectorPos[2]]], Math.min(0.022, 0.39 / count), i < count / 2 ? palette.cyan : palette.purple, 'fiber', 28), i < count / 2 ? 'tx' : 'rx');
     }
     const laserPos = isBoard ? [3.48, 0.32, -1.33] : [4.1, 0.07, 4.35];
     const source = els(root, laserPos);
@@ -685,6 +756,14 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
     electrical.material.userData.baseOpacity = 0.42;
     electrical.material.userData.baseTransparent = true;
     root.add(electrical);
+    // Raised, non-pickable overlays explain direction without pretending to be
+    // additional fibres or a measured package interconnect layout.
+    const txEnd = [connectorPos[0] + 0.52, 1.02, connectorPos[2] - 0.58];
+    const rxStart = [connectorPos[0] + 0.52, 1.14, connectorPos[2] + 0.58];
+    signalRoute(root, 'tx', [[2.95, 1.1, -3.48], [-1.1, 1.2, -2.6], [-2.85, 1.4, -1.05], [-0.62, 1.4, -0.58], [0.95, 1.18, -0.58], txEnd], 'Tx发射：电 → 光', [-1.4, 1.9, -2.55], 0.025);
+    signalRoute(root, 'rx', [rxStart, [0.96, 1.32, 0.62], [-1.48, 1.5, 0.52], [-2.36, 1.5, 1.18], [-0.53, 1.2, -2.03], [3.05, 1.04, -3.16]], 'Rx接收：光 → 电', [-0.2, 1.75, 1.46], 0.025);
+    const supplyPath = path.map(([x, y, z]) => [x, y + 0.25, z]);
+    signalRoute(root, 'cw', supplyPath, 'CW连续光供给Tx', isBoard ? [3.4, 1.65, 2.18] : [5.36, 1.6, 2.55], 0.022);
   }
 
   function substrateView(root) {
@@ -944,14 +1023,14 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
     });
     root.updateMatrixWorld(true);
   }
-  function frameObject(root, immediate = false) {
+  function frameObject(root, immediate = false, focusId = null) {
     // Fit real mesh bounds in camera space, with room for the stage heading and toolbar.
     // A width-only fit cuts off the near ELS when the board is viewed obliquely.
     updateExplode(root, normalizedExplode(state.explode));
     const points = [];
     const bounds = new THREE.Box3();
     root.traverse(o => {
-      if (!o.isMesh || o.userData.excludeFromFit) return;
+      if (!o.isMesh || o.userData.excludeFromFit || (focusId && !hasAncestorId(o, focusId))) return;
       if (!o.geometry.boundingBox) o.geometry.computeBoundingBox();
       const local = o.geometry.boundingBox;
       for (const x of [local.min.x, local.max.x]) for (const y of [local.min.y, local.max.y]) for (const z of [local.min.z, local.max.z]) {
@@ -961,7 +1040,7 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
       }
     });
     updateExplode(root, explodeCurrent);
-    if (!points.length) return;
+    if (!points.length) { if (focusId) frameObject(root, immediate); return; }
     const center = bounds.getCenter(new THREE.Vector3());
     const direction = state.viewId === 'faraday' || ['garnet', 'coating', 'polarizer', 'analyzer', 'magnet', 'lens', 'collimator'].includes(state.viewId)
       ? new THREE.Vector3(1.25, 0.52, 0.82).normalize()
@@ -1051,17 +1130,30 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
     return false;
   }
   function refreshHighlights() {
+    refreshSignalRoutes();
     currentRoot?.traverse(o => {
       if (!o.isMesh || !o.material.emissive) return;
       const base = o.material.userData.baseEmissive || new THREE.Color(0);
       o.material.emissive.copy(base);
+      if (o.material.userData.baseColor) o.material.color.copy(o.material.userData.baseColor);
+      o.material.emissiveIntensity = 1;
+      const modes = signalModesForObject(o);
+      if (state.signalPath !== 'all' && modes.length) {
+        if (modes.includes(state.signalPath)) {
+          o.material.color.lerp(new THREE.Color(SIGNAL_COLORS[state.signalPath]), 0.2);
+          o.material.emissive.lerp(new THREE.Color(SIGNAL_COLORS[state.signalPath]), 0.42);
+          o.material.emissiveIntensity = 0.85;
+        } else if (!o.userData.decorative) {
+          o.material.color.lerp(new THREE.Color('#a4adb5'), 0.55);
+        }
+      }
       if (hasAncestorId(o, state.selectedId)) {
         o.material.emissive.lerp(new THREE.Color('#167ea7'), 0.3);
         o.material.emissiveIntensity = 0.72;
       } else if (hasAncestorId(o, hoveredId)) {
         o.material.emissive.lerp(new THREE.Color('#36b8d0'), 0.25);
         o.material.emissiveIntensity = 0.75;
-      } else o.material.emissiveIntensity = 1;
+      }
     });
     for (const l of labels) {
       l.el.dataset.selected = String(l.id === state.selectedId);
@@ -1155,7 +1247,9 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
     const occupied = [];
     const sorted = [...labels].sort((a, b) => a.priority - b.priority);
     for (const l of sorted) {
-      if (l.root !== currentRoot || l.root.userData.opacity < 0.5) { l.el.style.display = 'none'; continue; }
+      let visible = true;
+      for (let cursor = l.anchor; cursor; cursor = cursor.parent) if (!cursor.visible) { visible = false; break; }
+      if (!visible || l.root !== currentRoot || l.root.userData.opacity < 0.5) { l.el.style.display = 'none'; continue; }
       l.anchor.getWorldPosition(projected);
       projected.project(camera);
       const x = (projected.x + 1) * w / 2, y = (-projected.y + 1) * h / 2;
@@ -1246,11 +1340,20 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
       if (next.viewId) state.viewId = next.viewId;
       if ('selectedId' in next) state.selectedId = next.selectedId;
       if ('explode' in next) state.explode = normalizedExplode(next.explode);
+      if ('signalPath' in next) state.signalPath = normalizeSignalPath(next.signalPath);
       const after = `${state.viewId}|${JSON.stringify(state.config)}|${JSON.stringify(state.quantities)}`;
       if (before !== after) { hoveredId = null; buildScene(); }
       else refreshHighlights();
     },
     reset() { if (!disposed && currentRoot) frameObject(currentRoot, false); },
+    focusSelected() {
+      if (disposed || !currentRoot) return;
+      frameObject(currentRoot, false, state.selectedId);
+      // A leaf view already contains the selected part; visibly move closer.
+      if (state.selectedId === state.viewId && cameraTween) {
+        cameraTween.toPos.sub(cameraTween.toTarget).multiplyScalar(0.84).add(cameraTween.toTarget);
+      }
+    },
     zoom(delta) {
       if (disposed) return;
       cameraTween = null;
