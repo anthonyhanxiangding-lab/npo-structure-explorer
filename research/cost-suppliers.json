@@ -2498,7 +2498,7 @@
       "function": "通过热电效应控制激光器温度，降低输出和波长漂移",
       "parent": "els",
       "quantity_basis": "按共享温控区数配置",
-      "notes": "冷却型可有TEC，非冷却型可无；不固定每激光器一只TEC",
+      "notes": "TEC温控与陶瓷壳体仅有组合参考区间；当前按工程假设核算温控功能的价值和分摊份额，实际温控区及物理归属需具体设计确认",
       "price": {
         "low": null,
         "base": null,
@@ -2749,7 +2749,7 @@
       "function": "降低表面反射和插入损耗，按器件要求实现偏振等功能",
       "parent": "faraday",
       "quantity_basis": "每个相关光学表面按功能设计",
-      "notes": "镀膜属于旋片/透镜报价的一部分，通常按加工面积/批次",
+      "notes": "镀膜属于旋片加工的一部分；缺少独立报价时使用明确标注的工程分配或单价假设，分配值不代表加工报价",
       "price": {
         "low": null,
         "base": null,
@@ -2896,24 +2896,22 @@
     },
     "pcb": {
       "id": "pcb",
-      "name": "控制PCB/PCBA",
+      "name": "高密度电路板",
       "category": "封装与互连",
-      "function": "承载电源、控制和低速连接等电路",
-      "parent": "els",
-      "quantity_basis": "按模块板卡数配置",
-      "notes": "ELS PCB参考值与引擎mSAP基板分开；控制IC可能含于PCBA报价",
+      "function": "在当前光引擎基板示意中承载高速电连接",
+      "parent": "substrate",
+      "quantity_basis": "当前示意按一只光引擎一片计数；实物板卡数量与工艺依具体封装设计",
+      "notes": "本节点为光引擎基板下的HDI/mSAP电路板；原ELS控制PCB的30美元组合参考移至historical_component_evidence.els_control_pcb，不用作本节点价格依据",
       "price": {
         "low": null,
-        "base": 30,
+        "base": null,
         "high": null,
         "currency": "USD",
-        "unit": "美元/一套ELS PCB",
-        "year": "2026",
-        "status": "source_estimate",
-        "source_ids": [
-          "WX_NPO_20260927"
-        ],
-        "scope": "ELS整套PCB参考；未提供是否包含全部控制IC的清单"
+        "unit": null,
+        "year": null,
+        "status": "unknown",
+        "source_ids": [],
+        "scope": "未取得当前光引擎HDI/mSAP电路板的独立价格；显示值来自基板预算工程分配或规格绑定的本地单价假设"
       },
       "benchmark_prices": [],
       "vendors": [
@@ -2924,7 +2922,7 @@
           "source_ids": [
             "FASTPRINT"
           ],
-          "note": "PCB/基板能力，未证实本ELS控制板供货"
+          "note": "公开资料支持PCB或封装基板产品能力，未确认当前光引擎电路板型号或供货关系；不沿用ELS控制板的对应关系"
         }
       ],
       "checked_at": "2026-10-08",
@@ -3093,7 +3091,7 @@
       "function": "填充芯片、盖板与散热器间微观间隙，降低接触热阻",
       "parent": "thermal",
       "quantity_basis": "按接触面积与胶层/片材厚度计量",
-      "notes": "按面积/厚度使用；非每数据通道一件",
+      "notes": "导热界面材料属于封装组合；缺少独立报价时显示工程分配或单价假设，不将分配值当作可采购报价",
       "price": {
         "low": null,
         "base": null,
@@ -3392,7 +3390,7 @@
       "function": "闭环调节TEC电流，使激光器温度接近设定值",
       "parent": "tec",
       "quantity_basis": "按独立温控区设置",
-      "notes": "与TEC制冷片是不同器件；通常由ELS控制板承载",
+      "notes": "温控电路作为光源预算内的独立核算项；当前拆分采用工程假设，实物控制器数量与独立报价尚未验证",
       "price": {
         "low": null,
         "base": null,
@@ -4196,5 +4194,547 @@
         }
       }
     }
+  },
+  "historical_component_evidence": {
+    "els_control_pcb": {
+      "id": "els_control_pcb",
+      "name": "控制PCB/PCBA",
+      "category": "封装与互连",
+      "function": "承载电源、控制和低速连接等电路",
+      "parent": "els",
+      "quantity_basis": "按模块板卡数配置",
+      "notes": "ELS PCB参考值与引擎mSAP基板分开；控制IC可能含于PCBA报价",
+      "price": {
+        "low": null,
+        "base": 30,
+        "high": null,
+        "currency": "USD",
+        "unit": "美元/一套ELS PCB",
+        "year": "2026",
+        "status": "source_estimate",
+        "source_ids": [
+          "WX_NPO_20260927"
+        ],
+        "scope": "ELS整套PCB参考；未提供是否包含全部控制IC的清单"
+      },
+      "benchmark_prices": [],
+      "vendors": [
+        {
+          "vendor_id": "fastprint",
+          "role": "mSAP及封装基板",
+          "status": "产品能力",
+          "source_ids": [
+            "FASTPRINT"
+          ],
+          "note": "PCB/基板能力，未证实本ELS控制板供货"
+        }
+      ],
+      "checked_at": "2026-10-08",
+      "vendor_coverage": {
+        "domestic": 1,
+        "international": 0,
+        "note": "未列出厂商不代表不存在；仅收录本轮取得产品或披露依据的关系"
+      },
+      "original_component_id": "pcb",
+      "evidence_entity": "ELS控制PCB/PCBA",
+      "record_status": "historical_scope_reference",
+      "scope_note": "保留原始ELS控制PCB组合参考，与当前光引擎基板下的高密度电路板节点分别记录；不作为该节点独立价格或供货证据"
+    }
+  },
+  "component_metadata": {
+    "npo": {
+      "budgetParent": null,
+      "quantityKind": "system_scope",
+      "quantityNote": "一套所选带宽的NPO研究范围，不代表特定厂商产品料号",
+      "physicalQuantityStatus": "not_applicable",
+      "physicalParent": null,
+      "physicalParentStatus": "not_applicable",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属"
+    },
+    "engine": {
+      "budgetParent": "npo",
+      "quantityKind": "physical_assembly",
+      "quantityNote": "数量按当前结构与集成参数作示意计算，尚未核实特定产品的实物件数",
+      "physicalQuantityStatus": "model_assumption",
+      "physicalParent": "npo",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属"
+    },
+    "pic": {
+      "budgetParent": "engine",
+      "quantityKind": "physical_assembly",
+      "quantityNote": "数量按当前结构与集成参数作示意计算，尚未核实特定产品的实物件数",
+      "physicalQuantityStatus": "model_assumption",
+      "physicalParent": "engine",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属"
+    },
+    "modulator": {
+      "budgetParent": "pic",
+      "quantityKind": "integrated_feature",
+      "quantityNote": "数量为芯片内部功能通道或功能组，不等于独立采购器件数量",
+      "physicalQuantityStatus": "unknown",
+      "physicalParent": "pic",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属"
+    },
+    "photodiode": {
+      "budgetParent": "pic",
+      "quantityKind": "integrated_feature",
+      "quantityNote": "数量为芯片内部功能通道或功能组，不等于独立采购器件数量",
+      "physicalQuantityStatus": "unknown",
+      "physicalParent": "pic",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属"
+    },
+    "waveguide": {
+      "budgetParent": "pic",
+      "quantityKind": "integrated_feature",
+      "quantityNote": "数量为芯片内部功能通道或功能组，不等于独立采购器件数量",
+      "physicalQuantityStatus": "unknown",
+      "physicalParent": "pic",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属"
+    },
+    "coupler": {
+      "budgetParent": "pic",
+      "quantityKind": "integrated_feature",
+      "quantityNote": "数量为芯片内部功能通道或功能组，不等于独立采购器件数量",
+      "physicalQuantityStatus": "unknown",
+      "physicalParent": "pic",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属"
+    },
+    "splitter": {
+      "budgetParent": "pic",
+      "quantityKind": "integrated_feature",
+      "quantityNote": "数量为芯片内部功能通道或功能组，不等于独立采购器件数量",
+      "physicalQuantityStatus": "unknown",
+      "physicalParent": "pic",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属"
+    },
+    "phase": {
+      "budgetParent": "pic",
+      "quantityKind": "integrated_feature",
+      "quantityNote": "数量为芯片内部功能通道或功能组，不等于独立采购器件数量",
+      "physicalQuantityStatus": "unknown",
+      "physicalParent": "pic",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属"
+    },
+    "eic": {
+      "budgetParent": "engine",
+      "quantityKind": "budget_group",
+      "quantityNote": "节点为预算分类，数量用于分配计算，不对应一颗独立实物器件",
+      "physicalQuantityStatus": "not_applicable",
+      "physicalParent": null,
+      "physicalParentStatus": "not_applicable",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属"
+    },
+    "driver": {
+      "budgetParent": "eic",
+      "quantityKind": "physical_assembly",
+      "quantityNote": "数量按当前结构与集成参数作示意计算，尚未核实特定产品的实物件数",
+      "physicalQuantityStatus": "model_assumption",
+      "physicalParent": null,
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属"
+    },
+    "tia": {
+      "budgetParent": "eic",
+      "quantityKind": "physical_assembly",
+      "quantityNote": "数量按当前结构与集成参数作示意计算，尚未核实特定产品的实物件数",
+      "physicalQuantityStatus": "model_assumption",
+      "physicalParent": null,
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属"
+    },
+    "fau": {
+      "budgetParent": "engine",
+      "quantityKind": "physical_assembly",
+      "quantityNote": "数量按当前结构与集成参数作示意计算，尚未核实特定产品的实物件数",
+      "physicalQuantityStatus": "model_assumption",
+      "physicalParent": "engine",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属"
+    },
+    "vgroove": {
+      "budgetParent": "fau",
+      "quantityKind": "physical_assembly",
+      "quantityNote": "数量按当前结构与集成参数作示意计算，尚未核实特定产品的实物件数",
+      "physicalQuantityStatus": "model_assumption",
+      "physicalParent": "fau",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属"
+    },
+    "fiber": {
+      "budgetParent": "fau",
+      "quantityKind": "physical_assembly",
+      "quantityNote": "数量按当前结构与集成参数作示意计算，尚未核实特定产品的实物件数",
+      "physicalQuantityStatus": "model_assumption",
+      "physicalParent": "fau",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属"
+    },
+    "lens": {
+      "budgetParent": "fau",
+      "quantityKind": "physical_assembly",
+      "quantityNote": "数量按当前结构与集成参数作示意计算，尚未核实特定产品的实物件数",
+      "physicalQuantityStatus": "model_assumption",
+      "physicalParent": "fau",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属"
+    },
+    "adhesive": {
+      "budgetParent": "fau",
+      "quantityKind": "material_allocation",
+      "quantityNote": "数量为工程核算份数或材料功能组，不等于已确认的面积、质量、批次或独立采购件数",
+      "physicalQuantityStatus": "unknown",
+      "physicalParent": "fau",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属"
+    },
+    "els": {
+      "budgetParent": "npo",
+      "quantityKind": "allocated_share",
+      "quantityNote": "预算按使用CW路数除以8折算光源套数；外置模式的实物盒数按ceil(CW路数/8)显示，未用通道能否共享仍需具体系统确认",
+      "physicalQuantityStatus": "model_assumption",
+      "physicalParent": "npo",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "外置ELS为NPO研究范围内分摊的独立光源模块；板载模式的物理封装和成本需另行验证",
+      "physicalQuantityRule": "ceil(cw/8)",
+      "detail": "外置模式按8路CW参考盒计算模型盒数及本NPO分摊比例；剩余通道能否共享需实际系统确认。板载光源是另一位置及封装情景，尚未核实相应独立报价"
+    },
+    "cw": {
+      "budgetParent": "els",
+      "quantityKind": "functional_channel",
+      "quantityNote": "数量为当前方案的供光或监测功能通道，不能直接解释为独立封装采购数量",
+      "physicalQuantityStatus": "unknown",
+      "physicalParent": "els",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属"
+    },
+    "laser_die": {
+      "budgetParent": "cw",
+      "quantityKind": "physical_assembly",
+      "quantityNote": "数量按当前结构与集成参数作示意计算，尚未核实特定产品的实物件数",
+      "physicalQuantityStatus": "model_assumption",
+      "physicalParent": "cw",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属"
+    },
+    "laser_submount": {
+      "budgetParent": "cw",
+      "quantityKind": "physical_assembly",
+      "quantityNote": "数量按当前结构与集成参数作示意计算，尚未核实特定产品的实物件数",
+      "physicalQuantityStatus": "model_assumption",
+      "physicalParent": "cw",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属"
+    },
+    "isolator": {
+      "budgetParent": "els",
+      "quantityKind": "physical_assembly",
+      "quantityNote": "数量按当前结构与集成参数作示意计算，尚未核实特定产品的实物件数",
+      "physicalQuantityStatus": "model_assumption",
+      "physicalParent": "els",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属"
+    },
+    "faraday": {
+      "budgetParent": "isolator",
+      "quantityKind": "physical_assembly",
+      "quantityNote": "数量按当前结构与集成参数作示意计算，尚未核实特定产品的实物件数",
+      "physicalQuantityStatus": "model_assumption",
+      "physicalParent": "isolator",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属"
+    },
+    "garnet": {
+      "budgetParent": "faraday",
+      "quantityKind": "material_allocation",
+      "quantityNote": "数量为工程核算份数或材料功能组，不等于已确认的面积、质量、批次或独立采购件数",
+      "physicalQuantityStatus": "unknown",
+      "physicalParent": "faraday",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属"
+    },
+    "coating": {
+      "budgetParent": "faraday",
+      "quantityKind": "material_allocation",
+      "quantityNote": "数量为工程核算份数或材料功能组，不等于已确认的面积、质量、批次或独立采购件数",
+      "physicalQuantityStatus": "unknown",
+      "physicalParent": "faraday",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
+      "detail": "镀膜属于旋片加工的一部分；缺少独立报价时使用明确标注的工程分配或单价假设，分配值不代表加工报价"
+    },
+    "polarizer": {
+      "budgetParent": "isolator",
+      "quantityKind": "physical_assembly",
+      "quantityNote": "数量按当前结构与集成参数作示意计算，尚未核实特定产品的实物件数",
+      "physicalQuantityStatus": "model_assumption",
+      "physicalParent": "isolator",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属"
+    },
+    "analyzer": {
+      "budgetParent": "isolator",
+      "quantityKind": "physical_assembly",
+      "quantityNote": "数量按当前结构与集成参数作示意计算，尚未核实特定产品的实物件数",
+      "physicalQuantityStatus": "model_assumption",
+      "physicalParent": "isolator",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属"
+    },
+    "magnet": {
+      "budgetParent": "isolator",
+      "quantityKind": "physical_assembly",
+      "quantityNote": "数量按当前结构与集成参数作示意计算，尚未核实特定产品的实物件数",
+      "physicalQuantityStatus": "model_assumption",
+      "physicalParent": "isolator",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属"
+    },
+    "collimator": {
+      "budgetParent": "isolator",
+      "quantityKind": "physical_assembly",
+      "quantityNote": "数量按当前结构与集成参数作示意计算，尚未核实特定产品的实物件数",
+      "physicalQuantityStatus": "model_assumption",
+      "physicalParent": "isolator",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属"
+    },
+    "isolator_housing": {
+      "budgetParent": "isolator",
+      "quantityKind": "physical_assembly",
+      "quantityNote": "数量按当前结构与集成参数作示意计算，尚未核实特定产品的实物件数",
+      "physicalQuantityStatus": "model_assumption",
+      "physicalParent": "isolator",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属"
+    },
+    "pm_fiber": {
+      "budgetParent": "els",
+      "quantityKind": "physical_assembly",
+      "quantityNote": "数量按当前结构与集成参数作示意计算，尚未核实特定产品的实物件数",
+      "physicalQuantityStatus": "model_assumption",
+      "physicalParent": "els",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属"
+    },
+    "laser_driver": {
+      "budgetParent": "els",
+      "quantityKind": "functional_group",
+      "quantityNote": "数量为当前方案的功能分组，具体芯片、接口或封装件数未知",
+      "physicalQuantityStatus": "unknown",
+      "physicalParent": "els",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属"
+    },
+    "monitor_pd": {
+      "budgetParent": "els",
+      "quantityKind": "functional_channel",
+      "quantityNote": "数量为当前方案的供光或监测功能通道，不能直接解释为独立封装采购数量",
+      "physicalQuantityStatus": "unknown",
+      "physicalParent": "cw",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前示意将本功能放在CW激光封装或热路径附近，预算仍归光源组件；实际可集成、共享或独立配置，未确认通用封装关系及实物件数"
+    },
+    "tec": {
+      "budgetParent": "els",
+      "quantityKind": "allocated_share",
+      "quantityNote": "按光源预算占用比例显示分摊等效组数；实物温控区、控制电路或阵列数量尚未知，0.5组不表示半个实物器件",
+      "physicalQuantityStatus": "unknown",
+      "physicalParent": "cw",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前示意将本功能放在CW激光封装或热路径附近，预算仍归光源组件；实际可集成、共享或独立配置，未确认通用封装关系及实物件数",
+      "physicalQuantityRule": null,
+      "detail": "TEC温控与陶瓷壳体仅有组合参考区间；当前按工程假设核算温控功能的价值和分摊份额，实际温控区及物理归属需具体设计确认"
+    },
+    "substrate": {
+      "budgetParent": "engine",
+      "quantityKind": "budget_group",
+      "quantityNote": "节点为预算分类，数量用于分配计算，不对应一颗独立实物器件",
+      "physicalQuantityStatus": "not_applicable",
+      "physicalParent": null,
+      "physicalParentStatus": "not_applicable",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属"
+    },
+    "pcb": {
+      "budgetParent": "substrate",
+      "quantityKind": "physical_assembly",
+      "quantityNote": "数量按当前结构与集成参数作示意计算，尚未核实特定产品的实物件数",
+      "physicalQuantityStatus": "model_assumption",
+      "physicalParent": null,
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
+      "detail": "光引擎基板下的HDI/mSAP电路板示意；未取得独立报价，当前价值依预算分配或工程单价计算。ELS控制PCB的历史组合参考另行保存，不能移作本节点价格"
+    },
+    "interposer": {
+      "budgetParent": "substrate",
+      "quantityKind": "physical_assembly",
+      "quantityNote": "数量按当前结构与集成参数作示意计算，尚未核实特定产品的实物件数",
+      "physicalQuantityStatus": "model_assumption",
+      "physicalParent": null,
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属"
+    },
+    "other": {
+      "budgetParent": "engine",
+      "quantityKind": "budget_group",
+      "quantityNote": "节点为预算分类，数量用于分配计算，不对应一颗独立实物器件",
+      "physicalQuantityStatus": "not_applicable",
+      "physicalParent": null,
+      "physicalParentStatus": "not_applicable",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属"
+    },
+    "connector": {
+      "budgetParent": "other",
+      "quantityKind": "functional_group",
+      "quantityNote": "数量为当前方案的功能分组，具体芯片、接口或封装件数未知",
+      "physicalQuantityStatus": "unknown",
+      "physicalParent": null,
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属"
+    },
+    "control": {
+      "budgetParent": "other",
+      "quantityKind": "functional_group",
+      "quantityNote": "数量为当前方案的功能分组，具体芯片、接口或封装件数未知",
+      "physicalQuantityStatus": "unknown",
+      "physicalParent": null,
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属"
+    },
+    "mcu": {
+      "budgetParent": "control",
+      "quantityKind": "functional_group",
+      "quantityNote": "数量为当前方案的功能分组，具体芯片、接口或封装件数未知",
+      "physicalQuantityStatus": "unknown",
+      "physicalParent": null,
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属"
+    },
+    "pmic": {
+      "budgetParent": "control",
+      "quantityKind": "functional_group",
+      "quantityNote": "数量为当前方案的功能分组，具体芯片、接口或封装件数未知",
+      "physicalQuantityStatus": "unknown",
+      "physicalParent": null,
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属"
+    },
+    "thermal": {
+      "budgetParent": "other",
+      "quantityKind": "functional_group",
+      "quantityNote": "数量为当前方案的功能分组，具体芯片、接口或封装件数未知",
+      "physicalQuantityStatus": "unknown",
+      "physicalParent": null,
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属"
+    },
+    "heatsink": {
+      "budgetParent": "thermal",
+      "quantityKind": "physical_assembly",
+      "quantityNote": "数量按当前结构与集成参数作示意计算，尚未核实特定产品的实物件数",
+      "physicalQuantityStatus": "model_assumption",
+      "physicalParent": null,
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属"
+    },
+    "tim": {
+      "budgetParent": "thermal",
+      "quantityKind": "material_allocation",
+      "quantityNote": "数量为工程核算份数或材料功能组，不等于已确认的面积、质量、批次或独立采购件数",
+      "physicalQuantityStatus": "unknown",
+      "physicalParent": null,
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
+      "detail": "导热界面材料属于封装组合；缺少独立报价时显示工程分配或单价假设，不将分配值当作可采购报价"
+    },
+    "housing": {
+      "budgetParent": "thermal",
+      "quantityKind": "physical_assembly",
+      "quantityNote": "数量按当前结构与集成参数作示意计算，尚未核实特定产品的实物件数",
+      "physicalQuantityStatus": "model_assumption",
+      "physicalParent": null,
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属"
+    },
+    "pm_fau": {
+      "budgetParent": "els",
+      "quantityKind": "allocated_share",
+      "quantityNote": "按光源预算占用比例显示分摊等效组数；实物温控区、控制电路或阵列数量尚未知，0.5组不表示半个实物器件",
+      "physicalQuantityStatus": "unknown",
+      "physicalParent": "els",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
+      "physicalQuantityRule": null
+    },
+    "els_optics": {
+      "budgetParent": "els",
+      "quantityKind": "allocated_share",
+      "quantityNote": "按光源预算占用比例显示分摊等效组数；实物温控区、控制电路或阵列数量尚未知，0.5组不表示半个实物器件",
+      "physicalQuantityStatus": "unknown",
+      "physicalParent": "els",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
+      "physicalQuantityRule": null
+    },
+    "tec_controller": {
+      "budgetParent": "els",
+      "quantityKind": "allocated_share",
+      "quantityNote": "按光源预算占用比例显示分摊等效组数；实物温控区、控制电路或阵列数量尚未知，0.5组不表示半个实物器件",
+      "physicalQuantityStatus": "unknown",
+      "physicalParent": "els",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
+      "physicalQuantityRule": null,
+      "detail": "温控电路作为光源预算内的独立核算项；当前拆分采用工程假设，实物控制器数量与独立报价尚未验证"
+    },
+    "ferrule": {
+      "budgetParent": "connector",
+      "quantityKind": "functional_group",
+      "quantityNote": "数量为当前方案的功能分组，具体芯片、接口或封装件数未知",
+      "physicalQuantityStatus": "unknown",
+      "physicalParent": "connector",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属"
+    },
+    "cover_plate": {
+      "budgetParent": "fau",
+      "quantityKind": "physical_assembly",
+      "quantityNote": "数量按当前结构与集成参数作示意计算，尚未核实特定产品的实物件数",
+      "physicalQuantityStatus": "model_assumption",
+      "physicalParent": "fau",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属"
+    },
+    "inp_substrate": {
+      "budgetParent": "laser_die",
+      "quantityKind": "material_allocation",
+      "quantityNote": "数量为工程核算份数或材料功能组，不等于已确认的面积、质量、批次或独立采购件数",
+      "physicalQuantityStatus": "unknown",
+      "physicalParent": "laser_die",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属"
+    },
+    "solder": {
+      "budgetParent": "substrate",
+      "quantityKind": "material_allocation",
+      "quantityNote": "数量为工程核算份数或材料功能组，不等于已确认的面积、质量、批次或独立采购件数",
+      "physicalQuantityStatus": "unknown",
+      "physicalParent": null,
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属"
+    }
+  },
+  "data_revision": "2026-10-09",
+  "research_status": "研报下载：0/0，复用1份高盛原表；公众号文章下载：0/0，复用并阅读1篇微信原文；复读2份公司披露。指定浏览器访问限制阻止本轮新增搜狗微信检索。 本轮局部更新：新增核对监测PD厂商网页及独立封装目录价，$1至5/路为工程假设；未新增下载研报或公众号文章，当前接口未能确认Codex工作台窗口。",
+  "research_assumptions": {
+    "monitorPD": "厂商资料支持监测PD采用裸片并与激光器共同封装；独立TO-46封装器件目录价约$10至18/颗，仅作为不同封装的参照。$1至5/路区间及$3/路中心为工程假设，并非由目录价按固定折扣推导，也未获供应商报价验证",
+    "componentAllocation": "上级预算约束下的功能及器件价值分配。六个一级池沿用现有来源参考；末级权重是可修改工程假设，不是厂商报价。当前数量为0的权重留在父级未拆分余额。"
   }
 }

@@ -147,11 +147,11 @@
       "opticalLaneGbps": 400,
       "opticalTxLanes": 8,
       "opticalRxLanes": 8,
-      "electricalLaneGbps": 200,
-      "electricalTxLanes": 16,
-      "electricalRxLanes": 16,
+      "electricalLaneGbps": 400,
+      "electricalTxLanes": 8,
+      "electricalRxLanes": 8,
       "electricalSelectionVisible": false,
-      "signalMode": "gearbox_retimed_scenario",
+      "signalMode": "future_matched_rate",
       "opticalTopology": "parallel_single_mode",
       "laserPlacementOptions": [
         "external_els",
@@ -159,7 +159,7 @@
       ],
       "defaultLaserPlacement": "external_els",
       "status": "scenario",
-      "displayStatus": "400G光lane研究情景",
+      "displayStatus": "400G光、电通道同速的前瞻研究情景",
       "sourceIds": [
         "AR07",
         "AR08"
@@ -184,11 +184,11 @@
         "elsSupplyFibers": 2,
         "elsPhysicalModules": 1,
         "elsAllocatedEquivalent": 0.25,
-        "gearbox1p6TEquivalentPackages": 2
+        "gearbox1p6TEquivalentPackages": 0
       },
       "limitations": [
-        "电侧自动保持200G，2:1电光速率映射需gearbox，数量是1.6T等效块，不代表已可采购NPO设计",
-        "400G器件性能、功率及单价均需独立验证，不能按200G模型减少lane后当作实际报价"
+        "400G器件性能、功率及单价均需独立验证，不能按200G模型减少lane后当作实际报价",
+        "本应用采用400G电侧同步升级的研究假设，取消200G电侧2:1转换路径；不对应Taurus具体产品"
       ]
     },
     {
@@ -252,11 +252,11 @@
       "opticalLaneGbps": 400,
       "opticalTxLanes": 16,
       "opticalRxLanes": 16,
-      "electricalLaneGbps": 200,
-      "electricalTxLanes": 32,
-      "electricalRxLanes": 32,
+      "electricalLaneGbps": 400,
+      "electricalTxLanes": 16,
+      "electricalRxLanes": 16,
       "electricalSelectionVisible": false,
-      "signalMode": "gearbox_retimed_scenario",
+      "signalMode": "future_matched_rate",
       "opticalTopology": "parallel_single_mode",
       "laserPlacementOptions": [
         "external_els",
@@ -264,7 +264,7 @@
       ],
       "defaultLaserPlacement": "external_els",
       "status": "scenario",
-      "displayStatus": "400G光lane研究情景",
+      "displayStatus": "400G光、电通道同速的前瞻研究情景",
       "sourceIds": [
         "AR07",
         "AR08"
@@ -289,11 +289,11 @@
         "elsSupplyFibers": 4,
         "elsPhysicalModules": 1,
         "elsAllocatedEquivalent": 0.5,
-        "gearbox1p6TEquivalentPackages": 4
+        "gearbox1p6TEquivalentPackages": 0
       },
       "limitations": [
-        "电侧自动保持200G，2:1电光速率映射需gearbox，数量是1.6T等效块，不代表已可采购NPO设计",
-        "400G器件性能、功率及单价均需独立验证，不能按200G模型减少lane后当作实际报价"
+        "400G器件性能、功率及单价均需独立验证，不能按200G模型减少lane后当作实际报价",
+        "本应用采用400G电侧同步升级的研究假设，取消200G电侧2:1转换路径；不对应Taurus具体产品"
       ]
     }
   ],
@@ -483,7 +483,7 @@
       "sourceIds": [
         "AR06"
       ],
-      "note": "默认每颗4lane是模型假设；可选8lane；与DSP/EIC集成时改标功能通道且禁重复成本"
+      "note": "默认每颗4lane，可选8或16lane；均为等效集成假设，未知真实封装关系时不视为已核实器件颗数"
     },
     {
       "id": "q-tia",
@@ -493,7 +493,7 @@
       "sourceIds": [
         "AR06"
       ],
-      "note": "默认每颗4lane，可选8lane；未知真实集成关系时标等效颗数"
+      "note": "默认每颗4lane，可选8或16lane；均为等效集成假设，未知真实封装关系时不视为已核实器件颗数"
     },
     {
       "id": "q-pic",
@@ -531,7 +531,7 @@
       "id": "q-fiber",
       "quantity": "signalFibers",
       "formula": "ceil(opticalTxLanes / wavelengthsPerSignalFiber) + ceil(opticalRxLanes / wavelengthsPerSignalFiber)",
-      "kind": "integrated_feature",
+      "kind": "physical_assembly",
       "sourceIds": [
         "AR01",
         "AR02"
@@ -591,7 +591,7 @@
       "id": "q-faraday",
       "quantity": "faradayRotators",
       "formula": "isolators * stagesPerIsolator * faradayRotatorsPerSingleStageIsolator",
-      "kind": "integrated_feature",
+      "kind": "physical_assembly",
       "sourceIds": [],
       "note": "单级偏振相关隔离器示意；材料或组件占比只能在有支持的成本分配下显示"
     },
@@ -603,13 +603,13 @@
       "sourceIds": [
         "AR07"
       ],
-      "note": "1.6T等效8:4映射块数量，3.2T为2、6.4T为4；只是速率守恒模型，非承诺可用的硅光NPO料号"
+      "note": "默认400G电光同速情景的数量为0；仅200G电侧转换备选路线采用1.6T等效映射块，3.2T为2、6.4T为4。映射数量守恒不确认可采购NPO料号"
     },
     {
       "id": "q-control",
       "quantity": "engineControlSet",
       "formula": "1",
-      "kind": "physical_assembly",
+      "kind": "functional_group",
       "sourceIds": [
         "AR05"
       ],
@@ -1146,5 +1146,289 @@
     "wechatArticlesDownloaded": 0,
     "wechatDownloadQueue": 0,
     "note": "本子任务只核验公开英文一手技术资料与厂商原文；不代表主任务其他来源通道状态"
+  },
+  "alternativeArchitectures": [
+    {
+      "id": "npo3200-8x400-electrical200",
+      "label": "3.2T · 8×400G",
+      "capacityGbps": 3200,
+      "capacityBasis": "per_direction",
+      "opticalLaneGbps": 400,
+      "opticalTxLanes": 8,
+      "opticalRxLanes": 8,
+      "electricalLaneGbps": 200,
+      "electricalTxLanes": 16,
+      "electricalRxLanes": 16,
+      "electricalSelectionVisible": false,
+      "signalMode": "gearbox_retimed_scenario",
+      "opticalTopology": "parallel_single_mode",
+      "laserPlacementOptions": [
+        "external_els",
+        "module_integrated_cw"
+      ],
+      "defaultLaserPlacement": "external_els",
+      "status": "scenario",
+      "displayStatus": "400G光lane研究情景",
+      "sourceIds": [
+        "AR07",
+        "AR08"
+      ],
+      "quantityAssumptions": [
+        "driver/tia每颗4lane",
+        "PIC每颗8路双向光lane",
+        "信号FAU每组8芯且Tx/Rx分体",
+        "每路CW供4条Tx lane",
+        "8路ELS按实际供光路数分摊"
+      ],
+      "defaultQuantities": {
+        "npoModule": 1,
+        "opticalTxFunctionalChannels": 8,
+        "opticalRxFunctionalChannels": 8,
+        "driverEquivalentPackages": 2,
+        "tiaEquivalentPackages": 2,
+        "picEquivalentDies": 1,
+        "signalFauAssemblies": 2,
+        "signalFibers": 16,
+        "activeCwPaths": 2,
+        "elsSupplyFibers": 2,
+        "elsPhysicalModules": 1,
+        "elsAllocatedEquivalent": 0.25,
+        "gearbox1p6TEquivalentPackages": 2
+      },
+      "limitations": [
+        "电侧自动保持200G，2:1电光速率映射需gearbox，数量是1.6T等效块，不代表已可采购NPO设计",
+        "400G器件性能、功率及单价均需独立验证，不能按200G模型减少lane后当作实际报价"
+      ],
+      "selectedForExplorer": false,
+      "scopeNote": "保留的200G电侧与400G光侧转换研究情景；当前探索器采用同速400G电光假设，此记录不驱动默认页面数量"
+    },
+    {
+      "id": "npo6400-16x400-electrical200",
+      "label": "6.4T · 16×400G",
+      "capacityGbps": 6400,
+      "capacityBasis": "per_direction",
+      "opticalLaneGbps": 400,
+      "opticalTxLanes": 16,
+      "opticalRxLanes": 16,
+      "electricalLaneGbps": 200,
+      "electricalTxLanes": 32,
+      "electricalRxLanes": 32,
+      "electricalSelectionVisible": false,
+      "signalMode": "gearbox_retimed_scenario",
+      "opticalTopology": "parallel_single_mode",
+      "laserPlacementOptions": [
+        "external_els",
+        "module_integrated_cw"
+      ],
+      "defaultLaserPlacement": "external_els",
+      "status": "scenario",
+      "displayStatus": "400G光lane研究情景",
+      "sourceIds": [
+        "AR07",
+        "AR08"
+      ],
+      "quantityAssumptions": [
+        "driver/tia每颗4lane",
+        "PIC每颗8路双向光lane",
+        "信号FAU每组8芯且Tx/Rx分体",
+        "每路CW供4条Tx lane",
+        "8路ELS按实际供光路数分摊"
+      ],
+      "defaultQuantities": {
+        "npoModule": 1,
+        "opticalTxFunctionalChannels": 16,
+        "opticalRxFunctionalChannels": 16,
+        "driverEquivalentPackages": 4,
+        "tiaEquivalentPackages": 4,
+        "picEquivalentDies": 2,
+        "signalFauAssemblies": 4,
+        "signalFibers": 32,
+        "activeCwPaths": 4,
+        "elsSupplyFibers": 4,
+        "elsPhysicalModules": 1,
+        "elsAllocatedEquivalent": 0.5,
+        "gearbox1p6TEquivalentPackages": 4
+      },
+      "limitations": [
+        "电侧自动保持200G，2:1电光速率映射需gearbox，数量是1.6T等效块，不代表已可采购NPO设计",
+        "400G器件性能、功率及单价均需独立验证，不能按200G模型减少lane后当作实际报价"
+      ],
+      "selectedForExplorer": false,
+      "scopeNote": "保留的200G电侧与400G光侧转换研究情景；当前探索器采用同速400G电光假设，此记录不驱动默认页面数量"
+    }
+  ],
+  "modelRevision": "2026-10-09",
+  "parameterDefinitions": {
+    "rate": {
+      "label": "单向标称带宽",
+      "allowedValues": [
+        3.2,
+        6.4
+      ],
+      "sourceIds": [
+        "AR02",
+        "AR03"
+      ],
+      "evidenceTier": "engineering_assumption",
+      "assumption": "3.2T与6.4T为当前研究范围；具体内部芯片数仍采用集成假设",
+      "effect": "影响光通道与所需器件数量，不把Tx与Rx相加作为名义带宽",
+      "sourceBoundary": "列出的来源用于相邻产品、架构或集成方式参考，不证明此参数的全部选值已验证；无来源时明确保留为工程假设"
+    },
+    "laneRate": {
+      "label": "每条光通道速率",
+      "allowedValues": [
+        200,
+        400
+      ],
+      "sourceIds": [
+        "AR02",
+        "AR07",
+        "AR08"
+      ],
+      "evidenceTier": "engineering_assumption",
+      "assumption": "400G为电光同速的前瞻研究情景，厂商技术参考不构成完整NPO量产BOM",
+      "effect": "改变所需光电通道数量；未计400G单价溢价、良率、功耗差异",
+      "sourceBoundary": "列出的来源用于相邻产品、架构或集成方式参考，不证明此参数的全部选值已验证；无来源时明确保留为工程假设"
+    },
+    "laser": {
+      "label": "光源位置",
+      "allowedValues": [
+        "external",
+        "board"
+      ],
+      "sourceIds": [
+        "AR01",
+        "AR02"
+      ],
+      "evidenceTier": "engineering_assumption",
+      "assumption": "外置与板载为位置及封装情景，未取得同一型号的两种可替换完整报价",
+      "effect": "不自动假设板载方案节省光源预算或具有相同维护方式",
+      "sourceBoundary": "列出的来源用于相邻产品、架构或集成方式参考，不证明此参数的全部选值已验证；无来源时明确保留为工程假设"
+    },
+    "driverChannels": {
+      "label": "每颗Driver通道数",
+      "allowedValues": [
+        4,
+        8,
+        16
+      ],
+      "sourceIds": [
+        "AR06"
+      ],
+      "evidenceTier": "engineering_assumption",
+      "assumption": "当前每颗集成度由用户选择；产品资料只支持相关集成路线，不证明全部选项有同规格可采购器件",
+      "effect": "用于向上取整等效封装数；改变集成度会改变规格，旧单价不能无条件沿用",
+      "sourceBoundary": "列出的来源用于相邻产品、架构或集成方式参考，不证明此参数的全部选值已验证；无来源时明确保留为工程假设"
+    },
+    "tiaChannels": {
+      "label": "每颗TIA通道数",
+      "allowedValues": [
+        4,
+        8,
+        16
+      ],
+      "sourceIds": [
+        "AR06"
+      ],
+      "evidenceTier": "engineering_assumption",
+      "assumption": "当前每颗集成度由用户选择；产品资料只支持相关集成路线，不证明全部选项有同规格可采购器件",
+      "effect": "用于向上取整等效封装数；改变集成度会改变规格，旧单价不能无条件沿用",
+      "sourceBoundary": "列出的来源用于相邻产品、架构或集成方式参考，不证明此参数的全部选值已验证；无来源时明确保留为工程假设"
+    },
+    "picChannels": {
+      "label": "每颗PIC双向通道数",
+      "allowedValues": [
+        4,
+        8,
+        16
+      ],
+      "sourceIds": [
+        "AR05"
+      ],
+      "evidenceTier": "engineering_assumption",
+      "assumption": "每颗PIC承载通道数为工程集成假设，非已核实厂商裸片数量",
+      "effect": "改变等效裸片数；同一功能预算内部摊分不等于独立采购价",
+      "sourceBoundary": "列出的来源用于相邻产品、架构或集成方式参考，不证明此参数的全部选值已验证；无来源时明确保留为工程假设"
+    },
+    "fauCapacity": {
+      "label": "每组信号FAU芯数",
+      "allowedValues": [
+        4,
+        8,
+        16
+      ],
+      "sourceIds": [
+        "AR11"
+      ],
+      "evidenceTier": "engineering_assumption",
+      "assumption": "默认Tx/Rx分体排纤，阵列容量可选；不代表特定NPO的实际阵列结构",
+      "effect": "阵列总成数与光纤根数分别计算；容量变化构成单价规格变化",
+      "sourceBoundary": "列出的来源用于相邻产品、架构或集成方式参考，不证明此参数的全部选值已验证；无来源时明确保留为工程假设"
+    },
+    "cwFanout": {
+      "label": "每路CW服务的Tx通道数",
+      "allowedValues": [
+        1,
+        2,
+        4,
+        8
+      ],
+      "sourceIds": [
+        "AR01",
+        "AR02"
+      ],
+      "evidenceTier": "engineering_assumption",
+      "assumption": "供光扇出为可调工程假设，仍需独立验证激光功率、分光损耗和链路预算",
+      "effect": "改变供光路径及光源分摊份额；数量守恒不证明光功率可行",
+      "sourceBoundary": "列出的来源用于相邻产品、架构或集成方式参考，不证明此参数的全部选值已验证；无来源时明确保留为工程假设"
+    },
+    "rotators": {
+      "label": "每只隔离器旋片数量",
+      "allowedValues": [
+        1,
+        2
+      ],
+      "sourceIds": [],
+      "evidenceTier": "engineering_assumption",
+      "assumption": "当前采用单路偏振相关隔离器示意，级数与共片结构未获同规格报价验证",
+      "effect": "预算模式保持上级预算，成本模式按规格对应的数量与工程单价汇总",
+      "sourceBoundary": "列出的来源用于相邻产品、架构或集成方式参考，不证明此参数的全部选值已验证；无来源时明确保留为工程假设"
+    },
+    "fauLens": {
+      "label": "是否采用透镜耦合",
+      "allowedValues": [
+        true,
+        false
+      ],
+      "sourceIds": [],
+      "evidenceTier": "engineering_assumption",
+      "assumption": "透镜耦合与直接耦合为示意设计选择，不代表同一产品可无代价替换",
+      "effect": "关闭时透镜数量为0；预算模式保留未拆分余额，不将其分给其他材料",
+      "sourceBoundary": "列出的来源用于相邻产品、架构或集成方式参考，不证明此参数的全部选值已验证；无来源时明确保留为工程假设"
+    },
+    "interposer": {
+      "label": "是否配置独立中介层",
+      "allowedValues": [
+        false,
+        true
+      ],
+      "sourceIds": [],
+      "evidenceTier": "engineering_assumption",
+      "assumption": "独立中介层仅作为可选结构示意，实际封装堆叠和设计需逐型号验证",
+      "effect": "关闭时不显示该节点金额；预算模式保留对应未拆分余额",
+      "sourceBoundary": "列出的来源用于相邻产品、架构或集成方式参考，不证明此参数的全部选值已验证；无来源时明确保留为工程假设"
+    },
+    "pricingMode": {
+      "label": "计价模式",
+      "allowedValues": [
+        "allocation",
+        "cost"
+      ],
+      "sourceIds": [],
+      "evidenceTier": "engineering_assumption",
+      "assumption": "两种模式均为工程研究模型，不代表同规格采购报价",
+      "effect": "预算分配用于查看父子归属；成本测算用于查看数量和规格绑定单价假设的影响",
+      "sourceBoundary": "列出的来源用于相邻产品、架构或集成方式参考，不证明此参数的全部选值已验证；无来源时明确保留为工程假设"
+    }
   }
 }
