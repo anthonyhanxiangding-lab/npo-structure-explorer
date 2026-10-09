@@ -1,6 +1,7 @@
 {
   "schemaVersion": 1,
-  "version": "1.1.0",
+  "version": "1.2.0",
+  "revision": "2026-10-09",
   "asOf": "2026-10-08",
   "name": "NPO结构与器件数据库",
   "scope": "一套标称单向3.2T或6.4T的NPO光互连单元及分摊光源，排除ASIC、系统主板及机箱；结构示意非厂商拆机",
@@ -15,12 +16,13 @@
       "role": "将高速电信号转换为光信号，并接收光信号",
       "detail": "边界为一套所选带宽的光引擎、连接封装及分摊光源。旁边的交换ASIC不属于本组件树或BOM。",
       "qtyRule": "one",
-      "sourceIds": [],
-      "vendorLinks": [],
-      "priceEvidence": null,
-      "benchmark_prices": [],
-      "quantityEvidence": null,
-      "checkedAt": "2026-10-08",
+      "budgetParent": null,
+      "quantityKind": "system_scope",
+      "quantityNote": "一套所选带宽的NPO研究范围，不代表特定厂商产品料号",
+      "physicalQuantityStatus": "not_applicable",
+      "physicalParent": null,
+      "physicalParentStatus": "not_applicable",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
       "aliases": [
         "NPO",
         "近封装光学",
@@ -28,7 +30,14 @@
         "近封装光子",
         "Near Packaged Optics",
         "Near Package Optics"
-      ]
+      ],
+      "estimate": null,
+      "sourceIds": [],
+      "vendorLinks": [],
+      "priceEvidence": null,
+      "benchmark_prices": [],
+      "quantityEvidence": null,
+      "checkedAt": "2026-10-08"
     },
     {
       "id": "engine",
@@ -40,19 +49,27 @@
       "role": "完成电光转换与光电转换",
       "detail": "由PIC、发射驱动及接收放大链组成；光引擎可包含多颗PIC。示意布局不代表某一厂商封装。",
       "qtyRule": "one",
-      "sourceIds": [],
-      "vendorLinks": [],
-      "priceEvidence": null,
-      "benchmark_prices": [],
-      "quantityEvidence": null,
-      "checkedAt": "2026-10-08",
+      "budgetParent": "npo",
+      "quantityKind": "physical_assembly",
+      "quantityNote": "数量按当前结构与集成参数作示意计算，尚未核实特定产品的实物件数",
+      "physicalQuantityStatus": "model_assumption",
+      "physicalParent": "npo",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
       "aliases": [
         "光学引擎",
         "光电引擎",
         "OE",
         "Optical Engine",
         "Photonic Engine"
-      ]
+      ],
+      "estimate": null,
+      "sourceIds": [],
+      "vendorLinks": [],
+      "priceEvidence": null,
+      "benchmark_prices": [],
+      "quantityEvidence": null,
+      "checkedAt": "2026-10-08"
     },
     {
       "id": "pic",
@@ -64,6 +81,24 @@
       "role": "集成调制、探测和片上光路",
       "detail": "用每颗PIC承载的光通道数计算颗数；实际划分取决于芯片设计与良率。",
       "qtyRule": "pic",
+      "budgetParent": "engine",
+      "quantityKind": "physical_assembly",
+      "quantityNote": "数量按当前结构与集成参数作示意计算，尚未核实特定产品的实物件数",
+      "physicalQuantityStatus": "model_assumption",
+      "physicalParent": "engine",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
+      "aliases": [
+        "光子集成电路",
+        "光子芯片",
+        "硅光芯片",
+        "光子集成芯片",
+        "PIC",
+        "Photonic IC",
+        "Silicon Photonics PIC",
+        "Silicon Photonics Chip"
+      ],
+      "estimate": null,
       "sourceIds": [
         "WX_NPO_20260927",
         "SIFO_200",
@@ -156,17 +191,7 @@
       },
       "benchmark_prices": [],
       "quantityEvidence": "取决于每颗PIC集成通道数及Tx/Rx分立或合一设计",
-      "checkedAt": "2026-10-08",
-      "aliases": [
-        "光子集成电路",
-        "光子芯片",
-        "硅光芯片",
-        "光子集成芯片",
-        "PIC",
-        "Photonic IC",
-        "Silicon Photonics PIC",
-        "Silicon Photonics Chip"
-      ]
+      "checkedAt": "2026-10-08"
     },
     {
       "id": "modulator",
@@ -178,6 +203,21 @@
       "role": "把电信号编码到连续光上",
       "detail": "示意采用MZM结构；微环等实现是其他路线。调制器计入PIC，不应再次叠加芯片采购价值。",
       "qtyRule": "lanes",
+      "budgetParent": "pic",
+      "quantityKind": "integrated_feature",
+      "quantityNote": "数量为芯片内部功能通道或功能组，不等于独立采购器件数量",
+      "physicalQuantityStatus": "unknown",
+      "physicalParent": "pic",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
+      "aliases": [
+        "光调制器",
+        "电光调制器",
+        "光学调制器",
+        "Modulator",
+        "Electro Optic Modulator"
+      ],
+      "estimate": null,
       "sourceIds": [
         "SIFO_200",
         "SICOYA_PIC",
@@ -279,14 +319,7 @@
       },
       "benchmark_prices": [],
       "quantityEvidence": "每条发射数据通道通常有一个调制功能；不代表一颗独立芯片",
-      "checkedAt": "2026-10-08",
-      "aliases": [
-        "光调制器",
-        "电光调制器",
-        "光学调制器",
-        "Modulator",
-        "Electro Optic Modulator"
-      ]
+      "checkedAt": "2026-10-08"
     },
     {
       "id": "photodiode",
@@ -298,6 +331,28 @@
       "role": "将接收光转换为电流信号",
       "detail": "示意为接收端探测结构，与TIA配合。独立探测芯片与PIC集成方案的物料边界不同。",
       "qtyRule": "lanes",
+      "budgetParent": "pic",
+      "quantityKind": "integrated_feature",
+      "quantityNote": "数量为芯片内部功能通道或功能组，不等于独立采购器件数量",
+      "physicalQuantityStatus": "unknown",
+      "physicalParent": "pic",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
+      "aliases": [
+        "PD",
+        "Rx PD",
+        "接收PD",
+        "高速PD",
+        "光电探测器",
+        "光电二极管",
+        "接收光探测器",
+        "探测器",
+        "Photodetector",
+        "Receiver Photodiode",
+        "Receive Photodetector",
+        "RX Detector"
+      ],
+      "estimate": null,
       "sourceIds": [
         "SIFO_200",
         "GF_FOTONIX",
@@ -352,21 +407,7 @@
       },
       "benchmark_prices": [],
       "quantityEvidence": "每条接收数据通道一个探测功能；可集成在PIC内",
-      "checkedAt": "2026-10-08",
-      "aliases": [
-        "PD",
-        "Rx PD",
-        "接收PD",
-        "高速PD",
-        "光电探测器",
-        "光电二极管",
-        "接收光探测器",
-        "探测器",
-        "Photodetector",
-        "Receiver Photodiode",
-        "Receive Photodetector",
-        "RX Detector"
-      ]
+      "checkedAt": "2026-10-08"
     },
     {
       "id": "waveguide",
@@ -378,6 +419,19 @@
       "role": "约束并传导片上光",
       "detail": "波导长度与拓扑属于版图参数，页面不把波导段当成独立采购件。",
       "qtyRule": "pic",
+      "budgetParent": "pic",
+      "quantityKind": "integrated_feature",
+      "quantityNote": "数量为芯片内部功能通道或功能组，不等于独立采购器件数量",
+      "physicalQuantityStatus": "unknown",
+      "physicalParent": "pic",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
+      "aliases": [
+        "光波导",
+        "光学波导",
+        "Optical Waveguide"
+      ],
+      "estimate": null,
       "sourceIds": [
         "GF_FOTONIX",
         "SICOYA_PIC"
@@ -419,12 +473,7 @@
       },
       "benchmark_prices": [],
       "quantityEvidence": "按光路拓扑和长度形成，不用颗数计量",
-      "checkedAt": "2026-10-08",
-      "aliases": [
-        "光波导",
-        "光学波导",
-        "Optical Waveguide"
-      ]
+      "checkedAt": "2026-10-08"
     },
     {
       "id": "coupler",
@@ -436,6 +485,22 @@
       "role": "连接片上波导与光纤接口",
       "detail": "边缘耦合与光栅耦合为替代实现；图中展示一般接口位置。",
       "qtyRule": "pic",
+      "budgetParent": "pic",
+      "quantityKind": "integrated_feature",
+      "quantityNote": "数量为芯片内部功能通道或功能组，不等于独立采购器件数量",
+      "physicalQuantityStatus": "unknown",
+      "physicalParent": "pic",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
+      "aliases": [
+        "光耦合器",
+        "耦合结构",
+        "耦合器",
+        "Optical Coupler",
+        "Edge Coupler",
+        "Grating Coupler"
+      ],
+      "estimate": null,
       "sourceIds": [
         "GF_FOTONIX",
         "SICOYA_PIC"
@@ -477,15 +542,7 @@
       },
       "benchmark_prices": [],
       "quantityEvidence": "按PIC外部光端口数配置",
-      "checkedAt": "2026-10-08",
-      "aliases": [
-        "光耦合器",
-        "耦合结构",
-        "耦合器",
-        "Optical Coupler",
-        "Edge Coupler",
-        "Grating Coupler"
-      ]
+      "checkedAt": "2026-10-08"
     },
     {
       "id": "splitter",
@@ -497,6 +554,22 @@
       "role": "把光源功率分配到调制通道",
       "detail": "具体分光比受激光功率、插损与链路预算约束。",
       "qtyRule": "pic",
+      "budgetParent": "pic",
+      "quantityKind": "integrated_feature",
+      "quantityNote": "数量为芯片内部功能通道或功能组，不等于独立采购器件数量",
+      "physicalQuantityStatus": "unknown",
+      "physicalParent": "pic",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
+      "aliases": [
+        "光分路器",
+        "光分束器",
+        "分束器",
+        "光功率分配器",
+        "Power Splitter",
+        "Beam Splitter"
+      ],
+      "estimate": null,
       "sourceIds": [
         "GF_FOTONIX",
         "SICOYA_PIC"
@@ -538,15 +611,7 @@
       },
       "benchmark_prices": [],
       "quantityEvidence": "按激光器到调制通道的供光网络设计",
-      "checkedAt": "2026-10-08",
-      "aliases": [
-        "光分路器",
-        "光分束器",
-        "分束器",
-        "光功率分配器",
-        "Power Splitter",
-        "Beam Splitter"
-      ]
+      "checkedAt": "2026-10-08"
     },
     {
       "id": "phase",
@@ -558,6 +623,24 @@
       "role": "校准光路工作点",
       "detail": "加热器与监控结构通常随PIC集成，数量不等于外部芯片颗数。",
       "qtyRule": "pic",
+      "budgetParent": "pic",
+      "quantityKind": "integrated_feature",
+      "quantityNote": "数量为芯片内部功能通道或功能组，不等于独立采购器件数量",
+      "physicalQuantityStatus": "unknown",
+      "physicalParent": "pic",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
+      "aliases": [
+        "相位调节",
+        "温度调谐",
+        "相位调谐",
+        "热调谐",
+        "Phase Tuning",
+        "Thermal Tuning",
+        "Phase Shifter",
+        "PIC Heater"
+      ],
+      "estimate": null,
       "sourceIds": [
         "GF_FOTONIX",
         "SICOYA_PIC"
@@ -599,17 +682,7 @@
       },
       "benchmark_prices": [],
       "quantityEvidence": "按需要独立调谐的功能区配置",
-      "checkedAt": "2026-10-08",
-      "aliases": [
-        "相位调节",
-        "温度调谐",
-        "相位调谐",
-        "热调谐",
-        "Phase Tuning",
-        "Thermal Tuning",
-        "Phase Shifter",
-        "PIC Heater"
-      ]
+      "checkedAt": "2026-10-08"
     },
     {
       "id": "eic",
@@ -621,36 +694,13 @@
       "role": "提供发射驱动和接收放大",
       "detail": "公开资料仅披露Driver与TIA合计。页面按显式工程权重拆分；点击价格可查看公式，不能将分配值视为独立报价。",
       "qtyRule": "one",
-      "sourceIds": [
-        "MACOM_LINEAR"
-      ],
-      "vendorLinks": [
-        {
-          "name": "MACOM",
-          "region": "海外",
-          "role": "高速模拟电芯片",
-          "vendor_id": "macom",
-          "status": "产品能力",
-          "source_ids": [
-            "MACOM_LINEAR"
-          ],
-          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
-        }
-      ],
-      "priceEvidence": {
-        "low": null,
-        "base": null,
-        "high": null,
-        "currency": "USD",
-        "unit": null,
-        "year": null,
-        "status": "unknown",
-        "source_ids": [],
-        "scope": "未取得适配本NPO配置的独立价格"
-      },
-      "benchmark_prices": [],
-      "quantityEvidence": "Driver芯片数=向上取整发射通道数/每颗Driver通道数",
-      "checkedAt": "2026-10-08",
+      "budgetParent": "engine",
+      "quantityKind": "budget_group",
+      "quantityNote": "节点为预算分类，数量用于分配计算，不对应一颗独立实物器件",
+      "physicalQuantityStatus": "not_applicable",
+      "physicalParent": null,
+      "physicalParentStatus": "not_applicable",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
       "aliases": [
         "EIC",
         "电子集成电路",
@@ -662,18 +712,8 @@
         "Driver TIA",
         "Driver + TIA",
         "Tx Rx Electronics"
-      ]
-    },
-    {
-      "id": "driver",
-      "parent": "eic",
-      "name": "Driver",
-      "en": "Modulator Driver",
-      "category": "有源电芯片",
-      "unit": "颗",
-      "role": "驱动发射调制器",
-      "detail": "功能通道数等于Tx通道数；封装颗数按每颗集成通道数向上取整。",
-      "qtyRule": "driver",
+      ],
+      "estimate": null,
       "sourceIds": [
         "MACOM_LINEAR"
       ],
@@ -703,7 +743,25 @@
       },
       "benchmark_prices": [],
       "quantityEvidence": "Driver芯片数=向上取整发射通道数/每颗Driver通道数",
-      "checkedAt": "2026-10-08",
+      "checkedAt": "2026-10-08"
+    },
+    {
+      "id": "driver",
+      "parent": "eic",
+      "name": "Driver",
+      "en": "Modulator Driver",
+      "category": "有源电芯片",
+      "unit": "颗",
+      "role": "驱动发射调制器",
+      "detail": "功能通道数等于Tx通道数；封装颗数按每颗集成通道数向上取整。",
+      "qtyRule": "driver",
+      "budgetParent": "eic",
+      "quantityKind": "physical_assembly",
+      "quantityNote": "数量按当前结构与集成参数作示意计算，尚未核实特定产品的实物件数",
+      "physicalQuantityStatus": "model_assumption",
+      "physicalParent": null,
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
       "aliases": [
         "驱动器",
         "调制器驱动",
@@ -713,7 +771,38 @@
         "Tx Driver",
         "Modulator Driver",
         "Optical Modulator Driver"
-      ]
+      ],
+      "estimate": null,
+      "sourceIds": [
+        "MACOM_LINEAR"
+      ],
+      "vendorLinks": [
+        {
+          "name": "MACOM",
+          "region": "海外",
+          "role": "高速模拟电芯片",
+          "vendor_id": "macom",
+          "status": "产品能力",
+          "source_ids": [
+            "MACOM_LINEAR"
+          ],
+          "note": "具备相关产品或工艺能力，未由此确认本NPO方案的供货关系"
+        }
+      ],
+      "priceEvidence": {
+        "low": null,
+        "base": null,
+        "high": null,
+        "currency": "USD",
+        "unit": null,
+        "year": null,
+        "status": "unknown",
+        "source_ids": [],
+        "scope": "未取得适配本NPO配置的独立价格"
+      },
+      "benchmark_prices": [],
+      "quantityEvidence": "Driver芯片数=向上取整发射通道数/每颗Driver通道数",
+      "checkedAt": "2026-10-08"
     },
     {
       "id": "tia",
@@ -725,6 +814,23 @@
       "role": "放大接收探测器的微弱电流",
       "detail": "功能通道数等于Rx通道数；四通道与八通道封装会改变颗数，不改变总接收通道数。",
       "qtyRule": "tia",
+      "budgetParent": "eic",
+      "quantityKind": "physical_assembly",
+      "quantityNote": "数量按当前结构与集成参数作示意计算，尚未核实特定产品的实物件数",
+      "physicalQuantityStatus": "model_assumption",
+      "physicalParent": null,
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
+      "aliases": [
+        "跨阻放大器",
+        "跨阻抗放大器",
+        "接收放大器",
+        "TIA",
+        "Rx Amplifier",
+        "Receiver Amplifier",
+        "Trans Impedance Amplifier"
+      ],
+      "estimate": null,
       "sourceIds": [
         "MACOM_200",
         "MXL_200",
@@ -778,16 +884,7 @@
       },
       "benchmark_prices": [],
       "quantityEvidence": "TIA芯片数=向上取整接收通道数/每颗TIA通道数",
-      "checkedAt": "2026-10-08",
-      "aliases": [
-        "跨阻放大器",
-        "跨阻抗放大器",
-        "接收放大器",
-        "TIA",
-        "Rx Amplifier",
-        "Receiver Amplifier",
-        "Trans Impedance Amplifier"
-      ]
+      "checkedAt": "2026-10-08"
     },
     {
       "id": "fau",
@@ -799,6 +896,24 @@
       "role": "将一排光纤精密定位到光引擎",
       "detail": "Tx与Rx分体排纤的示意模型。每组纤芯容量可调整，光纤根数与FAU组件数分别统计。",
       "qtyRule": "fau",
+      "budgetParent": "engine",
+      "quantityKind": "physical_assembly",
+      "quantityNote": "数量按当前结构与集成参数作示意计算，尚未核实特定产品的实物件数",
+      "physicalQuantityStatus": "model_assumption",
+      "physicalParent": "engine",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
+      "aliases": [
+        "FAU",
+        "光纤阵列",
+        "光纤阵列单元",
+        "信号FAU",
+        "信号光纤阵列",
+        "Fibre Array",
+        "Fibre Array Unit",
+        "Signal Fiber Array"
+      ],
+      "estimate": null,
       "sourceIds": [
         "WX_NPO_20260927",
         "TFC_2025",
@@ -895,17 +1010,7 @@
         }
       ],
       "quantityEvidence": "PSM双向链路光纤=Tx+Rx；阵列件数由每阵列容纳纤芯数决定",
-      "checkedAt": "2026-10-08",
-      "aliases": [
-        "FAU",
-        "光纤阵列",
-        "光纤阵列单元",
-        "信号FAU",
-        "信号光纤阵列",
-        "Fibre Array",
-        "Fibre Array Unit",
-        "Signal Fiber Array"
-      ]
+      "checkedAt": "2026-10-08"
     },
     {
       "id": "vgroove",
@@ -917,6 +1022,23 @@
       "role": "固定光纤中心距和排列精度",
       "detail": "常见玻璃或硅基板；本页每FAU一片为装配假设。",
       "qtyRule": "fau",
+      "budgetParent": "fau",
+      "quantityKind": "physical_assembly",
+      "quantityNote": "数量按当前结构与集成参数作示意计算，尚未核实特定产品的实物件数",
+      "physicalQuantityStatus": "model_assumption",
+      "physicalParent": "fau",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
+      "aliases": [
+        "V槽",
+        "V型槽",
+        "V沟槽",
+        "V沟槽基板",
+        "V Groove",
+        "V Groove Substrate",
+        "V Grooved Substrate"
+      ],
+      "estimate": null,
       "sourceIds": [
         "THREEV",
         "MOLEX_ARRAY"
@@ -958,16 +1080,7 @@
       },
       "benchmark_prices": [],
       "quantityEvidence": "通常按FAU物理阵列件配置",
-      "checkedAt": "2026-10-08",
-      "aliases": [
-        "V槽",
-        "V型槽",
-        "V沟槽",
-        "V沟槽基板",
-        "V Groove",
-        "V Groove Substrate",
-        "V Grooved Substrate"
-      ]
+      "checkedAt": "2026-10-08"
     },
     {
       "id": "fiber",
@@ -979,6 +1092,21 @@
       "role": "传输Tx与Rx光信号",
       "detail": "当前为并行单波长光链路，信号光纤根数为Tx＋Rx。WDM复用不在当前数量模型内。",
       "qtyRule": "fibers",
+      "budgetParent": "fau",
+      "quantityKind": "physical_assembly",
+      "quantityNote": "数量按当前结构与集成参数作示意计算，尚未核实特定产品的实物件数",
+      "physicalQuantityStatus": "model_assumption",
+      "physicalParent": "fau",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
+      "aliases": [
+        "光纤",
+        "数据光纤",
+        "通信光纤",
+        "Signal Fibre",
+        "Data Fiber"
+      ],
+      "estimate": null,
       "sourceIds": [
         "CORNING_CPO",
         "FUJIKURA_PMF",
@@ -1032,14 +1160,7 @@
       },
       "benchmark_prices": [],
       "quantityEvidence": "PSM收发独立时每通道Tx一根、Rx一根；长度由布线路径决定",
-      "checkedAt": "2026-10-08",
-      "aliases": [
-        "光纤",
-        "数据光纤",
-        "通信光纤",
-        "Signal Fibre",
-        "Data Fiber"
-      ]
+      "checkedAt": "2026-10-08"
     },
     {
       "id": "lens",
@@ -1051,6 +1172,21 @@
       "role": "整形与耦合阵列光束",
       "detail": "仅在所选透镜耦合结构中需要；直接耦合FAU可在高级参数关闭。",
       "qtyRule": "fauLens",
+      "budgetParent": "fau",
+      "quantityKind": "physical_assembly",
+      "quantityNote": "数量按当前结构与集成参数作示意计算，尚未核实特定产品的实物件数",
+      "physicalQuantityStatus": "model_assumption",
+      "physicalParent": "fau",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
+      "aliases": [
+        "微透镜",
+        "微型透镜阵列",
+        "Micro Lens Array",
+        "Microlens",
+        "MLA"
+      ],
+      "estimate": null,
       "sourceIds": [
         "FOCUSLIGHT_NPO",
         "TFC_2025",
@@ -1116,14 +1252,7 @@
       },
       "benchmark_prices": [],
       "quantityEvidence": "按光路或阵列孔径配置；不可简单按通道数推导实物片数",
-      "checkedAt": "2026-10-08",
-      "aliases": [
-        "微透镜",
-        "微型透镜阵列",
-        "Micro Lens Array",
-        "Microlens",
-        "MLA"
-      ]
+      "checkedAt": "2026-10-08"
     },
     {
       "id": "adhesive",
@@ -1135,6 +1264,22 @@
       "role": "保持光纤与基板的装配位置",
       "detail": "胶量与工艺良率不适合直接按每根光纤报价，计为组件中的工艺材料。",
       "qtyRule": "fau",
+      "budgetParent": "fau",
+      "quantityKind": "material_allocation",
+      "quantityNote": "数量为工程核算份数或材料功能组，不等于已确认的面积、质量、批次或独立采购件数",
+      "physicalQuantityStatus": "unknown",
+      "physicalParent": "fau",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
+      "aliases": [
+        "光学胶",
+        "光学胶水",
+        "光学粘合剂",
+        "光学黏合剂",
+        "Optical Glue",
+        "Optical Bonding Adhesive"
+      ],
+      "estimate": null,
       "sourceIds": [
         "HENKEL_OPTICAL"
       ],
@@ -1164,15 +1309,7 @@
       },
       "benchmark_prices": [],
       "quantityEvidence": "按点胶面积、胶层厚度及工艺消耗计量",
-      "checkedAt": "2026-10-08",
-      "aliases": [
-        "光学胶",
-        "光学胶水",
-        "光学粘合剂",
-        "光学黏合剂",
-        "Optical Glue",
-        "Optical Bonding Adhesive"
-      ]
+      "checkedAt": "2026-10-08"
     },
     {
       "id": "els",
@@ -1182,8 +1319,27 @@
       "category": "光源子系统",
       "unit": "套",
       "role": "为光引擎提供连续光",
-      "detail": "外置方式可多光引擎共享一套ELS；左侧同时显示物理套数及本NPO分摊比例。板载光源是另一封装情景。",
+      "detail": "外置模式按8路CW参考盒计算模型盒数及本NPO分摊比例；剩余通道能否共享需实际系统确认。板载光源是另一位置及封装情景，尚未核实相应独立报价",
       "qtyRule": "els",
+      "budgetParent": "npo",
+      "quantityKind": "allocated_share",
+      "quantityNote": "预算按使用CW路数除以8折算光源套数；外置模式的实物盒数按ceil(CW路数/8)显示，未用通道能否共享仍需具体系统确认",
+      "physicalQuantityStatus": "model_assumption",
+      "physicalParent": "npo",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "外置ELS为NPO研究范围内分摊的独立光源模块；板载模式的物理封装和成本需另行验证",
+      "physicalQuantityRule": "ceil(cw/8)",
+      "aliases": [
+        "ELS",
+        "外置光源",
+        "外部光源",
+        "外置激光源",
+        "外置激光光源",
+        "光源",
+        "External Laser Source",
+        "External Light Source"
+      ],
+      "estimate": null,
       "sourceIds": [
         "WX_NPO_20260927",
         "LITE_ELS",
@@ -1256,17 +1412,7 @@
         }
       ],
       "quantityEvidence": "源模型为8颗CW/ELS且一套ELS服务两只3.2T光引擎",
-      "checkedAt": "2026-10-08",
-      "aliases": [
-        "ELS",
-        "外置光源",
-        "外部光源",
-        "外置激光源",
-        "外置激光光源",
-        "光源",
-        "External Laser Source",
-        "External Light Source"
-      ]
+      "checkedAt": "2026-10-08"
     },
     {
       "id": "cw",
@@ -1278,6 +1424,23 @@
       "role": "产生供调制器使用的连续光",
       "detail": "激光路数按光通道与供光扇出计算。供光能力不只取决于数量，还取决于功率和损耗。",
       "qtyRule": "cw",
+      "budgetParent": "els",
+      "quantityKind": "functional_channel",
+      "quantityNote": "数量为当前方案的供光或监测功能通道，不能直接解释为独立封装采购数量",
+      "physicalQuantityStatus": "unknown",
+      "physicalParent": "els",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
+      "aliases": [
+        "CW",
+        "连续波激光器",
+        "连续光激光器",
+        "连续波光源",
+        "激光器",
+        "Continuous Wave Laser",
+        "Continuous Wave Laser Source"
+      ],
+      "estimate": null,
       "sourceIds": [
         "WX_NPO_20260927",
         "LITE_CW",
@@ -1350,16 +1513,7 @@
         }
       ],
       "quantityEvidence": "按独立激光腔和供光功率预算计算",
-      "checkedAt": "2026-10-08",
-      "aliases": [
-        "CW",
-        "连续波激光器",
-        "连续光激光器",
-        "连续波光源",
-        "激光器",
-        "Continuous Wave Laser",
-        "Continuous Wave Laser Source"
-      ]
+      "checkedAt": "2026-10-08"
     },
     {
       "id": "laser_die",
@@ -1371,6 +1525,24 @@
       "role": "通过受激辐射产生激光",
       "detail": "数量采用每光源路一颗芯片的示意假设；多发射腔或阵列产品需要另行建模。",
       "qtyRule": "cw",
+      "budgetParent": "cw",
+      "quantityKind": "physical_assembly",
+      "quantityNote": "数量按当前结构与集成参数作示意计算，尚未核实特定产品的实物件数",
+      "physicalQuantityStatus": "model_assumption",
+      "physicalParent": "cw",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
+      "aliases": [
+        "激光裸片",
+        "激光芯片",
+        "磷化铟激光芯片",
+        "激光器芯片",
+        "Laser Chip",
+        "Laser Die",
+        "InP Laser Chip",
+        "Indium Phosphide Laser Die"
+      ],
+      "estimate": null,
       "sourceIds": [
         "LITE_CW",
         "COHR_CW",
@@ -1424,17 +1596,7 @@
       },
       "benchmark_prices": [],
       "quantityEvidence": "按独立激光腔计数，阵列芯片可集成多个激光腔",
-      "checkedAt": "2026-10-08",
-      "aliases": [
-        "激光裸片",
-        "激光芯片",
-        "磷化铟激光芯片",
-        "激光器芯片",
-        "Laser Chip",
-        "Laser Die",
-        "InP Laser Chip",
-        "Indium Phosphide Laser Die"
-      ]
+      "checkedAt": "2026-10-08"
     },
     {
       "id": "laser_submount",
@@ -1446,6 +1608,23 @@
       "role": "为激光芯片提供安装及导热路径",
       "detail": "材料和尺寸依功率、封装及散热方案变化。",
       "qtyRule": "cw",
+      "budgetParent": "cw",
+      "quantityKind": "physical_assembly",
+      "quantityNote": "数量按当前结构与集成参数作示意计算，尚未核实特定产品的实物件数",
+      "physicalQuantityStatus": "model_assumption",
+      "physicalParent": "cw",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
+      "aliases": [
+        "激光热沉",
+        "激光器热沉",
+        "激光载台",
+        "激光器载板",
+        "Submount",
+        "Laser Heat Sink",
+        "Laser Carrier"
+      ],
+      "estimate": null,
       "sourceIds": [
         "KYOCERA_LD",
         "SUMI_ALN",
@@ -1522,16 +1701,7 @@
       },
       "benchmark_prices": [],
       "quantityEvidence": "按裸片或多激光阵列封装配置",
-      "checkedAt": "2026-10-08",
-      "aliases": [
-        "激光热沉",
-        "激光器热沉",
-        "激光载台",
-        "激光器载板",
-        "Submount",
-        "Laser Heat Sink",
-        "Laser Carrier"
-      ]
+      "checkedAt": "2026-10-08"
     },
     {
       "id": "isolator",
@@ -1543,6 +1713,21 @@
       "role": "抑制反射光返回激光器",
       "detail": "示意为每CW路一个单级隔离器，实际可采用集成或不同级数方案；不是所有NPO架构的通用颗数。",
       "qtyRule": "isolator",
+      "budgetParent": "els",
+      "quantityKind": "physical_assembly",
+      "quantityNote": "数量按当前结构与集成参数作示意计算，尚未核实特定产品的实物件数",
+      "physicalQuantityStatus": "model_assumption",
+      "physicalParent": "els",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
+      "aliases": [
+        "隔离器",
+        "Optical Isolator",
+        "光学隔离器",
+        "法拉第隔离器",
+        "Faraday Isolator"
+      ],
+      "estimate": null,
       "sourceIds": [
         "COHR_ISO",
         "TFC_ISO",
@@ -1666,14 +1851,7 @@
         }
       ],
       "quantityEvidence": "按独立受保护供光路径计数；不等于NPO数据通道数",
-      "checkedAt": "2026-10-08",
-      "aliases": [
-        "隔离器",
-        "Optical Isolator",
-        "光学隔离器",
-        "法拉第隔离器",
-        "Faraday Isolator"
-      ]
+      "checkedAt": "2026-10-08"
     },
     {
       "id": "faraday",
@@ -1685,6 +1863,22 @@
       "role": "在磁场作用下旋转偏振方向",
       "detail": "与偏振元件配合实现隔离。当前按单级隔离器一片建模，可调整每隔离器片数。",
       "qtyRule": "faraday",
+      "budgetParent": "isolator",
+      "quantityKind": "physical_assembly",
+      "quantityNote": "数量按当前结构与集成参数作示意计算，尚未核实特定产品的实物件数",
+      "physicalQuantityStatus": "model_assumption",
+      "physicalParent": "isolator",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
+      "aliases": [
+        "旋片",
+        "法拉第片",
+        "Faraday Rotator",
+        "法拉第旋转片",
+        "法拉第旋转器",
+        "Faraday Rotation Plate"
+      ],
+      "estimate": null,
       "sourceIds": [
         "XINYU_IPO_20260622",
         "COHR_GARNET",
@@ -1769,15 +1963,7 @@
         }
       ],
       "quantityEvidence": "单级隔离光路通常一个旋光单元；双级、多束共片另算",
-      "checkedAt": "2026-10-08",
-      "aliases": [
-        "旋片",
-        "法拉第片",
-        "Faraday Rotator",
-        "法拉第旋转片",
-        "法拉第旋转器",
-        "Faraday Rotation Plate"
-      ]
+      "checkedAt": "2026-10-08"
     },
     {
       "id": "garnet",
@@ -1789,6 +1975,23 @@
       "role": "提供非互易磁光响应",
       "detail": "薄膜晶体的材料体系、波段与生长工艺不同；原料与加工旋片属于不同价值层。",
       "qtyRule": "faraday",
+      "budgetParent": "faraday",
+      "quantityKind": "material_allocation",
+      "quantityNote": "数量为工程核算份数或材料功能组，不等于已确认的面积、质量、批次或独立采购件数",
+      "physicalQuantityStatus": "unknown",
+      "physicalParent": "faraday",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
+      "aliases": [
+        "磁光材料",
+        "磁光晶体",
+        "磁光石榴石",
+        "石榴石晶体",
+        "Magneto Optical Garnet",
+        "Magneto Optic Crystal",
+        "Magneto Optical Material"
+      ],
+      "estimate": null,
       "sourceIds": [
         "XINYU_IPO_20260622",
         "COHR_GARNET",
@@ -1858,16 +2061,7 @@
         }
       ],
       "quantityEvidence": "按有效面积、厚度、切粒良率及后加工折算",
-      "checkedAt": "2026-10-08",
-      "aliases": [
-        "磁光材料",
-        "磁光晶体",
-        "磁光石榴石",
-        "石榴石晶体",
-        "Magneto Optical Garnet",
-        "Magneto Optic Crystal",
-        "Magneto Optical Material"
-      ]
+      "checkedAt": "2026-10-08"
     },
     {
       "id": "coating",
@@ -1877,8 +2071,25 @@
       "category": "表面工艺",
       "unit": "组",
       "role": "降低工作波段表面反射",
-      "detail": "镀膜是旋片加工的一部分；没有独立成本资料时只标示包含关系。",
+      "detail": "镀膜属于旋片加工的一部分；缺少独立报价时使用明确标注的工程分配或单价假设，分配值不代表加工报价",
       "qtyRule": "faraday",
+      "budgetParent": "faraday",
+      "quantityKind": "material_allocation",
+      "quantityNote": "数量为工程核算份数或材料功能组，不等于已确认的面积、质量、批次或独立采购件数",
+      "physicalQuantityStatus": "unknown",
+      "physicalParent": "faraday",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
+      "aliases": [
+        "增透膜",
+        "增透镀膜",
+        "抗反射镀膜",
+        "减反膜",
+        "AR Coating",
+        "Antireflection Coating",
+        "Anti Reflective Coating"
+      ],
+      "estimate": null,
       "sourceIds": [
         "COHR_GARNET",
         "TFC_COATING",
@@ -1932,16 +2143,7 @@
       },
       "benchmark_prices": [],
       "quantityEvidence": "每个相关光学表面按功能设计",
-      "checkedAt": "2026-10-08",
-      "aliases": [
-        "增透膜",
-        "增透镀膜",
-        "抗反射镀膜",
-        "减反膜",
-        "AR Coating",
-        "Antireflection Coating",
-        "Anti Reflective Coating"
-      ]
+      "checkedAt": "2026-10-08"
     },
     {
       "id": "polarizer",
@@ -1953,6 +2155,21 @@
       "role": "建立输入偏振方向",
       "detail": "偏振相关型隔离器的示意结构。其他偏振无关型产品可能采用双折射晶体等不同结构。",
       "qtyRule": "isolator",
+      "budgetParent": "isolator",
+      "quantityKind": "physical_assembly",
+      "quantityNote": "数量按当前结构与集成参数作示意计算，尚未核实特定产品的实物件数",
+      "physicalQuantityStatus": "model_assumption",
+      "physicalParent": "isolator",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
+      "aliases": [
+        "起偏器",
+        "起偏片",
+        "偏振片",
+        "Polariser",
+        "Input Polarizer"
+      ],
+      "estimate": null,
       "sourceIds": [
         "XINYU_IPO_20260622"
       ],
@@ -2026,14 +2243,7 @@
       },
       "benchmark_prices": [],
       "quantityEvidence": "概念性单级偏振相关隔离器一个输入偏振元件",
-      "checkedAt": "2026-10-08",
-      "aliases": [
-        "起偏器",
-        "起偏片",
-        "偏振片",
-        "Polariser",
-        "Input Polarizer"
-      ]
+      "checkedAt": "2026-10-08"
     },
     {
       "id": "analyzer",
@@ -2045,6 +2255,20 @@
       "role": "与旋转后的偏振方向配合",
       "detail": "与起偏元件及法拉第旋片共同构成隔离光路。",
       "qtyRule": "isolator",
+      "budgetParent": "isolator",
+      "quantityKind": "physical_assembly",
+      "quantityNote": "数量按当前结构与集成参数作示意计算，尚未核实特定产品的实物件数",
+      "physicalQuantityStatus": "model_assumption",
+      "physicalParent": "isolator",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
+      "aliases": [
+        "检偏器",
+        "检偏片",
+        "Analyser",
+        "Output Polarizer"
+      ],
+      "estimate": null,
       "sourceIds": [
         "XINYU_IPO_20260622"
       ],
@@ -2118,13 +2342,7 @@
       },
       "benchmark_prices": [],
       "quantityEvidence": "概念性单级偏振相关隔离器一个输出偏振元件",
-      "checkedAt": "2026-10-08",
-      "aliases": [
-        "检偏器",
-        "检偏片",
-        "Analyser",
-        "Output Polarizer"
-      ]
+      "checkedAt": "2026-10-08"
     },
     {
       "id": "magnet",
@@ -2136,6 +2354,21 @@
       "role": "为磁光元件提供工作磁场",
       "detail": "具体磁路与元件设计相关，示意为一个磁体组件。",
       "qtyRule": "isolator",
+      "budgetParent": "isolator",
+      "quantityKind": "physical_assembly",
+      "quantityNote": "数量按当前结构与集成参数作示意计算，尚未核实特定产品的实物件数",
+      "physicalQuantityStatus": "model_assumption",
+      "physicalParent": "isolator",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
+      "aliases": [
+        "磁体",
+        "永磁体",
+        "永磁铁",
+        "永久磁铁",
+        "Magnet"
+      ],
+      "estimate": null,
       "sourceIds": [
         "XINYU_IPO_20260622"
       ],
@@ -2187,14 +2420,7 @@
       },
       "benchmark_prices": [],
       "quantityEvidence": "按隔离器磁路设计；不是每个数据通道必需一个",
-      "checkedAt": "2026-10-08",
-      "aliases": [
-        "磁体",
-        "永磁体",
-        "永磁铁",
-        "永久磁铁",
-        "Magnet"
-      ]
+      "checkedAt": "2026-10-08"
     },
     {
       "id": "collimator",
@@ -2206,6 +2432,20 @@
       "role": "将光纤出射光准直并重新耦合",
       "detail": "每只隔离器两片是本示意的封装假设，芯片级或自由空间方案可能不同。",
       "qtyRule": "collimator",
+      "budgetParent": "isolator",
+      "quantityKind": "physical_assembly",
+      "quantityNote": "数量按当前结构与集成参数作示意计算，尚未核实特定产品的实物件数",
+      "physicalQuantityStatus": "model_assumption",
+      "physicalParent": "isolator",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
+      "aliases": [
+        "准直镜",
+        "准直器",
+        "Collimator",
+        "Collimation Lens"
+      ],
+      "estimate": null,
       "sourceIds": [
         "FOCUSLIGHT_NPO",
         "AFR_PRODUCTS",
@@ -2287,13 +2527,7 @@
         }
       ],
       "quantityEvidence": "按被耦合光路或阵列设计",
-      "checkedAt": "2026-10-08",
-      "aliases": [
-        "准直镜",
-        "准直器",
-        "Collimator",
-        "Collimation Lens"
-      ]
+      "checkedAt": "2026-10-08"
     },
     {
       "id": "isolator_housing",
@@ -2305,18 +2539,26 @@
       "role": "固定内部光学件并保护装配",
       "detail": "整体隔离器采购价值已经包括内部装配及封装。",
       "qtyRule": "isolator",
-      "sourceIds": [],
-      "vendorLinks": [],
-      "priceEvidence": null,
-      "benchmark_prices": [],
-      "quantityEvidence": null,
-      "checkedAt": "2026-10-08",
+      "budgetParent": "isolator",
+      "quantityKind": "physical_assembly",
+      "quantityNote": "数量按当前结构与集成参数作示意计算，尚未核实特定产品的实物件数",
+      "physicalQuantityStatus": "model_assumption",
+      "physicalParent": "isolator",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
       "aliases": [
         "光隔离器外壳",
         "隔离器外壳",
         "隔离器封装壳体",
         "Optical Isolator Housing"
-      ]
+      ],
+      "estimate": null,
+      "sourceIds": [],
+      "vendorLinks": [],
+      "priceEvidence": null,
+      "benchmark_prices": [],
+      "quantityEvidence": null,
+      "checkedAt": "2026-10-08"
     },
     {
       "id": "pm_fiber",
@@ -2328,6 +2570,23 @@
       "role": "输送并保持供光偏振",
       "detail": "供光纤与信号FAU的Tx/Rx光纤单独计数。",
       "qtyRule": "cw",
+      "budgetParent": "els",
+      "quantityKind": "physical_assembly",
+      "quantityNote": "数量按当前结构与集成参数作示意计算，尚未核实特定产品的实物件数",
+      "physicalQuantityStatus": "model_assumption",
+      "physicalParent": "els",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
+      "aliases": [
+        "保偏光纤",
+        "保偏纤",
+        "供光光纤",
+        "PM Fiber",
+        "PM Fibre",
+        "PMF",
+        "Polarisation Maintaining Fibre"
+      ],
+      "estimate": null,
       "sourceIds": [
         "CORNING_PMF",
         "FUJIKURA_PMF",
@@ -2381,16 +2640,7 @@
       },
       "benchmark_prices": [],
       "quantityEvidence": "数量受ELS输出端口和分光设计影响；长度依布线",
-      "checkedAt": "2026-10-08",
-      "aliases": [
-        "保偏光纤",
-        "保偏纤",
-        "供光光纤",
-        "PM Fiber",
-        "PM Fibre",
-        "PMF",
-        "Polarisation Maintaining Fibre"
-      ]
+      "checkedAt": "2026-10-08"
     },
     {
       "id": "laser_driver",
@@ -2402,6 +2652,23 @@
       "role": "为CW激光器提供稳定偏置电流",
       "detail": "与高速调制Driver功能不同，数量采用每路供光一组驱动功能。",
       "qtyRule": "cw",
+      "budgetParent": "els",
+      "quantityKind": "functional_group",
+      "quantityNote": "数量为当前方案的功能分组，具体芯片、接口或封装件数未知",
+      "physicalQuantityStatus": "unknown",
+      "physicalParent": "els",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
+      "aliases": [
+        "激光驱动",
+        "激光驱动器",
+        "激光电流驱动器",
+        "激光器驱动",
+        "Laser Driver",
+        "Laser Diode Driver",
+        "Laser Current Controller"
+      ],
+      "estimate": null,
       "sourceIds": [
         "TI_OPTICAL",
         "WAVELENGTH_LD"
@@ -2443,16 +2710,7 @@
       },
       "benchmark_prices": [],
       "quantityEvidence": "可单通道或多通道控制，不能认定一激光一颗IC",
-      "checkedAt": "2026-10-08",
-      "aliases": [
-        "激光驱动",
-        "激光驱动器",
-        "激光电流驱动器",
-        "激光器驱动",
-        "Laser Driver",
-        "Laser Diode Driver",
-        "Laser Current Controller"
-      ]
+      "checkedAt": "2026-10-08"
     },
     {
       "id": "monitor_pd",
@@ -2464,6 +2722,44 @@
       "role": "反馈光源输出功率",
       "detail": "可内置于激光封装，不应默认视为独立采购芯片。",
       "qtyRule": "cw",
+      "budgetParent": "els",
+      "quantityKind": "functional_channel",
+      "quantityNote": "数量为当前方案的供光或监测功能通道，不能直接解释为独立封装采购数量",
+      "physicalQuantityStatus": "unknown",
+      "physicalParent": "cw",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前示意将本功能放在CW激光封装或热路径附近，预算仍归光源组件；实际可集成、共享或独立配置，未确认通用封装关系及实物件数",
+      "aliases": [
+        "监测PD",
+        "监控PD",
+        "监测探测器",
+        "监控光电二极管",
+        "Monitor PD",
+        "MPD",
+        "监测光电二极管",
+        "监控光探测器",
+        "Monitor Photodetector",
+        "Monitoring Photodiode",
+        "Laser Monitor PD"
+      ],
+      "estimate": {
+        "low": 1,
+        "base": 3,
+        "high": 5,
+        "currency": "USD",
+        "unit": "路",
+        "year": 2026,
+        "status": "engineering_estimate",
+        "sourceIds": [
+          "COHERENT_MONITOR_PD",
+          "LUXNET_MONITOR_PD",
+          "DIGIKEY_MTPD1346D100"
+        ],
+        "scope": "集成监测PD的数量级假设，按每路CW一个监测点分配光源组件已有预算；不额外增加总BOM，也不叠加计入CW价格",
+        "displayNote": "集成监测功能的工程假设，未取得同规格量产报价",
+        "basis": "厂商资料支持监测PD采用裸片并与激光器共同封装；独立TO-46封装器件目录价约$10至18/颗，仅作为不同封装的参照。$1至5/路区间及$3/路中心为工程假设，并非由目录价按固定折扣推导，也未获供应商报价验证",
+        "checkedAt": "2026-10-08"
+      },
       "sourceIds": [
         "HAMAMATSU_PD",
         "COHERENT_MONITOR_PD",
@@ -2520,38 +2816,7 @@
         }
       ],
       "quantityEvidence": "按激光器或监控点设置；可能集成在激光器封装或PIC内",
-      "checkedAt": "2026-10-08",
-      "aliases": [
-        "监测PD",
-        "监控PD",
-        "监测探测器",
-        "监控光电二极管",
-        "Monitor PD",
-        "MPD",
-        "监测光电二极管",
-        "监控光探测器",
-        "Monitor Photodetector",
-        "Monitoring Photodiode",
-        "Laser Monitor PD"
-      ],
-      "estimate": {
-        "low": 1,
-        "base": 3,
-        "high": 5,
-        "currency": "USD",
-        "unit": "路",
-        "year": 2026,
-        "status": "engineering_estimate",
-        "sourceIds": [
-          "COHERENT_MONITOR_PD",
-          "LUXNET_MONITOR_PD",
-          "DIGIKEY_MTPD1346D100"
-        ],
-        "scope": "集成监测PD的数量级假设，按每路CW一个监测点分配光源组件已有预算；不额外增加总BOM，也不叠加计入CW价格",
-        "displayNote": "集成监测功能的工程假设，未取得同规格量产报价",
-        "basis": "厂商资料支持监测PD采用裸片并与激光器共同封装；独立TO-46封装器件目录价约$10至18/颗，仅作为不同封装的参照。$1至5/路区间及$3/路中心为工程假设，并非由目录价按固定折扣推导，也未获供应商报价验证",
-        "checkedAt": "2026-10-08"
-      }
+      "checkedAt": "2026-10-08"
     },
     {
       "id": "tec",
@@ -2561,8 +2826,29 @@
       "category": "热电器件",
       "unit": "组",
       "role": "稳定光源温度与工作点",
-      "detail": "TEC温控与陶瓷壳体只有组合参考区间。当前拆分值使用明确工程假设，点击价格查看分配过程。",
+      "detail": "TEC温控与陶瓷壳体仅有组合参考区间；当前按工程假设核算温控功能的价值和分摊份额，实际温控区及物理归属需具体设计确认",
       "qtyRule": "els",
+      "budgetParent": "els",
+      "quantityKind": "allocated_share",
+      "quantityNote": "按光源预算占用比例显示分摊等效组数；实物温控区、控制电路或阵列数量尚未知，0.5组不表示半个实物器件",
+      "physicalQuantityStatus": "unknown",
+      "physicalParent": "cw",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前示意将本功能放在CW激光封装或热路径附近，预算仍归光源组件；实际可集成、共享或独立配置，未确认通用封装关系及实物件数",
+      "physicalQuantityRule": null,
+      "aliases": [
+        "TEC",
+        "热电制冷器",
+        "半导体制冷器",
+        "制冷片",
+        "热电冷却器",
+        "温度控制组件",
+        "Thermoelectric Cooler",
+        "Thermo Electric Cooler",
+        "Temperature Control",
+        "Thermal Electric Cooler"
+      ],
+      "estimate": null,
       "sourceIds": [
         "FERROTEC_TEC",
         "FUXIN_TEC"
@@ -2604,19 +2890,7 @@
       },
       "benchmark_prices": [],
       "quantityEvidence": "按共享温控区数配置",
-      "checkedAt": "2026-10-08",
-      "aliases": [
-        "TEC",
-        "热电制冷器",
-        "半导体制冷器",
-        "制冷片",
-        "热电冷却器",
-        "温度控制组件",
-        "Thermoelectric Cooler",
-        "Thermo Electric Cooler",
-        "Temperature Control",
-        "Thermal Electric Cooler"
-      ]
+      "checkedAt": "2026-10-08"
     },
     {
       "id": "substrate",
@@ -2628,6 +2902,23 @@
       "role": "支撑光电芯片并完成高速电连接",
       "detail": "不同NPO结构可能使用有机基板、中介层或不同PCB工艺，不把这些技术全部当成必选叠加。",
       "qtyRule": "one",
+      "budgetParent": "engine",
+      "quantityKind": "budget_group",
+      "quantityNote": "节点为预算分类，数量用于分配计算，不对应一颗独立实物器件",
+      "physicalQuantityStatus": "not_applicable",
+      "physicalParent": null,
+      "physicalParentStatus": "not_applicable",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
+      "aliases": [
+        "基板",
+        "封装基板",
+        "电连接",
+        "Substrate",
+        "Package Substrate",
+        "Packaging Substrate",
+        "Electrical Interconnect"
+      ],
+      "estimate": null,
       "sourceIds": [
         "WX_NPO_20260927",
         "FASTPRINT",
@@ -2672,16 +2963,7 @@
       },
       "benchmark_prices": [],
       "quantityEvidence": "通常每只光引擎一块主承载基板；多板结构需另设",
-      "checkedAt": "2026-10-08",
-      "aliases": [
-        "基板",
-        "封装基板",
-        "电连接",
-        "Substrate",
-        "Package Substrate",
-        "Packaging Substrate",
-        "Electrical Interconnect"
-      ]
+      "checkedAt": "2026-10-08"
     },
     {
       "id": "pcb",
@@ -2691,10 +2973,28 @@
       "category": "电互连",
       "unit": "片",
       "role": "连接光引擎、电源与系统接口",
-      "detail": "mSAP为参考材料模型中的组合项；并非所有厂商必然采用相同工艺。",
+      "detail": "光引擎基板下的HDI/mSAP电路板示意；未取得独立报价，当前价值依预算分配或工程单价计算。ELS控制PCB的历史组合参考另行保存，不能移作本节点价格",
       "qtyRule": "one",
+      "budgetParent": "substrate",
+      "quantityKind": "physical_assembly",
+      "quantityNote": "数量按当前结构与集成参数作示意计算，尚未核实特定产品的实物件数",
+      "physicalQuantityStatus": "model_assumption",
+      "physicalParent": null,
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
+      "aliases": [
+        "PCB",
+        "印刷电路板",
+        "电路板",
+        "印制电路板",
+        "HDI",
+        "mSAP",
+        "Printed Circuit Board",
+        "HDI PCB",
+        "mSAP PCB"
+      ],
+      "estimate": null,
       "sourceIds": [
-        "WX_NPO_20260927",
         "FASTPRINT"
       ],
       "vendorLinks": [
@@ -2707,36 +3007,23 @@
           "source_ids": [
             "FASTPRINT"
           ],
-          "note": "PCB/基板能力，未证实本ELS控制板供货"
+          "note": "公开资料支持PCB或封装基板产品能力，未确认当前光引擎电路板型号或供货关系；不沿用ELS控制板的对应关系"
         }
       ],
       "priceEvidence": {
         "low": null,
-        "base": 30,
+        "base": null,
         "high": null,
         "currency": "USD",
-        "unit": "美元/一套ELS PCB",
-        "year": "2026",
-        "status": "source_estimate",
-        "source_ids": [
-          "WX_NPO_20260927"
-        ],
-        "scope": "ELS整套PCB参考；未提供是否包含全部控制IC的清单"
+        "unit": null,
+        "year": null,
+        "status": "unknown",
+        "source_ids": [],
+        "scope": "未取得当前光引擎HDI/mSAP电路板的独立价格；显示值来自基板预算工程分配或规格绑定的本地单价假设"
       },
       "benchmark_prices": [],
-      "quantityEvidence": "按模块板卡数配置",
-      "checkedAt": "2026-10-08",
-      "aliases": [
-        "PCB",
-        "印刷电路板",
-        "电路板",
-        "印制电路板",
-        "HDI",
-        "mSAP",
-        "Printed Circuit Board",
-        "HDI PCB",
-        "mSAP PCB"
-      ]
+      "quantityEvidence": "当前示意按一只光引擎一片计数；实物板卡数量与工艺依具体封装设计",
+      "checkedAt": "2026-10-08"
     },
     {
       "id": "interposer",
@@ -2748,6 +3035,23 @@
       "role": "提供芯片间短距离互连",
       "detail": "在高级参数启用；未启用时仍可浏览器件知识，但数量与BOM不计入。",
       "qtyRule": "interposer",
+      "budgetParent": "substrate",
+      "quantityKind": "physical_assembly",
+      "quantityNote": "数量按当前结构与集成参数作示意计算，尚未核实特定产品的实物件数",
+      "physicalQuantityStatus": "model_assumption",
+      "physicalParent": null,
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
+      "aliases": [
+        "中介层",
+        "转接层",
+        "精密载板",
+        "中介板",
+        "Interposer",
+        "Carrier",
+        "Precision Carrier"
+      ],
+      "estimate": null,
       "sourceIds": [
         "ASE",
         "SHINKO"
@@ -2789,16 +3093,7 @@
       },
       "benchmark_prices": [],
       "quantityEvidence": "依2D/2.5D/3D封装方案；若无独立中介层则为0",
-      "checkedAt": "2026-10-08",
-      "aliases": [
-        "中介层",
-        "转接层",
-        "精密载板",
-        "中介板",
-        "Interposer",
-        "Carrier",
-        "Precision Carrier"
-      ]
+      "checkedAt": "2026-10-08"
     },
     {
       "id": "other",
@@ -2810,6 +3105,21 @@
       "role": "提供控制、连接、机械与散热支持",
       "detail": "参考BOM仅披露其他材料组合预算。内部组件按明确工程权重分配，子件不再叠加到总额。",
       "qtyRule": "one",
+      "budgetParent": "engine",
+      "quantityKind": "budget_group",
+      "quantityNote": "节点为预算分类，数量用于分配计算，不对应一颗独立实物器件",
+      "physicalQuantityStatus": "not_applicable",
+      "physicalParent": null,
+      "physicalParentStatus": "not_applicable",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
+      "aliases": [
+        "辅助材料",
+        "配套材料",
+        "配套组件",
+        "Supporting Components",
+        "Supporting Materials"
+      ],
+      "estimate": null,
       "sourceIds": [
         "WX_NPO_20260927"
       ],
@@ -2829,14 +3139,7 @@
       },
       "benchmark_prices": [],
       "quantityEvidence": "每光引擎一组成本池",
-      "checkedAt": "2026-10-08",
-      "aliases": [
-        "辅助材料",
-        "配套材料",
-        "配套组件",
-        "Supporting Components",
-        "Supporting Materials"
-      ]
+      "checkedAt": "2026-10-08"
     },
     {
       "id": "connector",
@@ -2848,6 +3151,23 @@
       "role": "与外部电接口和光纤系统连接",
       "detail": "组件数量按所选NPO单元一组接口集合表示，不能从带宽直接反推具体插头数。",
       "qtyRule": "one",
+      "budgetParent": "other",
+      "quantityKind": "functional_group",
+      "quantityNote": "数量为当前方案的功能分组，具体芯片、接口或封装件数未知",
+      "physicalQuantityStatus": "unknown",
+      "physicalParent": null,
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
+      "aliases": [
+        "光连接器",
+        "电连接器",
+        "光纤连接器",
+        "连接器",
+        "Optical Connector",
+        "Electrical Connector",
+        "Fiber Connector"
+      ],
+      "estimate": null,
       "sourceIds": [
         "MOLEX_CPO",
         "SENKO_FA",
@@ -2913,16 +3233,7 @@
       },
       "benchmark_prices": [],
       "quantityEvidence": "按纤芯端口与连接器每口容量计算，不按比特率直接计算",
-      "checkedAt": "2026-10-08",
-      "aliases": [
-        "光连接器",
-        "电连接器",
-        "光纤连接器",
-        "连接器",
-        "Optical Connector",
-        "Electrical Connector",
-        "Fiber Connector"
-      ]
+      "checkedAt": "2026-10-08"
     },
     {
       "id": "control",
@@ -2934,12 +3245,13 @@
       "role": "管理供电、监控和校准",
       "detail": "没有来源的细分成本并入其他材料，避免加总出重复成本。",
       "qtyRule": "one",
-      "sourceIds": [],
-      "vendorLinks": [],
-      "priceEvidence": null,
-      "benchmark_prices": [],
-      "quantityEvidence": null,
-      "checkedAt": "2026-10-08",
+      "budgetParent": "other",
+      "quantityKind": "functional_group",
+      "quantityNote": "数量为当前方案的功能分组，具体芯片、接口或封装件数未知",
+      "physicalQuantityStatus": "unknown",
+      "physicalParent": null,
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
       "aliases": [
         "控制供电",
         "控制与电源",
@@ -2948,7 +3260,14 @@
         "Control",
         "Control and Power",
         "Power and Control"
-      ]
+      ],
+      "estimate": null,
+      "sourceIds": [],
+      "vendorLinks": [],
+      "priceEvidence": null,
+      "benchmark_prices": [],
+      "quantityEvidence": null,
+      "checkedAt": "2026-10-08"
     },
     {
       "id": "mcu",
@@ -2960,6 +3279,25 @@
       "role": "执行状态管理和校准",
       "detail": "每NPO一组是功能分组，实际可由系统级控制器共享。",
       "qtyRule": "one",
+      "budgetParent": "control",
+      "quantityKind": "functional_group",
+      "quantityNote": "数量为当前方案的功能分组，具体芯片、接口或封装件数未知",
+      "physicalQuantityStatus": "unknown",
+      "physicalParent": null,
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
+      "aliases": [
+        "MCU",
+        "微控制器",
+        "单片机",
+        "主控芯片",
+        "控制器芯片",
+        "Microcontroller",
+        "Micro Controller",
+        "Control Chip",
+        "Controller"
+      ],
+      "estimate": null,
       "sourceIds": [
         "GIGA_MCU"
       ],
@@ -2989,18 +3327,7 @@
       },
       "benchmark_prices": [],
       "quantityEvidence": "按管理域计数，非按光通道数线性增长",
-      "checkedAt": "2026-10-08",
-      "aliases": [
-        "MCU",
-        "微控制器",
-        "单片机",
-        "主控芯片",
-        "控制器芯片",
-        "Microcontroller",
-        "Micro Controller",
-        "Control Chip",
-        "Controller"
-      ]
+      "checkedAt": "2026-10-08"
     },
     {
       "id": "pmic",
@@ -3012,6 +3339,24 @@
       "role": "提供多路稳定电源",
       "detail": "数量为电源功能组，不等于已核定的独立芯片数。",
       "qtyRule": "one",
+      "budgetParent": "control",
+      "quantityKind": "functional_group",
+      "quantityNote": "数量为当前方案的功能分组，具体芯片、接口或封装件数未知",
+      "physicalQuantityStatus": "unknown",
+      "physicalParent": null,
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
+      "aliases": [
+        "PMIC",
+        "电源管理芯片",
+        "电源管理集成电路",
+        "电源芯片",
+        "Power Management IC",
+        "Power Management Integrated Circuit",
+        "DC DC",
+        "DC to DC Converter"
+      ],
+      "estimate": null,
       "sourceIds": [
         "TI_OPTICAL"
       ],
@@ -3041,17 +3386,7 @@
       },
       "benchmark_prices": [],
       "quantityEvidence": "按电压轨、电流和控制域设置",
-      "checkedAt": "2026-10-08",
-      "aliases": [
-        "PMIC",
-        "电源管理芯片",
-        "电源管理集成电路",
-        "电源芯片",
-        "Power Management IC",
-        "Power Management Integrated Circuit",
-        "DC DC",
-        "DC to DC Converter"
-      ]
+      "checkedAt": "2026-10-08"
     },
     {
       "id": "thermal",
@@ -3063,6 +3398,22 @@
       "role": "提供散热路径及机械保护",
       "detail": "可视化展示功能层级，详细热设计仍需要功耗与环境条件。",
       "qtyRule": "one",
+      "budgetParent": "other",
+      "quantityKind": "functional_group",
+      "quantityNote": "数量为当前方案的功能分组，具体芯片、接口或封装件数未知",
+      "physicalQuantityStatus": "unknown",
+      "physicalParent": null,
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
+      "aliases": [
+        "热管理与机械封装",
+        "热管理",
+        "散热封装",
+        "Thermal Management",
+        "Mechanical Packaging",
+        "Thermal Packaging"
+      ],
+      "estimate": null,
       "sourceIds": [
         "BOYD_COOL",
         "HENKEL_OPTICAL"
@@ -3104,15 +3455,7 @@
       },
       "benchmark_prices": [],
       "quantityEvidence": "按热区、覆盖面积与散热功率配置",
-      "checkedAt": "2026-10-08",
-      "aliases": [
-        "热管理与机械封装",
-        "热管理",
-        "散热封装",
-        "Thermal Management",
-        "Mechanical Packaging",
-        "Thermal Packaging"
-      ]
+      "checkedAt": "2026-10-08"
     },
     {
       "id": "heatsink",
@@ -3124,6 +3467,21 @@
       "role": "把芯片热量传向系统冷却侧",
       "detail": "散热面积与功耗相关，不按光通道等比例确定外形。",
       "qtyRule": "one",
+      "budgetParent": "thermal",
+      "quantityKind": "physical_assembly",
+      "quantityNote": "数量按当前结构与集成参数作示意计算，尚未核实特定产品的实物件数",
+      "physicalQuantityStatus": "model_assumption",
+      "physicalParent": null,
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
+      "aliases": [
+        "热扩散器",
+        "散热片",
+        "Heat Sink",
+        "Heatsink",
+        "Heat Spreader"
+      ],
+      "estimate": null,
       "sourceIds": [
         "BOYD_COOL"
       ],
@@ -3153,14 +3511,7 @@
       },
       "benchmark_prices": [],
       "quantityEvidence": "按热区和机构设计",
-      "checkedAt": "2026-10-08",
-      "aliases": [
-        "热扩散器",
-        "散热片",
-        "Heat Sink",
-        "Heatsink",
-        "Heat Spreader"
-      ]
+      "checkedAt": "2026-10-08"
     },
     {
       "id": "tim",
@@ -3170,8 +3521,24 @@
       "category": "材料",
       "unit": "组",
       "role": "填充接触界面并降低热阻",
-      "detail": "在封装组合成本内，缺少拆分资料时不生成独立报价。",
+      "detail": "导热界面材料属于封装组合；缺少独立报价时显示工程分配或单价假设，不将分配值当作可采购报价",
       "qtyRule": "one",
+      "budgetParent": "thermal",
+      "quantityKind": "material_allocation",
+      "quantityNote": "数量为工程核算份数或材料功能组，不等于已确认的面积、质量、批次或独立采购件数",
+      "physicalQuantityStatus": "unknown",
+      "physicalParent": null,
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
+      "aliases": [
+        "TIM",
+        "热界面材料",
+        "导热材料",
+        "导热介质",
+        "Thermal Interface",
+        "Thermal Interface Material"
+      ],
+      "estimate": null,
       "sourceIds": [
         "INDIUM_TIM",
         "HENKEL_OPTICAL"
@@ -3213,15 +3580,7 @@
       },
       "benchmark_prices": [],
       "quantityEvidence": "按接触面积与胶层/片材厚度计量",
-      "checkedAt": "2026-10-08",
-      "aliases": [
-        "TIM",
-        "热界面材料",
-        "导热材料",
-        "导热介质",
-        "Thermal Interface",
-        "Thermal Interface Material"
-      ]
+      "checkedAt": "2026-10-08"
     },
     {
       "id": "housing",
@@ -3233,6 +3592,23 @@
       "role": "保护器件并保持装配精度",
       "detail": "示意外形不代表某家产品的尺寸或实物拆解。",
       "qtyRule": "one",
+      "budgetParent": "thermal",
+      "quantityKind": "physical_assembly",
+      "quantityNote": "数量按当前结构与集成参数作示意计算，尚未核实特定产品的实物件数",
+      "physicalQuantityStatus": "model_assumption",
+      "physicalParent": null,
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
+      "aliases": [
+        "机械外壳",
+        "封装壳体",
+        "外壳",
+        "壳体",
+        "Mechanical Housing",
+        "Package Housing",
+        "Enclosure"
+      ],
+      "estimate": null,
       "sourceIds": [
         "KYOCERA_PKG",
         "XINYU_IPO_20260622",
@@ -3286,16 +3662,7 @@
       },
       "benchmark_prices": [],
       "quantityEvidence": "按独立模块/封装壳体计数",
-      "checkedAt": "2026-10-08",
-      "aliases": [
-        "机械外壳",
-        "封装壳体",
-        "外壳",
-        "壳体",
-        "Mechanical Housing",
-        "Package Housing",
-        "Enclosure"
-      ]
+      "checkedAt": "2026-10-08"
     },
     {
       "id": "pm_fau",
@@ -3307,6 +3674,24 @@
       "role": "定位供光端的保偏光纤阵列",
       "detail": "供光FAU与信号Tx/Rx FAU分别统计；按8路保偏阵列与ELS等比例分摊，不能把保偏光纤根数当成FAU组件数。",
       "category": "材料与配套",
+      "budgetParent": "els",
+      "quantityKind": "allocated_share",
+      "quantityNote": "按光源预算占用比例显示分摊等效组数；实物温控区、控制电路或阵列数量尚未知，0.5组不表示半个实物器件",
+      "physicalQuantityStatus": "unknown",
+      "physicalParent": "els",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
+      "physicalQuantityRule": null,
+      "aliases": [
+        "保偏光纤阵列",
+        "保偏FAU",
+        "保偏阵列",
+        "PM FAU",
+        "PM Fibre Array",
+        "PM Fiber Array Unit",
+        "Polarization Maintaining Fiber Array"
+      ],
+      "estimate": null,
       "sourceIds": [
         "WX_NPO_20260927",
         "AFR_AI",
@@ -3363,16 +3748,7 @@
       },
       "benchmark_prices": [],
       "quantityEvidence": "按ELS供光端口与每阵列容量配置",
-      "checkedAt": "2026-10-08",
-      "aliases": [
-        "保偏光纤阵列",
-        "保偏FAU",
-        "保偏阵列",
-        "PM FAU",
-        "PM Fibre Array",
-        "PM Fiber Array Unit",
-        "Polarization Maintaining Fiber Array"
-      ]
+      "checkedAt": "2026-10-08"
     },
     {
       "id": "els_optics",
@@ -3384,6 +3760,25 @@
       "role": "整形、准直并筛选供光光谱",
       "detail": "来源仅披露组合预算，不等同于隔离器本身的采购成本。",
       "category": "材料与配套",
+      "budgetParent": "els",
+      "quantityKind": "allocated_share",
+      "quantityNote": "按光源预算占用比例显示分摊等效组数；实物温控区、控制电路或阵列数量尚未知，0.5组不表示半个实物器件",
+      "physicalQuantityStatus": "unknown",
+      "physicalParent": "els",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
+      "physicalQuantityRule": null,
+      "aliases": [
+        "激光整形",
+        "光源滤光",
+        "光束整形",
+        "滤光器",
+        "Beam Shaping",
+        "Laser Shaping",
+        "Optical Filtering",
+        "Laser Filter"
+      ],
+      "estimate": null,
       "sourceIds": [
         "WX_NPO_20260927",
         "FOCUSLIGHT_NPO",
@@ -3440,17 +3835,7 @@
       },
       "benchmark_prices": [],
       "quantityEvidence": "按被供光路径配置",
-      "checkedAt": "2026-10-08",
-      "aliases": [
-        "激光整形",
-        "光源滤光",
-        "光束整形",
-        "滤光器",
-        "Beam Shaping",
-        "Laser Shaping",
-        "Optical Filtering",
-        "Laser Filter"
-      ]
+      "checkedAt": "2026-10-08"
     },
     {
       "id": "tec_controller",
@@ -3460,8 +3845,26 @@
       "qtyRule": "els",
       "unit": "组",
       "role": "根据监测反馈调节光源温度",
-      "detail": "TEC制冷片、温控电路和陶瓷壳体组合价格不强行拆分。",
+      "detail": "温控电路作为光源预算内的独立核算项；当前拆分采用工程假设，实物控制器数量与独立报价尚未验证",
       "category": "材料与配套",
+      "budgetParent": "els",
+      "quantityKind": "allocated_share",
+      "quantityNote": "按光源预算占用比例显示分摊等效组数；实物温控区、控制电路或阵列数量尚未知，0.5组不表示半个实物器件",
+      "physicalQuantityStatus": "unknown",
+      "physicalParent": "els",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
+      "physicalQuantityRule": null,
+      "aliases": [
+        "TEC控制器",
+        "TEC驱动",
+        "温度控制电路",
+        "热电制冷控制器",
+        "TEC Controller",
+        "Temperature Controller",
+        "TEC Driver"
+      ],
+      "estimate": null,
       "sourceIds": [
         "ADI_TEC",
         "TI_OPTICAL"
@@ -3519,16 +3922,7 @@
         }
       ],
       "quantityEvidence": "按独立温控区设置",
-      "checkedAt": "2026-10-08",
-      "aliases": [
-        "TEC控制器",
-        "TEC驱动",
-        "温度控制电路",
-        "热电制冷控制器",
-        "TEC Controller",
-        "Temperature Controller",
-        "TEC Driver"
-      ]
+      "checkedAt": "2026-10-08"
     },
     {
       "id": "ferrule",
@@ -3540,6 +3934,22 @@
       "role": "精密定位连接器光纤端面",
       "detail": "数量为接口集合的功能组，具体连接器端口数仍需型号资料。",
       "category": "材料与配套",
+      "budgetParent": "connector",
+      "quantityKind": "functional_group",
+      "quantityNote": "数量为当前方案的功能分组，具体芯片、接口或封装件数未知",
+      "physicalQuantityStatus": "unknown",
+      "physicalParent": "connector",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
+      "aliases": [
+        "光纤插芯",
+        "连接器插芯",
+        "陶瓷插芯",
+        "Fiber Ferrule",
+        "Fibre Ferrule",
+        "Connector Ferrule"
+      ],
+      "estimate": null,
       "sourceIds": [
         "USCONEC_MT"
       ],
@@ -3569,15 +3979,7 @@
       },
       "benchmark_prices": [],
       "quantityEvidence": "每物理连接器端配置对应插芯",
-      "checkedAt": "2026-10-08",
-      "aliases": [
-        "光纤插芯",
-        "连接器插芯",
-        "陶瓷插芯",
-        "Fiber Ferrule",
-        "Fibre Ferrule",
-        "Connector Ferrule"
-      ]
+      "checkedAt": "2026-10-08"
     },
     {
       "id": "cover_plate",
@@ -3589,6 +3991,22 @@
       "role": "约束并保护V槽中的光纤",
       "detail": "每FAU一片是装配示意假设。",
       "category": "材料与配套",
+      "budgetParent": "fau",
+      "quantityKind": "physical_assembly",
+      "quantityNote": "数量按当前结构与集成参数作示意计算，尚未核实特定产品的实物件数",
+      "physicalQuantityStatus": "model_assumption",
+      "physicalParent": "fau",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
+      "aliases": [
+        "光纤阵列盖板",
+        "阵列盖板",
+        "盖板",
+        "FAU Cover Plate",
+        "Fibre Array Cover Plate",
+        "Cover Plate"
+      ],
+      "estimate": null,
       "sourceIds": [
         "THREEV",
         "MOLEX_ARRAY"
@@ -3630,15 +4048,7 @@
       },
       "benchmark_prices": [],
       "quantityEvidence": "通常每阵列一组，依结构变化",
-      "checkedAt": "2026-10-08",
-      "aliases": [
-        "光纤阵列盖板",
-        "阵列盖板",
-        "盖板",
-        "FAU Cover Plate",
-        "Fibre Array Cover Plate",
-        "Cover Plate"
-      ]
+      "checkedAt": "2026-10-08"
     },
     {
       "id": "inp_substrate",
@@ -3650,6 +4060,21 @@
       "role": "提供激光外延结构的半导体衬底",
       "detail": "衬底属于芯片内部材料，不将晶圆采购价当成单颗芯片材料价。",
       "category": "材料与配套",
+      "budgetParent": "laser_die",
+      "quantityKind": "material_allocation",
+      "quantityNote": "数量为工程核算份数或材料功能组，不等于已确认的面积、质量、批次或独立采购件数",
+      "physicalQuantityStatus": "unknown",
+      "physicalParent": "laser_die",
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
+      "aliases": [
+        "磷化铟衬底",
+        "磷化铟基片",
+        "InP基片",
+        "衬底",
+        "Indium Phosphide Substrate"
+      ],
+      "estimate": null,
       "sourceIds": [
         "LITE_CW",
         "COHR_CW",
@@ -3703,14 +4128,7 @@
       },
       "benchmark_prices": [],
       "quantityEvidence": "按晶圆有效芯片数和良率分摊",
-      "checkedAt": "2026-10-08",
-      "aliases": [
-        "磷化铟衬底",
-        "磷化铟基片",
-        "InP基片",
-        "衬底",
-        "Indium Phosphide Substrate"
-      ]
+      "checkedAt": "2026-10-08"
     },
     {
       "id": "solder",
@@ -3722,6 +4140,24 @@
       "role": "建立芯片及基板间的电与热连接",
       "detail": "计为本单元装配材料，不按焊点任意估单价。",
       "category": "材料与配套",
+      "budgetParent": "substrate",
+      "quantityKind": "material_allocation",
+      "quantityNote": "数量为工程核算份数或材料功能组，不等于已确认的面积、质量、批次或独立采购件数",
+      "physicalQuantityStatus": "unknown",
+      "physicalParent": null,
+      "physicalParentStatus": "schematic",
+      "physicalParentNote": "当前结构树同时包含物理结构、功能分组与预算分类；预算父级不自动证明实物封装归属",
+      "aliases": [
+        "焊接材料",
+        "键合材料",
+        "焊料",
+        "键合",
+        "Solder",
+        "Bonding Material",
+        "Solder Material",
+        "Bonding"
+      ],
+      "estimate": null,
       "sourceIds": [
         "INDIUM_TIM",
         "FOCUSLIGHT_MAT"
@@ -3763,17 +4199,479 @@
       },
       "benchmark_prices": [],
       "quantityEvidence": "按焊点数/焊接面积和工艺损耗计量",
-      "checkedAt": "2026-10-08",
-      "aliases": [
-        "焊接材料",
-        "键合材料",
-        "焊料",
-        "键合",
-        "Solder",
-        "Bonding Material",
-        "Solder Material",
-        "Bonding"
-      ]
+      "checkedAt": "2026-10-08"
+    }
+  ],
+  "valuationModel": {
+    "version": "1.0.0",
+    "status": "engineering_allocation",
+    "asOf": "2026-10-08",
+    "description": "上级预算约束下的功能及器件价值分配。六个一级池沿用现有来源参考；末级权重是可修改工程假设，不是厂商报价。当前数量为0的权重留在父级未拆分余额。",
+    "sourceIds": [
+      "WX_NPO_20260927"
+    ],
+    "rules": {
+      "pic": {
+        "weights": {
+          "modulator": 40,
+          "photodiode": 20,
+          "waveguide": 10,
+          "coupler": 10,
+          "splitter": 5,
+          "phase": 5
+        },
+        "reserveWeight": 10,
+        "basis": "按PIC集成功能分配芯片预算；权重是工程假设，不代表功能可独立采购或真实芯片面积比例"
+      },
+      "eic": {
+        "weights": {
+          "driver": 50,
+          "tia": 50
+        },
+        "reserveWeight": 0,
+        "basis": "来源仅披露Driver与TIA合计；Tx驱动和Rx放大各分配一半为展示假设，不是已披露的分项价格"
+      },
+      "fau": {
+        "weights": {
+          "vgroove": 20,
+          "fiber": 10,
+          "lens": 15,
+          "adhesive": 10,
+          "cover_plate": 5
+        },
+        "reserveWeight": 40,
+        "basis": "FAU细件按工程权重分配；保留40份未拆分预算，不把精密装配和测试全部归给材料"
+      },
+      "substrate": {
+        "weights": {
+          "pcb": 60,
+          "interposer": 20,
+          "solder": 10
+        },
+        "reserveWeight": 10,
+        "basis": "光引擎基板内部预算分配；此PCB不是来源ELS控制PCB的30美元组合项；未配置中介层的权重保留为未拆分预算"
+      },
+      "other": {
+        "weights": {
+          "connector": 20,
+          "control": 25,
+          "thermal": 45
+        },
+        "reserveWeight": 10,
+        "basis": "配套与热管理组合预算内部的工程分配，不对应独立报价"
+      },
+      "connector": {
+        "weights": {
+          "ferrule": 50
+        },
+        "reserveWeight": 50,
+        "basis": "插芯分配连接器预算的一半，其余结构和装配保留未拆分"
+      },
+      "control": {
+        "weights": {
+          "mcu": 60,
+          "pmic": 40
+        },
+        "reserveWeight": 0,
+        "basis": "控制与供电预算按60比40分配给控制芯片及电源管理，比例未获器件报价验证"
+      },
+      "thermal": {
+        "weights": {
+          "heatsink": 45,
+          "tim": 10,
+          "housing": 35
+        },
+        "reserveWeight": 10,
+        "basis": "散热器、导热材料、外壳按工程权重分配，保留未拆分预算"
+      },
+      "cw": {
+        "weights": {
+          "laser_die": 70,
+          "laser_submount": 20
+        },
+        "reserveWeight": 10,
+        "basis": "CW净预算中按70份激光芯片、20份热沉与Submount、10份未拆分分配；监测PD已在光源层单列，不能重复加入"
+      },
+      "laser_die": {
+        "weights": {
+          "inp_substrate": 35
+        },
+        "reserveWeight": 65,
+        "basis": "InP衬底分配芯片净预算的35%为工程假设；剩余65%未拆分，不能据此推断材料毛利或实际行业价值份额"
+      },
+      "isolator": {
+        "weights": {
+          "faraday": 40,
+          "polarizer": 10,
+          "analyzer": 10,
+          "magnet": 10,
+          "collimator": 10,
+          "isolator_housing": 10
+        },
+        "reserveWeight": 10,
+        "basis": "隔离器内部材料与器件分配假设；本模型令法拉第旋片占40%，缺少同规格量产拆价验证"
+      },
+      "faraday": {
+        "weights": {
+          "garnet": 65,
+          "coating": 15
+        },
+        "reserveWeight": 20,
+        "basis": "旋片预算按65份磁光晶体、15份镀膜、20份未拆分分配，未取得材料加工同口径拆价"
+      },
+      "els": {
+        "weights": {
+          "cw": 136,
+          "isolator": 18,
+          "pm_fiber": 6,
+          "laser_driver": 15,
+          "tec": 36,
+          "pm_fau": 24,
+          "els_optics": 12,
+          "tec_controller": 6
+        },
+        "reserveWeight": 23,
+        "basis": "先扣已单列的监测PD，再按以下默认预算权重分配光源剩余预算。来源组合项和当前结构树不完全对应，拆分及包含关系均为工程假设；保留23份未拆分余额",
+        "weightNotes": {
+          "cw": "默认权重136＝原CW组合参考160−8个监测点×假设3。将监测PD从CW组合中单列是防止重复计算的建模选择，来源未确认该包含关系；当前值不等于原文20+/颗CW参考价",
+          "isolator": "默认权重18＝整形滤光组合参考30×假设60%。将隔离器归入这一组合仅为建模选择，来源未确认包含关系",
+          "els_optics": "默认权重12＝整形滤光组合参考30×假设40%，与单列隔离器共用该组合预算",
+          "pm_fau": "默认权重24＝8路保偏FAU组合参考30×假设80%，当前净分配已扣除单列供光纤",
+          "pm_fiber": "默认权重6＝8路保偏FAU组合参考30×假设20%，不是公开裸光纤单价",
+          "laser_driver": "默认权重15＝ELS控制PCB组合参考30×假设50%；来源没有逐项IC清单",
+          "tec_controller": "默认权重6＝ELS控制PCB组合参考30×假设20%；来源没有逐项IC清单",
+          "tec": "默认权重36＝TEC及陶瓷组合参考区间40至50的假设中值45×80%；45不是原文披露单值，当前分配也不是独立TEC报价"
+        }
+      }
+    }
+  },
+  "historicalEvidence": {
+    "els_control_pcb": {
+      "id": "els_control_pcb",
+      "name": "控制PCB/PCBA",
+      "category": "封装与互连",
+      "function": "承载电源、控制和低速连接等电路",
+      "parent": "els",
+      "quantity_basis": "按模块板卡数配置",
+      "notes": "ELS PCB参考值与引擎mSAP基板分开；控制IC可能含于PCBA报价",
+      "price": {
+        "low": null,
+        "base": 30,
+        "high": null,
+        "currency": "USD",
+        "unit": "美元/一套ELS PCB",
+        "year": "2026",
+        "status": "source_estimate",
+        "source_ids": [
+          "WX_NPO_20260927"
+        ],
+        "scope": "ELS整套PCB参考；未提供是否包含全部控制IC的清单"
+      },
+      "benchmark_prices": [],
+      "vendors": [
+        {
+          "vendor_id": "fastprint",
+          "role": "mSAP及封装基板",
+          "status": "产品能力",
+          "source_ids": [
+            "FASTPRINT"
+          ],
+          "note": "PCB/基板能力，未证实本ELS控制板供货"
+        }
+      ],
+      "checked_at": "2026-10-08",
+      "vendor_coverage": {
+        "domestic": 1,
+        "international": 0,
+        "note": "未列出厂商不代表不存在；仅收录本轮取得产品或披露依据的关系"
+      },
+      "original_component_id": "pcb",
+      "evidence_entity": "ELS控制PCB/PCBA",
+      "record_status": "historical_scope_reference",
+      "scope_note": "保留原始ELS控制PCB组合参考，与当前光引擎基板下的高密度电路板节点分别记录；不作为该节点独立价格或供货证据"
+    }
+  },
+  "parameterDefinitions": {
+    "rate": {
+      "label": "单向标称带宽",
+      "allowedValues": [
+        3.2,
+        6.4
+      ],
+      "sourceIds": [
+        "AR02",
+        "AR03"
+      ],
+      "evidenceTier": "engineering_assumption",
+      "assumption": "3.2T与6.4T为当前研究范围；具体内部芯片数仍采用集成假设",
+      "effect": "影响光通道与所需器件数量，不把Tx与Rx相加作为名义带宽",
+      "sourceBoundary": "列出的来源用于相邻产品、架构或集成方式参考，不证明此参数的全部选值已验证；无来源时明确保留为工程假设"
+    },
+    "laneRate": {
+      "label": "每条光通道速率",
+      "allowedValues": [
+        200,
+        400
+      ],
+      "sourceIds": [
+        "AR02",
+        "AR07",
+        "AR08"
+      ],
+      "evidenceTier": "engineering_assumption",
+      "assumption": "400G为电光同速的前瞻研究情景，厂商技术参考不构成完整NPO量产BOM",
+      "effect": "改变所需光电通道数量；未计400G单价溢价、良率、功耗差异",
+      "sourceBoundary": "列出的来源用于相邻产品、架构或集成方式参考，不证明此参数的全部选值已验证；无来源时明确保留为工程假设"
+    },
+    "laser": {
+      "label": "光源位置",
+      "allowedValues": [
+        "external",
+        "board"
+      ],
+      "sourceIds": [
+        "AR01",
+        "AR02"
+      ],
+      "evidenceTier": "engineering_assumption",
+      "assumption": "外置与板载为位置及封装情景，未取得同一型号的两种可替换完整报价",
+      "effect": "不自动假设板载方案节省光源预算或具有相同维护方式",
+      "sourceBoundary": "列出的来源用于相邻产品、架构或集成方式参考，不证明此参数的全部选值已验证；无来源时明确保留为工程假设"
+    },
+    "driverChannels": {
+      "label": "每颗Driver通道数",
+      "allowedValues": [
+        4,
+        8,
+        16
+      ],
+      "sourceIds": [
+        "AR06"
+      ],
+      "evidenceTier": "engineering_assumption",
+      "assumption": "当前每颗集成度由用户选择；产品资料只支持相关集成路线，不证明全部选项有同规格可采购器件",
+      "effect": "用于向上取整等效封装数；改变集成度会改变规格，旧单价不能无条件沿用",
+      "sourceBoundary": "列出的来源用于相邻产品、架构或集成方式参考，不证明此参数的全部选值已验证；无来源时明确保留为工程假设"
+    },
+    "tiaChannels": {
+      "label": "每颗TIA通道数",
+      "allowedValues": [
+        4,
+        8,
+        16
+      ],
+      "sourceIds": [
+        "AR06"
+      ],
+      "evidenceTier": "engineering_assumption",
+      "assumption": "当前每颗集成度由用户选择；产品资料只支持相关集成路线，不证明全部选项有同规格可采购器件",
+      "effect": "用于向上取整等效封装数；改变集成度会改变规格，旧单价不能无条件沿用",
+      "sourceBoundary": "列出的来源用于相邻产品、架构或集成方式参考，不证明此参数的全部选值已验证；无来源时明确保留为工程假设"
+    },
+    "picChannels": {
+      "label": "每颗PIC双向通道数",
+      "allowedValues": [
+        4,
+        8,
+        16
+      ],
+      "sourceIds": [
+        "AR05"
+      ],
+      "evidenceTier": "engineering_assumption",
+      "assumption": "每颗PIC承载通道数为工程集成假设，非已核实厂商裸片数量",
+      "effect": "改变等效裸片数；同一功能预算内部摊分不等于独立采购价",
+      "sourceBoundary": "列出的来源用于相邻产品、架构或集成方式参考，不证明此参数的全部选值已验证；无来源时明确保留为工程假设"
+    },
+    "fauCapacity": {
+      "label": "每组信号FAU芯数",
+      "allowedValues": [
+        4,
+        8,
+        16
+      ],
+      "sourceIds": [
+        "AR11"
+      ],
+      "evidenceTier": "engineering_assumption",
+      "assumption": "默认Tx/Rx分体排纤，阵列容量可选；不代表特定NPO的实际阵列结构",
+      "effect": "阵列总成数与光纤根数分别计算；容量变化构成单价规格变化",
+      "sourceBoundary": "列出的来源用于相邻产品、架构或集成方式参考，不证明此参数的全部选值已验证；无来源时明确保留为工程假设"
+    },
+    "cwFanout": {
+      "label": "每路CW服务的Tx通道数",
+      "allowedValues": [
+        1,
+        2,
+        4,
+        8
+      ],
+      "sourceIds": [
+        "AR01",
+        "AR02"
+      ],
+      "evidenceTier": "engineering_assumption",
+      "assumption": "供光扇出为可调工程假设，仍需独立验证激光功率、分光损耗和链路预算",
+      "effect": "改变供光路径及光源分摊份额；数量守恒不证明光功率可行",
+      "sourceBoundary": "列出的来源用于相邻产品、架构或集成方式参考，不证明此参数的全部选值已验证；无来源时明确保留为工程假设"
+    },
+    "rotators": {
+      "label": "每只隔离器旋片数量",
+      "allowedValues": [
+        1,
+        2
+      ],
+      "sourceIds": [],
+      "evidenceTier": "engineering_assumption",
+      "assumption": "当前采用单路偏振相关隔离器示意，级数与共片结构未获同规格报价验证",
+      "effect": "预算模式保持上级预算，成本模式按规格对应的数量与工程单价汇总",
+      "sourceBoundary": "列出的来源用于相邻产品、架构或集成方式参考，不证明此参数的全部选值已验证；无来源时明确保留为工程假设"
+    },
+    "fauLens": {
+      "label": "是否采用透镜耦合",
+      "allowedValues": [
+        true,
+        false
+      ],
+      "sourceIds": [],
+      "evidenceTier": "engineering_assumption",
+      "assumption": "透镜耦合与直接耦合为示意设计选择，不代表同一产品可无代价替换",
+      "effect": "关闭时透镜数量为0；预算模式保留未拆分余额，不将其分给其他材料",
+      "sourceBoundary": "列出的来源用于相邻产品、架构或集成方式参考，不证明此参数的全部选值已验证；无来源时明确保留为工程假设"
+    },
+    "interposer": {
+      "label": "是否配置独立中介层",
+      "allowedValues": [
+        false,
+        true
+      ],
+      "sourceIds": [],
+      "evidenceTier": "engineering_assumption",
+      "assumption": "独立中介层仅作为可选结构示意，实际封装堆叠和设计需逐型号验证",
+      "effect": "关闭时不显示该节点金额；预算模式保留对应未拆分余额",
+      "sourceBoundary": "列出的来源用于相邻产品、架构或集成方式参考，不证明此参数的全部选值已验证；无来源时明确保留为工程假设"
+    },
+    "pricingMode": {
+      "label": "计价模式",
+      "allowedValues": [
+        "allocation",
+        "cost"
+      ],
+      "sourceIds": [],
+      "evidenceTier": "engineering_assumption",
+      "assumption": "两种模式均为工程研究模型，不代表同规格采购报价",
+      "effect": "预算分配用于查看父子归属；成本测算用于查看数量和规格绑定单价假设的影响",
+      "sourceBoundary": "列出的来源用于相邻产品、架构或集成方式参考，不证明此参数的全部选值已验证；无来源时明确保留为工程假设"
+    }
+  },
+  "alternativeArchitectures": [
+    {
+      "id": "npo3200-8x400-electrical200",
+      "label": "3.2T · 8×400G",
+      "capacityGbps": 3200,
+      "capacityBasis": "per_direction",
+      "opticalLaneGbps": 400,
+      "opticalTxLanes": 8,
+      "opticalRxLanes": 8,
+      "electricalLaneGbps": 200,
+      "electricalTxLanes": 16,
+      "electricalRxLanes": 16,
+      "electricalSelectionVisible": false,
+      "signalMode": "gearbox_retimed_scenario",
+      "opticalTopology": "parallel_single_mode",
+      "laserPlacementOptions": [
+        "external_els",
+        "module_integrated_cw"
+      ],
+      "defaultLaserPlacement": "external_els",
+      "status": "scenario",
+      "displayStatus": "400G光lane研究情景",
+      "sourceIds": [
+        "AR07",
+        "AR08"
+      ],
+      "quantityAssumptions": [
+        "driver/tia每颗4lane",
+        "PIC每颗8路双向光lane",
+        "信号FAU每组8芯且Tx/Rx分体",
+        "每路CW供4条Tx lane",
+        "8路ELS按实际供光路数分摊"
+      ],
+      "defaultQuantities": {
+        "npoModule": 1,
+        "opticalTxFunctionalChannels": 8,
+        "opticalRxFunctionalChannels": 8,
+        "driverEquivalentPackages": 2,
+        "tiaEquivalentPackages": 2,
+        "picEquivalentDies": 1,
+        "signalFauAssemblies": 2,
+        "signalFibers": 16,
+        "activeCwPaths": 2,
+        "elsSupplyFibers": 2,
+        "elsPhysicalModules": 1,
+        "elsAllocatedEquivalent": 0.25,
+        "gearbox1p6TEquivalentPackages": 2
+      },
+      "limitations": [
+        "电侧自动保持200G，2:1电光速率映射需gearbox，数量是1.6T等效块，不代表已可采购NPO设计",
+        "400G器件性能、功率及单价均需独立验证，不能按200G模型减少lane后当作实际报价"
+      ],
+      "selectedForExplorer": false,
+      "scopeNote": "保留的200G电侧与400G光侧转换研究情景；当前探索器采用同速400G电光假设，此记录不驱动默认页面数量"
+    },
+    {
+      "id": "npo6400-16x400-electrical200",
+      "label": "6.4T · 16×400G",
+      "capacityGbps": 6400,
+      "capacityBasis": "per_direction",
+      "opticalLaneGbps": 400,
+      "opticalTxLanes": 16,
+      "opticalRxLanes": 16,
+      "electricalLaneGbps": 200,
+      "electricalTxLanes": 32,
+      "electricalRxLanes": 32,
+      "electricalSelectionVisible": false,
+      "signalMode": "gearbox_retimed_scenario",
+      "opticalTopology": "parallel_single_mode",
+      "laserPlacementOptions": [
+        "external_els",
+        "module_integrated_cw"
+      ],
+      "defaultLaserPlacement": "external_els",
+      "status": "scenario",
+      "displayStatus": "400G光lane研究情景",
+      "sourceIds": [
+        "AR07",
+        "AR08"
+      ],
+      "quantityAssumptions": [
+        "driver/tia每颗4lane",
+        "PIC每颗8路双向光lane",
+        "信号FAU每组8芯且Tx/Rx分体",
+        "每路CW供4条Tx lane",
+        "8路ELS按实际供光路数分摊"
+      ],
+      "defaultQuantities": {
+        "npoModule": 1,
+        "opticalTxFunctionalChannels": 16,
+        "opticalRxFunctionalChannels": 16,
+        "driverEquivalentPackages": 4,
+        "tiaEquivalentPackages": 4,
+        "picEquivalentDies": 2,
+        "signalFauAssemblies": 4,
+        "signalFibers": 32,
+        "activeCwPaths": 4,
+        "elsSupplyFibers": 4,
+        "elsPhysicalModules": 1,
+        "elsAllocatedEquivalent": 0.5,
+        "gearbox1p6TEquivalentPackages": 4
+      },
+      "limitations": [
+        "电侧自动保持200G，2:1电光速率映射需gearbox，数量是1.6T等效块，不代表已可采购NPO设计",
+        "400G器件性能、功率及单价均需独立验证，不能按200G模型减少lane后当作实际报价"
+      ],
+      "selectedForExplorer": false,
+      "scopeNote": "保留的200G电侧与400G光侧转换研究情景；当前探索器采用同速400G电光假设，此记录不驱动默认页面数量"
     }
   ],
   "vendors": {
@@ -4132,7 +5030,7 @@
       "sourceIds": [
         "AR06"
       ],
-      "note": "默认每颗4lane是模型假设；可选8lane；与DSP/EIC集成时改标功能通道且禁重复成本"
+      "note": "默认每颗4lane，可选8或16lane；均为等效集成假设，未知真实封装关系时不视为已核实器件颗数"
     },
     {
       "id": "q-tia",
@@ -4142,7 +5040,7 @@
       "sourceIds": [
         "AR06"
       ],
-      "note": "默认每颗4lane，可选8lane；未知真实集成关系时标等效颗数"
+      "note": "默认每颗4lane，可选8或16lane；均为等效集成假设，未知真实封装关系时不视为已核实器件颗数"
     },
     {
       "id": "q-pic",
@@ -4180,7 +5078,7 @@
       "id": "q-fiber",
       "quantity": "signalFibers",
       "formula": "ceil(opticalTxLanes / wavelengthsPerSignalFiber) + ceil(opticalRxLanes / wavelengthsPerSignalFiber)",
-      "kind": "integrated_feature",
+      "kind": "physical_assembly",
       "sourceIds": [
         "AR01",
         "AR02"
@@ -4240,7 +5138,7 @@
       "id": "q-faraday",
       "quantity": "faradayRotators",
       "formula": "isolators * stagesPerIsolator * faradayRotatorsPerSingleStageIsolator",
-      "kind": "integrated_feature",
+      "kind": "physical_assembly",
       "sourceIds": [],
       "note": "单级偏振相关隔离器示意；材料或组件占比只能在有支持的成本分配下显示"
     },
@@ -4252,13 +5150,13 @@
       "sourceIds": [
         "AR07"
       ],
-      "note": "1.6T等效8:4映射块数量，3.2T为2、6.4T为4；只是速率守恒模型，非承诺可用的硅光NPO料号"
+      "note": "默认400G电光同速情景的数量为0；仅200G电侧转换备选路线采用1.6T等效映射块，3.2T为2、6.4T为4。映射数量守恒不确认可采购NPO料号"
     },
     {
       "id": "q-control",
       "quantity": "engineControlSet",
       "formula": "1",
-      "kind": "physical_assembly",
+      "kind": "functional_group",
       "sourceIds": [
         "AR05"
       ],
@@ -4378,9 +5276,8 @@
         "gearbox1p6TEquivalentPackages": 0
       },
       "limitations": [
-        "电侧自动保持200G，2:1电光速率映射需gearbox，数量是1.6T等效块，不代表已可采购NPO设计",
         "400G器件性能、功率及单价均需独立验证，不能按200G模型减少lane后当作实际报价",
-        "本应用采用400G电侧同步升级的研究假设，取消200G电侧2:1转换路径；不对应Taurus具体产品。"
+        "本应用采用400G电侧同步升级的研究假设，取消200G电侧2:1转换路径；不对应Taurus具体产品"
       ]
     },
     {
@@ -4484,9 +5381,8 @@
         "gearbox1p6TEquivalentPackages": 0
       },
       "limitations": [
-        "电侧自动保持200G，2:1电光速率映射需gearbox，数量是1.6T等效块，不代表已可采购NPO设计",
         "400G器件性能、功率及单价均需独立验证，不能按200G模型减少lane后当作实际报价",
-        "本应用采用400G电侧同步升级的研究假设，取消200G电侧2:1转换路径；不对应Taurus具体产品。"
+        "本应用采用400G电侧同步升级的研究假设，取消200G电侧2:1转换路径；不对应Taurus具体产品"
       ]
     }
   ],
@@ -5395,6 +6291,43 @@
       "locator": null
     },
     {
+      "id": "COHERENT_MONITOR_PD",
+      "title": "Coherent｜Top-Illuminated Monitor Photodiode Chips",
+      "url": "https://www.coherent.com/networking/optoelectronic-devices/inp-optoelectronics/monitor-pds",
+      "date": null,
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "InGaAs监测PD芯片覆盖1270至1620nm，支持收发器集成",
+        "监测PD产品能力"
+      ],
+      "scope": "未披露价格或本NPO方案的供货关系；不能验证工程估价区间"
+    },
+    {
+      "id": "LUXNET_MONITOR_PD",
+      "title": "华星光通｜Monitor Photodiode芯片目录",
+      "url": "https://www.luxnetcorp.com.tw/chip?page=1",
+      "date": null,
+      "accessed": "2026-10-08",
+      "type": "official_product",
+      "supports": [
+        "DI0A-7031及DI0A-7025监测芯片可与FP/DFB激光器共同封装，监测后端面出光"
+      ],
+      "scope": "仅支持器件形态及集成方式，未提供NPO适配器件报价"
+    },
+    {
+      "id": "DIGIKEY_MTPD1346D100",
+      "title": "DigiKey｜Marktech MTPD1346D-100目录价格",
+      "url": "https://www.digikey.com/en/products/detail/marktech-optoelectronics/MTPD1346D-100/5866635",
+      "date": null,
+      "accessed": "2026-10-08",
+      "type": "distributor_catalog",
+      "supports": [
+        "独立TO-46封装InGaAs PD目录单价：1颗$17.63，100颗$11.6278，1,000颗$10.35944"
+      ],
+      "scope": "1mm感光区独立封装器件；目录价会变动，不是集成监测裸片或NPO量产报价，不能直接换算$1至5工程假设"
+    },
+    {
       "id": "AR01",
       "title": "OIF Implementation Agreement for a 3.2Tb/s Co-Packaged Module 01.0",
       "url": "https://www.oiforum.com/wp-content/uploads/OIF-Co-Packaging-3.2T-Module-01.0.pdf",
@@ -5602,43 +6535,6 @@
       "limitation": "证明NPO也有VCSEL替代路线；未核验该VCSEL方案lane数，不纳入硅光CW/隔离器BOM",
       "kind": "issuer_press_release",
       "readStatus": "read_relevant_sections"
-    },
-    {
-      "id": "COHERENT_MONITOR_PD",
-      "title": "Coherent｜Top-Illuminated Monitor Photodiode Chips",
-      "url": "https://www.coherent.com/networking/optoelectronic-devices/inp-optoelectronics/monitor-pds",
-      "date": null,
-      "accessed": "2026-10-08",
-      "type": "official_product",
-      "supports": [
-        "InGaAs监测PD芯片覆盖1270至1620nm，支持收发器集成",
-        "监测PD产品能力"
-      ],
-      "scope": "未披露价格或本NPO方案的供货关系；不能验证工程估价区间"
-    },
-    {
-      "id": "LUXNET_MONITOR_PD",
-      "title": "华星光通｜Monitor Photodiode芯片目录",
-      "url": "https://www.luxnetcorp.com.tw/chip?page=1",
-      "date": null,
-      "accessed": "2026-10-08",
-      "type": "official_product",
-      "supports": [
-        "DI0A-7031及DI0A-7025监测芯片可与FP/DFB激光器共同封装，监测后端面出光"
-      ],
-      "scope": "仅支持器件形态及集成方式，未提供NPO适配器件报价"
-    },
-    {
-      "id": "DIGIKEY_MTPD1346D100",
-      "title": "DigiKey｜Marktech MTPD1346D-100目录价格",
-      "url": "https://www.digikey.com/en/products/detail/marktech-optoelectronics/MTPD1346D-100/5866635",
-      "date": null,
-      "accessed": "2026-10-08",
-      "type": "distributor_catalog",
-      "supports": [
-        "独立TO-46封装InGaAs PD目录单价：1颗$17.63，100颗$11.6278，1,000颗$10.35944"
-      ],
-      "scope": "1mm感光区独立封装器件；目录价会变动，不是集成监测裸片或NPO量产报价，不能直接换算$1至5工程假设"
     }
   ],
   "referenceBOM": {
@@ -5857,159 +6753,18 @@
     "description": "原始BOM均为近似值且有150+与160+。650是500+300/2参考锚点，不是精确报价；ELS子项约290-300+，不强制虚构差额项"
   },
   "researchStatus": "研报下载：0/0，复用1份高盛原表；公众号文章下载：0/0，复用并阅读1篇微信原文；复读2份公司披露。指定浏览器访问限制阻止本轮新增搜狗微信检索。 本轮局部更新：新增核对监测PD厂商网页及独立封装目录价，$1至5/路为工程假设；未新增下载研报或公众号文章，当前接口未能确认Codex工作台窗口。",
-  "updatePolicy": "本次核验快照。修改database.json后执行npm run build，重新生成内嵌数据HTML与SQLite。没有设置定期自动更新。",
+  "updatePolicy": "公开资料核验快照截至2026-10-08；2026-10-09调整模型及元数据，不表示新增核验。研究源文件修改后先运行scripts/assemble-database.mjs重建database.json，再执行npm run build更新HTML与SQLite。直接编辑database.json的内容会被再次组装覆盖。没有设置定期自动更新。",
   "researchAssumptions": {
-    "pricing": "一级预算依现有32×100G参考测算缩放，细项使用显式工程权重或单价假设分配；未计高速器件与良率溢价，不等于当前厂商报价",
-    "quantities": "芯片和FAU集成度、供光扇出、隔离级数均为可调整假设",
-    "arch400G": "电光同速400G前瞻情景，未绑定到具体NPO产品",
     "monitorPD": "厂商资料支持监测PD采用裸片并与激光器共同封装；独立TO-46封装器件目录价约$10至18/颗，仅作为不同封装的参照。$1至5/路区间及$3/路中心为工程假设，并非由目录价按固定折扣推导，也未获供应商报价验证",
-    "componentAllocation": "上级预算约束下的功能及器件价值分配。六个一级池沿用现有来源参考；末级权重是可修改工程假设，不是厂商报价。当前数量为0的权重留在父级未拆分余额。"
+    "componentAllocation": "上级预算约束下的功能及器件价值分配。六个一级池沿用现有来源参考；末级权重是可修改工程假设，不是厂商报价。当前数量为0的权重留在父级未拆分余额。",
+    "pricing": "默认预算分配模式依原始参考预算及显式工程权重分配；成本测算模式按固定工程参考单价与当前数量汇总，并保留未拆分项。未取得同规格采购报价，未计400G溢价、良率及功耗差异",
+    "quantities": "区分实物总成、功能通道、预算分类、材料核算份数与光源分摊等效数量；示意数量不等于已确认产品BOM",
+    "arch400G": "电光同速400G前瞻情景，未绑定到具体NPO产品；200G电侧转换路线仅保存在独立备选记录"
   },
   "provenance": {
     "costSourceFile": "research/cost-suppliers.json",
-    "architectureSourceFile": "research/architecture.json"
-  },
-  "valuationModel": {
-    "version": "1.0.0",
-    "status": "engineering_allocation",
-    "asOf": "2026-10-08",
-    "description": "上级预算约束下的功能及器件价值分配。六个一级池沿用现有来源参考；末级权重是可修改工程假设，不是厂商报价。当前数量为0的权重留在父级未拆分余额。",
-    "sourceIds": [
-      "WX_NPO_20260927"
-    ],
-    "rules": {
-      "pic": {
-        "weights": {
-          "modulator": 40,
-          "photodiode": 20,
-          "waveguide": 10,
-          "coupler": 10,
-          "splitter": 5,
-          "phase": 5
-        },
-        "reserveWeight": 10,
-        "basis": "按PIC集成功能分配芯片预算；权重是工程假设，不代表功能可独立采购或真实芯片面积比例"
-      },
-      "eic": {
-        "weights": {
-          "driver": 50,
-          "tia": 50
-        },
-        "reserveWeight": 0,
-        "basis": "来源仅披露Driver与TIA合计；Tx驱动和Rx放大各分配一半为展示假设，不是已披露的分项价格"
-      },
-      "fau": {
-        "weights": {
-          "vgroove": 20,
-          "fiber": 10,
-          "lens": 15,
-          "adhesive": 10,
-          "cover_plate": 5
-        },
-        "reserveWeight": 40,
-        "basis": "FAU细件按工程权重分配；保留40份未拆分预算，不把精密装配和测试全部归给材料"
-      },
-      "substrate": {
-        "weights": {
-          "pcb": 60,
-          "interposer": 20,
-          "solder": 10
-        },
-        "reserveWeight": 10,
-        "basis": "光引擎基板内部预算分配；此PCB不是来源ELS控制PCB的30美元组合项；未配置中介层的权重保留为未拆分预算"
-      },
-      "other": {
-        "weights": {
-          "connector": 20,
-          "control": 25,
-          "thermal": 45
-        },
-        "reserveWeight": 10,
-        "basis": "配套与热管理组合预算内部的工程分配，不对应独立报价"
-      },
-      "connector": {
-        "weights": {
-          "ferrule": 50
-        },
-        "reserveWeight": 50,
-        "basis": "插芯分配连接器预算的一半，其余结构和装配保留未拆分"
-      },
-      "control": {
-        "weights": {
-          "mcu": 60,
-          "pmic": 40
-        },
-        "reserveWeight": 0,
-        "basis": "控制与供电预算按60比40分配给控制芯片及电源管理，比例未获器件报价验证"
-      },
-      "thermal": {
-        "weights": {
-          "heatsink": 45,
-          "tim": 10,
-          "housing": 35
-        },
-        "reserveWeight": 10,
-        "basis": "散热器、导热材料、外壳按工程权重分配，保留未拆分预算"
-      },
-      "cw": {
-        "weights": {
-          "laser_die": 70,
-          "laser_submount": 20
-        },
-        "reserveWeight": 10,
-        "basis": "CW净预算中按70份激光芯片、20份热沉与Submount、10份未拆分分配；监测PD已在光源层单列，不能重复加入"
-      },
-      "laser_die": {
-        "weights": {
-          "inp_substrate": 35
-        },
-        "reserveWeight": 65,
-        "basis": "InP衬底分配芯片净预算的35%为工程假设；剩余65%未拆分，不能据此推断材料毛利或实际行业价值份额"
-      },
-      "isolator": {
-        "weights": {
-          "faraday": 40,
-          "polarizer": 10,
-          "analyzer": 10,
-          "magnet": 10,
-          "collimator": 10,
-          "isolator_housing": 10
-        },
-        "reserveWeight": 10,
-        "basis": "隔离器内部材料与器件分配假设；本模型令法拉第旋片占40%，缺少同规格量产拆价验证"
-      },
-      "faraday": {
-        "weights": {
-          "garnet": 65,
-          "coating": 15
-        },
-        "reserveWeight": 20,
-        "basis": "旋片预算按65份磁光晶体、15份镀膜、20份未拆分分配，未取得材料加工同口径拆价"
-      },
-      "els": {
-        "weights": {
-          "cw": 136,
-          "isolator": 18,
-          "pm_fiber": 6,
-          "laser_driver": 15,
-          "tec": 36,
-          "pm_fau": 24,
-          "els_optics": 12,
-          "tec_controller": 6
-        },
-        "reserveWeight": 23,
-        "basis": "先扣已单列的监测PD，再按以下默认预算权重分配光源剩余预算。来源组合项和当前结构树不完全对应，拆分及包含关系均为工程假设；保留23份未拆分余额",
-        "weightNotes": {
-          "cw": "默认权重136＝原CW组合参考160−8个监测点×假设3。将监测PD从CW组合中单列是防止重复计算的建模选择，来源未确认该包含关系；当前值不等于原文20+/颗CW参考价",
-          "isolator": "默认权重18＝整形滤光组合参考30×假设60%。将隔离器归入这一组合仅为建模选择，来源未确认包含关系",
-          "els_optics": "默认权重12＝整形滤光组合参考30×假设40%，与单列隔离器共用该组合预算",
-          "pm_fau": "默认权重24＝8路保偏FAU组合参考30×假设80%，当前净分配已扣除单列供光纤",
-          "pm_fiber": "默认权重6＝8路保偏FAU组合参考30×假设20%，不是公开裸光纤单价",
-          "laser_driver": "默认权重15＝ELS控制PCB组合参考30×假设50%；来源没有逐项IC清单",
-          "tec_controller": "默认权重6＝ELS控制PCB组合参考30×假设20%；来源没有逐项IC清单",
-          "tec": "默认权重36＝TEC及陶瓷组合参考区间40至50的假设中值45×80%；45不是原文披露单值，当前分配也不是独立TEC报价"
-        }
-      }
-    }
+    "architectureSourceFile": "research/architecture.json",
+    "componentMetadataSource": "research/cost-suppliers.json#component_metadata",
+    "parameterDefinitionsSource": "research/architecture.json#parameterDefinitions"
   }
 }
