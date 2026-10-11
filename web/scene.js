@@ -54,6 +54,18 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
   overlay.className = 'scene-label-layer';
   Object.assign(overlay.style, { position: 'absolute', inset: '0', overflow: 'hidden', pointerEvents: 'none' });
   container.appendChild(overlay);
+  const navigationCue = document.createElement('div');
+  navigationCue.className = 'scene-navigation-cue';
+  navigationCue.setAttribute?.('role', 'status');
+  Object.assign(navigationCue.style, {
+    position: 'absolute', left: '50%', bottom: '64px', transform: 'translateX(-50%)',
+    maxWidth: 'calc(100% - 32px)', padding: '7px 12px', borderRadius: '6px',
+    color: '#17627c', background: 'rgba(240,250,253,.94)', border: '1px solid #b7d7e1',
+    font: '500 11px/1.5 Inter, -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif',
+    textAlign: 'center', pointerEvents: 'none', display: 'none',
+  });
+  overlay.appendChild(navigationCue);
+  const motionPreference = window.matchMedia?.('(prefers-reduced-motion: reduce)');
 
   const pmrem = new THREE.PMREMGenerator(renderer);
   const studio = new RoomEnvironment();
@@ -116,6 +128,15 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
   let raf = 0;
   let hoveredId = null;
   let cameraTween = null;
+  let navigationTween = null;
+  let navigationInfo = { kind: 'none', active: false, phase: 1 };
+  let preferredAnchor = null;
+  // Remember only the representative instance used at each active descent.
+  // This preserves the entry point when returning through nested assemblies.
+  const navigationEntries = new Map();
+  let pickedObject = null;
+  let viewportWidth = 0, viewportHeight = 0;
+  const NAVIGATION_DURATION = 1200;
   let explodeCurrent = Number(state.explode);
   let pointerDown = null;
   const activePointers = new Set();
@@ -268,6 +289,7 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
 
   function board(parent, id = 'pcb', size = [7.8, 0.18, 5], pos = [0, 0.1, 0]) {
     const g = group(id, parent, pos);
+    g.userData.navigationAnchor = id;
     box(g, size, [0, 0, 0], palette.pcbDark, null, 1);
     box(g, [size[0] - 0.03, 0.018, size[2] - 0.03], [0, size[1] / 2 + 0.003, 0], palette.pcb);
     for (let i = 0; i < 6; i++) {
@@ -303,6 +325,7 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
 
   function pic(parent, pos = [0, 0, 0], detailed = false, channelCount = null) {
     const g = group('pic', parent, pos);
+    g.userData.navigationAnchor = 'pic';
     const base = group(null, g);
     box(base, [3.9, 0.115, 2.0], [0, 0, 0], palette.silicon, null, 1);
     box(base, [3.76, 0.008, 1.87], [0, 0.061, 0], palette.darkSilver);
@@ -314,11 +337,15 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
       const arm = pitch * 0.22;
       const tx = signalTag(group(null, optical), 'tx');
       const rx = signalTag(group(null, optical), 'rx');
+      // Each MZM is an explicit spatial anchor, so drilling in follows one real
+      // channel rather than treating all repeated modulators as one large part.
+      const mzm = group('modulator', tx);
+      mzm.userData.navigationAnchor = 'modulator';
       // Separate transmit and receive rows: MZM on Tx, terminating PD on Rx.
       signalTag(straight(tx, [-1.8, 0.017, txZ], [-1.0, 0.017, txZ], guideRadius, palette.gold, 'waveguide'), ['cw', 'tx']);
       for (const side of [-1, 1]) {
-        tube(tx, [[-1, 0.017, txZ], [-0.72, 0.017, txZ + side * arm], [0.27, 0.017, txZ + side * arm], [0.54, 0.017, txZ]], guideRadius, palette.gold, 'modulator', 20);
-        box(tx, [0.93, 0.022, arm * 0.6], [-0.23, 0.035, txZ + side * arm], palette.cyan, 'modulator');
+        tube(mzm, [[-1, 0.017, txZ], [-0.72, 0.017, txZ + side * arm], [0.27, 0.017, txZ + side * arm], [0.54, 0.017, txZ]], guideRadius, palette.gold, 'modulator', 20);
+        box(mzm, [0.93, 0.022, arm * 0.6], [-0.23, 0.035, txZ + side * arm], palette.cyan, 'modulator');
       }
       straight(tx, [0.54, 0.017, txZ], [1.8, 0.017, txZ], guideRadius, palette.gold, 'waveguide');
       box(tx, [0.2, 0.012, pitch * 0.42], [1.67, 0.025, txZ], palette.gold, 'coupler');
@@ -981,7 +1008,8 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
     label(g, `${node?.name || id}${q(id, 1) === 0 ? ' · 未配置，结构示意' : ''}`, [0, 1.7, 0], id, 0);
   }
 
-  function buildScene() {
+  function buildScene(allowHierarchy = true) {
+    cancelNavigation('navigation');
     const root = new THREE.Group();
     root.userData.viewId = state.viewId;
     root.userData.opacity = currentRoot ? 0 : 1;
@@ -1005,17 +1033,32 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
     else if (v === 'connector') connector(root, [0.6, 0.15, 0], true);
     else leafView(root, v);
     buildingRoot = null;
+    // Navigation may change the desired exploded layout. Build the destination
+    // at that final layout while retaining the outgoing root at its real pose.
+    explodeCurrent = normalizedExplode(state.explode);
     updateExplode(root, explodeCurrent);
     scene.add(root);
-    const now = performance.now();
-    if (currentRoot) {
-      for (const entry of roots) { entry.from = entry.opacity; entry.to = 0; entry.start = now; }
-      roots.push({ root, from: 0, to: 1, opacity: 0, start: now });
-    } else roots.push({ root, from: 1, to: 1, opacity: 1, start: now });
+    const previousRoot = currentRoot;
     currentRoot = root;
     refreshHighlights();
-    frameObject(root, !cameraTween && roots.length === 1);
-    setRootOpacity(root, root.userData.opacity);
+    const kind = previousRoot && allowHierarchy ? navigationKind(previousRoot.userData.viewId, v) : 'crossfade';
+    if (previousRoot && kind !== 'crossfade' && !motionPreference?.matches && beginHierarchyNavigation(previousRoot, root, kind)) return;
+    preferredAnchor = null;
+    navigationEntries.clear();
+    const now = performance.now();
+    if (previousRoot && !motionPreference?.matches) {
+      roots = [{ root: previousRoot, from: 1, to: 0, opacity: 1, start: now }, { root, from: 0, to: 1, opacity: 0, start: now }];
+      navigationInfo = { kind: 'crossfade', from: previousRoot.userData.viewId, to: v, active: true, phase: 0 };
+      scene.userData.navigation = navigationInfo;
+      frameObject(root);
+    } else {
+      if (previousRoot) disposeRoot(previousRoot);
+      roots = [{ root, from: 1, to: 1, opacity: 1, start: now }];
+      navigationInfo = { kind: 'none', from: previousRoot?.userData.viewId || null, to: v, active: false, phase: 1 };
+      scene.userData.navigation = navigationInfo;
+      frameObject(root, true);
+    }
+    setRootOpacity(root, roots.at(-1).opacity);
   }
   function updateExplode(root, amount) {
     root.traverse(o => {
@@ -1023,14 +1066,12 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
     });
     root.updateMatrixWorld(true);
   }
-  function frameObject(root, immediate = false, focusId = null) {
-    // Fit real mesh bounds in camera space, with room for the stage heading and toolbar.
-    // A width-only fit cuts off the near ELS when the board is viewed obliquely.
-    updateExplode(root, normalizedExplode(state.explode));
-    const points = [];
+  function geometryBounds(root, predicate = () => true) {
     const bounds = new THREE.Box3();
+    const points = [];
+    root.updateMatrixWorld(true);
     root.traverse(o => {
-      if (!o.isMesh || o.userData.excludeFromFit || (focusId && !hasAncestorId(o, focusId))) return;
+      if (!o.isMesh || o.userData.excludeFromFit || !predicate(o)) return;
       if (!o.geometry.boundingBox) o.geometry.computeBoundingBox();
       const local = o.geometry.boundingBox;
       for (const x of [local.min.x, local.max.x]) for (const y of [local.min.y, local.max.y]) for (const z of [local.min.z, local.max.z]) {
@@ -1039,18 +1080,23 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
         bounds.expandByPoint(point);
       }
     });
-    updateExplode(root, explodeCurrent);
-    if (!points.length) { if (focusId) frameObject(root, immediate); return; }
-    const center = bounds.getCenter(new THREE.Vector3());
-    const direction = state.viewId === 'faraday' || ['garnet', 'coating', 'polarizer', 'analyzer', 'magnet', 'lens', 'collimator'].includes(state.viewId)
+    return { bounds, points };
+  }
+  function viewDirection(viewId) {
+    return viewId === 'faraday' || ['garnet', 'coating', 'polarizer', 'analyzer', 'magnet', 'lens', 'collimator'].includes(viewId)
       ? new THREE.Vector3(1.25, 0.52, 0.82).normalize()
-      : state.viewId === 'isolator' ? new THREE.Vector3(0.68, 0.63, 1.34).normalize()
+      : viewId === 'isolator' ? new THREE.Vector3(0.68, 0.63, 1.34).normalize()
         : new THREE.Vector3(0.87, 0.86, 1.08).normalize();
+  }
+  function framingPose(geometry, viewId, direction = viewDirection(viewId), minimum = 2.2) {
+    const { bounds, points } = geometry;
+    if (!points.length) return null;
+    const center = bounds.getCenter(new THREE.Vector3());
     const right = new THREE.Vector3().crossVectors(new THREE.Vector3(0, 1, 0), direction).normalize();
     const up = new THREE.Vector3().crossVectors(direction, right).normalize();
     const tanY = Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2);
     const tanX = tanY * camera.aspect;
-    let distance = 2.2;
+    let distance = minimum;
     for (const point of points) {
       const relative = point.clone().sub(center);
       const x = relative.dot(right), y = relative.dot(up), depth = relative.dot(direction);
@@ -1059,8 +1105,7 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
     }
     distance *= 1.035;
     const target = center.clone();
-    if (state.viewId === 'npo') {
-      // The external source is close to the camera: center its visible silhouette higher.
+    if (viewId === 'npo') {
       target.addScaledVector(up, -distance * tanY * 0.18);
       let closer = distance * 0.84;
       for (const point of points) {
@@ -1070,17 +1115,190 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
       }
       distance = closer * 1.015;
     }
-    const position = target.clone().addScaledVector(direction, distance);
-    controls.minDistance = Math.max(0.65, distance * 0.18);
-    controls.maxDistance = Math.max(12, distance * 3.5);
-    if (immediate) {
-      camera.position.copy(position);
-      controls.target.copy(target);
+    return { position: target.clone().addScaledVector(direction, distance), target, distance };
+  }
+  function cameraLimits(distance, scale = 1) {
+    controls.minDistance = Math.max(0.02 * scale, distance * 0.18);
+    controls.maxDistance = Math.max(12 * scale, distance * 3.5);
+    camera.near = Math.max(0.00001, Math.min(0.05, distance * 0.01));
+    camera.far = Math.max(250, distance * 5);
+    camera.updateProjectionMatrix();
+  }
+  function frameObject(root, immediate = false, focusId = null) {
+    updateExplode(root, normalizedExplode(state.explode));
+    let geometry = geometryBounds(root, o => !focusId || hasAncestorId(o, focusId));
+    if (!geometry.points.length && focusId) geometry = geometryBounds(root);
+    const pose = framingPose(geometry, state.viewId);
+    updateExplode(root, explodeCurrent);
+    if (!pose) return;
+    cameraLimits(pose.distance);
+    if (immediate || motionPreference?.matches) {
+      camera.position.copy(pose.position);
+      controls.target.copy(pose.target);
       cameraTween = null;
       controls.update();
     } else {
-      cameraTween = { start: performance.now(), fromPos: camera.position.clone(), fromTarget: controls.target.clone(), toPos: position, toTarget: target, duration: 800 };
+      cameraTween = { start: performance.now(), fromPos: camera.position.clone(), fromTarget: controls.target.clone(), toPos: pose.position, toTarget: pose.target, duration: 800 };
     }
+  }
+  function isAncestor(ancestor, child) {
+    const visited = new Set();
+    let node = state.nodes?.[child];
+    while (node && !visited.has(node.id)) {
+      visited.add(node.id);
+      const parentId = node.physicalParent || node.parent;
+      if (parentId === ancestor) return true;
+      node = state.nodes[parentId];
+    }
+    return false;
+  }
+  function navigationKind(from, to) {
+    if (from !== to && isAncestor(from, to)) return 'in';
+    if (from !== to && isAncestor(to, from)) return 'out';
+    return 'crossfade';
+  }
+  function spatialAnchor(root, id, preferred = null, preferredIndex = null) {
+    // An ancestry label alone is insufficient. Only real semantic geometry may
+    // establish a spatial transition, including a physically represented child
+    // whose cost belongs to a different budget group.
+    const instances = [];
+    root.traverse(o => { if (o.userData.navigationAnchor === id) instances.push(o); });
+    let chosen = null;
+    if (preferred) for (let cursor = preferred; cursor && cursor !== root; cursor = cursor.parent) {
+      if (instances.includes(cursor)) { chosen = cursor; break; }
+    }
+    if (!chosen && Number.isInteger(preferredIndex) && preferredIndex >= 0 && preferredIndex < instances.length) chosen = instances[preferredIndex];
+    if (!chosen && instances.length) chosen = instances[0];
+    const geometry = chosen ? geometryBounds(chosen) : geometryBounds(root, o => {
+      let found = false;
+      for (let cursor = o; cursor && cursor !== root; cursor = cursor.parent) {
+        if (cursor.userData.nonInteractive || cursor.userData.decorative) return false;
+        if (cursor.userData.id === id) found = true;
+      }
+      return found;
+    });
+    if (!geometry.points.length || geometry.bounds.isEmpty()) return null;
+    return { ...geometry, representative: instances.length > 1, instanceCount: instances.length || 1, instanceIndex: chosen ? instances.indexOf(chosen) : 0 };
+  }
+  function smoothStep(t) { const x = THREE.MathUtils.clamp(t, 0, 1); return x * x * (3 - 2 * x); }
+  function stageProgress(t, from, to) { return smoothStep((t - from) / (to - from)); }
+  function beginHierarchyNavigation(previousRoot, root, kind) {
+    const from = previousRoot.userData.viewId, to = root.userData.viewId;
+    const entry = kind === 'out' ? navigationEntries.get(from) : null;
+    const returnIndex = entry?.parentId === to ? entry.instanceIndex : null;
+    const anchor = spatialAnchor(kind === 'in' ? previousRoot : root, kind === 'in' ? to : from, kind === 'in' ? preferredAnchor : null, returnIndex);
+    preferredAnchor = null;
+    if (!anchor) return false;
+    const detail = geometryBounds(kind === 'in' ? root : previousRoot);
+    if (!detail.points.length) return false;
+    const anchorSize = anchor.bounds.getSize(new THREE.Vector3());
+    const detailSize = detail.bounds.getSize(new THREE.Vector3());
+    const anchorExtent = Math.max(anchorSize.x, anchorSize.y, anchorSize.z);
+    const detailExtent = Math.max(detailSize.x, detailSize.y, detailSize.z);
+    if (!(anchorExtent > 0.000001 && detailExtent > 0.000001)) return false;
+    const anchorCenter = anchor.bounds.getCenter(new THREE.Vector3());
+    const detailCenter = detail.bounds.getCenter(new THREE.Vector3());
+    const scale = kind === 'in' ? anchorExtent / detailExtent : detailExtent / anchorExtent;
+    const offset = kind === 'in' ? anchorCenter.clone().addScaledVector(detailCenter, -scale) : detailCenter.clone().addScaledVector(anchorCenter, -scale);
+    root.scale.setScalar(scale);
+    root.position.copy(offset);
+    root.updateMatrixWorld(true);
+    const direction = camera.position.clone().sub(controls.target).normalize();
+    const destination = framingPose(geometryBounds(root), to, direction, 0.05 * scale);
+    if (!destination) return false;
+    if (kind === 'in') navigationEntries.set(to, { parentId: from, instanceIndex: anchor.instanceIndex });
+    else navigationEntries.delete(from);
+    const focusGeometry = kind === 'in' ? anchor : detail;
+    const focus = framingPose(focusGeometry, 'detail', direction, 0.01);
+    // Phase one approaches the real part while its parent still surrounds it.
+    // Stop slightly wide so the parent silhouette remains visible at the handoff.
+    if (kind === 'in') {
+      const distance = Math.max(focus.distance * 1.8, destination.distance * 1.22);
+      focus.position.copy(focus.target).addScaledVector(direction, distance);
+    }
+    const now = performance.now();
+    roots = [{ root: previousRoot, from: 1, to: 0, opacity: 1, start: now }, { root, from: 0, to: 1, opacity: 0, start: now }];
+    setRootOpacity(previousRoot, 1);
+    setRootOpacity(root, 0);
+    cameraTween = null;
+    cameraLimits(Math.min(camera.position.distanceTo(controls.target), destination.distance), Math.min(1, scale));
+    controls.maxDistance = Math.max(controls.maxDistance, camera.position.distanceTo(controls.target) * 1.5, destination.distance * 2);
+    // Discard residual orbit damping before taking ownership of the camera.
+    const damping = controls.enableDamping;
+    controls.enableDamping = false;
+    controls.update();
+    controls.enableDamping = damping;
+    navigationTween = {
+      start: now, duration: NAVIGATION_DURATION, kind, previousRoot, root,
+      fromPos: camera.position.clone(), fromTarget: controls.target.clone(), focus, destination,
+    };
+    navigationInfo = {
+      kind, from, to, active: true, phase: 0, duration: NAVIGATION_DURATION,
+      anchorCenter: anchorCenter.toArray(), representative: anchor.representative, instanceCount: anchor.instanceCount, instanceIndex: anchor.instanceIndex,
+    };
+    scene.userData.navigation = navigationInfo;
+    const parentName = state.nodes?.[kind === 'in' ? from : to]?.name || (kind === 'in' ? from : to);
+    const childName = state.nodes?.[kind === 'in' ? to : from]?.name || (kind === 'in' ? to : from);
+    navigationCue.textContent = `${parentName} › ${childName} · ${kind === 'in' ? '局部放大' : '返回整体'}${anchor.representative ? ' · 单个示例' : ''}`;
+    navigationCue.style.display = 'block';
+    floor.visible = false;
+    return true;
+  }
+  function normalizeRootCoordinates(root) {
+    const scale = root.scale.x;
+    if (Math.abs(scale - 1) > 0.0000001 || root.position.lengthSq() > 0.0000001) {
+      camera.position.sub(root.position).divideScalar(scale);
+      controls.target.sub(root.position).divideScalar(scale);
+      root.position.set(0, 0, 0);
+      root.scale.setScalar(1);
+      root.updateMatrixWorld(true);
+    }
+    cameraLimits(camera.position.distanceTo(controls.target));
+  }
+  function cancelNavigation(reason = 'interrupted') {
+    cameraTween = null;
+    if (!currentRoot) return;
+    if (navigationTween) normalizeRootCoordinates(currentRoot);
+    navigationTween = null;
+    for (const entry of roots) if (entry.root !== currentRoot) disposeRoot(entry.root);
+    roots = [{ root: currentRoot, from: 1, to: 1, opacity: 1, start: performance.now() }];
+    setRootOpacity(currentRoot, 1);
+    if (navigationInfo.active) {
+      navigationInfo = { ...navigationInfo, active: false, phase: reason === 'complete' ? 1 : navigationInfo.phase, endedBy: reason };
+      scene.userData.navigation = navigationInfo;
+    }
+    navigationCue.style.display = 'none';
+    floor.visible = true;
+  }
+  function animateHierarchyNavigation(now) {
+    const nav = navigationTween;
+    if (!nav) return;
+    // Keep dynamic clipping valid through large upward steps as well.
+    camera.far = Math.max(250, nav.fromPos.length() * 3, nav.destination.position.length() * 3);
+    camera.updateProjectionMatrix();
+    const t = Math.min(1, Math.max(0, (now - nav.start) / nav.duration));
+    navigationInfo.phase = t;
+    if (nav.kind === 'in') {
+      if (t < 0.42) {
+        const e = stageProgress(t, 0, 0.42);
+        camera.position.lerpVectors(nav.fromPos, nav.focus.position, e);
+        controls.target.lerpVectors(nav.fromTarget, nav.focus.target, e);
+      } else {
+        const e = stageProgress(t, 0.42, 1);
+        camera.position.lerpVectors(nav.focus.position, nav.destination.position, e);
+        controls.target.lerpVectors(nav.focus.target, nav.destination.target, e);
+      }
+      roots[0].opacity = 1 - stageProgress(t, 0.43, 0.87);
+      roots[1].opacity = stageProgress(t, 0.36, 0.71);
+    } else {
+      const e = smoothStep(t);
+      camera.position.lerpVectors(nav.fromPos, nav.destination.position, e);
+      controls.target.lerpVectors(nav.fromTarget, nav.destination.target, e);
+      roots[0].opacity = 1 - stageProgress(t, 0.12, 0.58);
+      roots[1].opacity = stageProgress(t, 0.04, 0.53);
+    }
+    for (const entry of roots) setRootOpacity(entry.root, entry.opacity);
+    if (t >= 1) cancelNavigation('complete');
   }
 
   function setRootOpacity(root, opacity) {
@@ -1170,6 +1388,7 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
     onHover?.(id, event);
   }
   function pick(event) {
+    pickedObject = null;
     if (!currentRoot) return null;
     const rect = renderer.domElement.getBoundingClientRect();
     pointer.set((event.clientX - rect.left) / rect.width * 2 - 1, -(event.clientY - rect.top) / rect.height * 2 + 1);
@@ -1178,11 +1397,11 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
     for (const hit of hits) {
       if (!hit.object.isMesh || hit.object.material?.opacity < 0.1) continue;
       const id = semanticId(hit.object);
-      if (id) return id;
+      if (id) { pickedObject = hit.object; return id; }
     }
     return null;
   }
-  function activatePart(id) {
+  function activatePart(id, object = null) {
     if (!id || disposed) return;
     // Navigation is owned by the caller. Avoid repeating its enter action for this view,
     // so a second click does not reset the user's camera or explosion setting.
@@ -1190,6 +1409,7 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
       if (state.selectedId !== id) onSelect?.(id);
       return;
     }
+    preferredAnchor = object;
     changeHover(null);
     if (onEnter) onEnter(id);
     else onSelect?.(id);
@@ -1198,7 +1418,7 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
     activePointers.add(event.pointerId);
     if (activePointers.size > 1) {
       if (pointerDown) pointerDown.dragged = true;
-      cameraTween = null;
+      cancelNavigation('gesture');
       return;
     }
     if (event.button !== 0 || event.isPrimary === false) return;
@@ -1212,12 +1432,12 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
     if (event.button !== 0 || press.dragged || activePointers.size > 0) return;
     if (Math.hypot(event.clientX - press.x, event.clientY - press.y) >= 5) return;
     const id = pick(event);
-    if (id && id === press.id) activatePart(id);
+    if (id && id === press.id) activatePart(id, pickedObject);
   }
   function pointerMove(event) {
     if (pointerDown && pointerDown.pointerId === event.pointerId) {
       if (Math.hypot(event.clientX - pointerDown.x, event.clientY - pointerDown.y) >= 5) pointerDown.dragged = true;
-      if (pointerDown.dragged) { cameraTween = null; changeHover(null); return; }
+      if (pointerDown.dragged) { cancelNavigation('gesture'); changeHover(null); return; }
     }
     if (activePointers.size > 1) return;
     changeHover(pick(event), event);
@@ -1228,9 +1448,9 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
     changeHover(null);
   }
   function pointerLeave() { changeHover(null); if (pointerDown) pointerDown.dragged = true; }
-  function cancelGesture() { activePointers.clear(); pointerDown = null; }
-  function wheelStart() { cameraTween = null; }
-  function controlStart() { controlsActive = true; if (!pointerDown) cameraTween = null; renderer.domElement.style.cursor = 'grabbing'; }
+  function cancelGesture() { activePointers.clear(); pointerDown = null; cancelNavigation('blur'); }
+  function wheelStart() { cancelNavigation('gesture'); }
+  function controlStart() { controlsActive = true; if (!pointerDown) cancelNavigation('gesture'); renderer.domElement.style.cursor = 'grabbing'; }
   function controlEnd() { controlsActive = false; renderer.domElement.style.cursor = hoveredId ? 'pointer' : 'grab'; }
   controls.addEventListener('start', controlStart);
   controls.addEventListener('end', controlEnd);
@@ -1249,7 +1469,8 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
     for (const l of sorted) {
       let visible = true;
       for (let cursor = l.anchor; cursor; cursor = cursor.parent) if (!cursor.visible) { visible = false; break; }
-      if (!visible || l.root !== currentRoot || l.root.userData.opacity < 0.5) { l.el.style.display = 'none'; continue; }
+      const activeLabelRoot = navigationTween?.kind === 'in' && navigationInfo.phase < 0.44 ? navigationTween.previousRoot : currentRoot;
+      if (!visible || l.root !== activeLabelRoot || l.root.userData.opacity < 0.5) { l.el.style.display = 'none'; continue; }
       l.anchor.getWorldPosition(projected);
       projected.project(camera);
       const x = (projected.x + 1) * w / 2, y = (-projected.y + 1) * h / 2;
@@ -1281,11 +1502,12 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
     if (disposed) return;
     const w = container.clientWidth, h = container.clientHeight;
     if (w < 10 || h < 10) return;
-    const aspectChanged = Math.abs(camera.aspect - w / h) > 0.01;
+    const sizeChanged = w !== viewportWidth || h !== viewportHeight;
+    viewportWidth = w; viewportHeight = h;
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
     renderer.setSize(w, h, false);
-    if (currentRoot && aspectChanged) frameObject(currentRoot, false);
+    if (currentRoot && sizeChanged) { cancelNavigation('resize'); frameObject(currentRoot, true); }
   }
   const observer = new ResizeObserver(resize);
   observer.observe(container);
@@ -1296,10 +1518,11 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
     const dt = Math.min(0.1, (now - lastTime) / 1000);
     lastTime = now;
     const targetExplode = normalizedExplode(state.explode);
-    if (Math.abs(explodeCurrent - targetExplode) > 0.0005) {
+    if (!navigationTween && Math.abs(explodeCurrent - targetExplode) > 0.0005) {
       explodeCurrent = THREE.MathUtils.lerp(explodeCurrent, targetExplode, 1 - Math.exp(-dt * 7));
       if (currentRoot) updateExplode(currentRoot, explodeCurrent);
     }
+    if (navigationTween) animateHierarchyNavigation(now);
     if (cameraTween) {
       const t = Math.min(1, (now - cameraTween.start) / cameraTween.duration);
       const e = t < 0.5 ? 4 * t ** 3 : 1 - (-2 * t + 2) ** 3 / 2;
@@ -1307,17 +1530,19 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
       controls.target.lerpVectors(cameraTween.fromTarget, cameraTween.toTarget, e);
       if (t >= 1) cameraTween = null;
     }
-    for (const entry of roots) {
+    if (!navigationTween) for (const entry of roots) {
       const t = Math.min(1, (now - entry.start) / 800);
       const e = t * t * (3 - 2 * t);
       entry.opacity = THREE.MathUtils.lerp(entry.from, entry.to, e);
       if (t < 1 || Math.abs(entry.root.userData.opacity - entry.to) > 0.001) setRootOpacity(entry.root, entry.opacity);
     }
-    const expired = roots.filter(e => e.to === 0 && now - e.start >= 800);
+    const expired = navigationTween ? [] : roots.filter(e => e.to === 0 && now - e.start >= 800);
     if (expired.length) {
       for (const e of expired) disposeRoot(e.root);
       roots = roots.filter(e => !expired.includes(e));
+      if (navigationInfo.kind === 'crossfade') { navigationInfo.active = false; navigationInfo.phase = 1; }
     }
+    if (!navigationTween && navigationInfo.kind === 'crossfade' && navigationInfo.active) navigationInfo.phase = Math.min(1, (now - roots.at(-1).start) / 800);
     controls.update();
     renderer.render(scene, camera);
     updateLabels();
@@ -1327,13 +1552,20 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
     if (value === false) return 0;
     return THREE.MathUtils.clamp(Number(value) || 0, 0, 1);
   }
+  function motionPreferenceChanged() {
+    if (motionPreference.matches) { cancelNavigation('reduced-motion'); if (currentRoot) frameObject(currentRoot, true); }
+  }
+  motionPreference?.addEventListener?.('change', motionPreferenceChanged);
   buildScene();
   raf = requestAnimationFrame(animate);
 
   return {
     setState(next = {}) {
       if (disposed) return;
-      const before = `${state.viewId}|${JSON.stringify(state.config)}|${JSON.stringify(state.quantities)}`;
+      const previousView = state.viewId;
+      const previousGeometry = `${JSON.stringify(state.config)}|${JSON.stringify(state.quantities)}`;
+      const previousExplode = state.explode;
+      const before = `${previousView}|${previousGeometry}`;
       if (next.config) state.config = { ...state.config, ...next.config };
       if (next.quantities) state.quantities = next.quantities;
       if (next.nodes) state.nodes = next.nodes;
@@ -1341,13 +1573,19 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
       if ('selectedId' in next) state.selectedId = next.selectedId;
       if ('explode' in next) state.explode = normalizedExplode(next.explode);
       if ('signalPath' in next) state.signalPath = normalizeSignalPath(next.signalPath);
-      const after = `${state.viewId}|${JSON.stringify(state.config)}|${JSON.stringify(state.quantities)}`;
-      if (before !== after) { hoveredId = null; buildScene(); }
-      else refreshHighlights();
+      const nextGeometry = `${JSON.stringify(state.config)}|${JSON.stringify(state.quantities)}`;
+      const after = `${state.viewId}|${nextGeometry}`;
+      if (previousGeometry !== nextGeometry) navigationEntries.clear();
+      if (before !== after) { hoveredId = null; buildScene(previousView !== state.viewId && previousGeometry === nextGeometry); }
+      else {
+        if (previousExplode !== state.explode) cancelNavigation('explode');
+        refreshHighlights();
+      }
     },
-    reset() { if (!disposed && currentRoot) frameObject(currentRoot, false); },
+    reset() { if (!disposed && currentRoot) { cancelNavigation('reset'); frameObject(currentRoot, false); } },
     focusSelected() {
       if (disposed || !currentRoot) return;
+      cancelNavigation('focus');
       frameObject(currentRoot, false, state.selectedId);
       // A leaf view already contains the selected part; visibly move closer.
       if (state.selectedId === state.viewId && cameraTween) {
@@ -1356,7 +1594,7 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
     },
     zoom(delta) {
       if (disposed) return;
-      cameraTween = null;
+      cancelNavigation('zoom');
       const offset = camera.position.clone().sub(controls.target);
       const value = Number(delta) || 0;
       const scale = Math.exp(value * 0.14);
@@ -1364,13 +1602,27 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
       camera.position.copy(controls.target).add(offset);
       controls.update();
     },
-    setExplode(value) { state.explode = normalizedExplode(value); },
+    setExplode(value) { if (!disposed) { cancelNavigation('explode'); state.explode = normalizedExplode(value); } },
+    getNavigationState() {
+      return {
+        ...navigationInfo, anchorCenter: navigationInfo.anchorCenter ? [...navigationInfo.anchorCenter] : undefined,
+        camera: camera.position.toArray(), target: controls.target.toArray(),
+        roots: roots.map(({ root }) => {
+          const bounds = geometryBounds(root).bounds;
+          return { viewId: root.userData.viewId, opacity: root.userData.opacity, scale: root.scale.toArray(), position: root.position.toArray(), bounds: { min: bounds.min.toArray(), max: bounds.max.toArray() } };
+        }),
+      };
+    },
     capture() { renderer.render(scene, camera); return renderer.domElement.toDataURL('image/png'); },
     dispose() {
       if (disposed) return;
       disposed = true;
       cancelAnimationFrame(raf);
       observer.disconnect();
+      motionPreference?.removeEventListener?.('change', motionPreferenceChanged);
+      navigationTween = null;
+      cameraTween = null;
+      navigationEntries.clear();
       controls.dispose();
       renderer.domElement.removeEventListener('pointerdown', pointerStart, true);
       renderer.domElement.removeEventListener('pointerup', pointerEnd);
