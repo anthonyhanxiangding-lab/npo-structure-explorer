@@ -17,7 +17,7 @@ const state=()=>page.evaluate(()=>NPO.getState());
 async function expectView(id){
   await page.waitForFunction(id=>NPO.getState().view===id&&NPO.getState().selected===id,id);
   assert.equal(await page.locator('#tree [aria-selected="true"]').getAttribute('data-select'),id,'tree selection follows focused view');
-  await page.waitForTimeout(1000);
+  await page.waitForFunction(()=>!NPO.scene.getNavigationState().active);
 }
 async function searchFor(query,id,{enter=false}={}){
   await page.locator('#component-search').fill(query);

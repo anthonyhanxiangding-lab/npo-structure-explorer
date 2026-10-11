@@ -56,7 +56,7 @@ async function setting(key,value){await page.locator('#settings').click();await 
  assert((await page.locator('.allocated-quantity').innerText()).includes('0.5'));mark('Parameter provenance, residual share, allocation labels, and expand actions');
  await page.evaluate(()=>NPO.select('tia'));assert.equal((await state()).signalPath,'rx');assert((await page.locator('#signal-route').innerText()).includes('接收PD'));
  await page.locator('[data-signal="tx"]').click();assert.equal((await state()).signalPath,'tx');
- await page.evaluate(()=>NPO.select('pic'));await page.waitForTimeout(1200);await page.screenshot({path:path.join(qa,'10-pic-signal-paths.png')});
+ await page.evaluate(()=>NPO.select('pic'));await page.waitForFunction(()=>!NPO.scene.getNavigationState().active);await page.screenshot({path:path.join(qa,'10-pic-signal-paths.png')});
  await page.evaluate(()=>NPO.select('monitor_pd'));assert.equal((await state()).signalPath,'cw');await page.locator('[data-focus="monitor_pd"]').click();
  await page.evaluate(()=>NPO.select('els'));await page.waitForTimeout(1000);await page.screenshot({path:path.join(qa,'11-els.png')});
  mark('Signal route controls, component-linked paths, PIC and ELS view rendering');
