@@ -126,7 +126,8 @@ function result(passed,extra={}){
     assert(value.price.isEstimate&&!value.price.isOverride);assert.equal(value.price.total,value.estimate.base*value.quantity);
     assert.equal(value.total,value.withoutEstimateTotal,'monitor estimate allocates existing BOM budget');
     const displayMoney=v=>'$'+v.toLocaleString('en-US',{maximumFractionDigits:2});
-    assert((await page.locator('#inspector .price-value').innerText()).includes(displayMoney(value.price.total)),'visible price matches monitor allocation');
+    assert((await page.locator('#inspector .price-value').innerText()).includes(displayMoney(value.price.unit)),'primary price matches monitor unit value');
+    assert((await page.locator('#inspector .price-total').innerText()).includes(displayMoney(value.price.total)),'secondary price matches monitor allocation');
     assert((await page.locator('#inspector .price-caption').innerText()).includes('估算'),'visible price is labeled estimate');
     const range=await page.locator('#inspector .estimate-range').innerText();
     assert(range.includes(displayMoney(value.estimate.low))&&range.includes(displayMoney(value.estimate.high)),'visible estimate range matches database');

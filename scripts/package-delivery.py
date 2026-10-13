@@ -33,6 +33,15 @@ if navigation_receipt.get('passed') is not True or navigation_receipt.get('error
  raise SystemExit('Navigation QA does not match current HTML')
 files['qa/navigation-results.json']=navigation_path
 files['qa/navigation-zoom.webm']=qa/'navigation-zoom.webm'
+preview_path=qa/'preview-results.json'
+if not preview_path.is_file():
+ raise SystemExit('Run node scripts/test-previews.cjs before packaging')
+preview_receipt=json.loads(preview_path.read_text(encoding='utf-8'))
+if preview_receipt.get('passed') is not True or preview_receipt.get('errors')!=[] or preview_receipt.get('externalRequests')!=[] or preview_receipt.get('artifactSha256')!=hashlib.sha256(artifact.read_bytes()).hexdigest():
+ raise SystemExit('Preview QA does not match current HTML')
+files['qa/preview-results.json']=preview_path
+for image in preview_receipt.get('screenshots',[]):
+ files['qa/'+image]=qa/image
 qa_images=sorted(qa.glob('[0-9][0-9]-*.png'))
 if not qa_images:
  raise SystemExit(f'Browser QA screenshots are missing from {qa}. Rerun node scripts/render-qa.cjs using the same NPO_QA_DIR before packaging.')

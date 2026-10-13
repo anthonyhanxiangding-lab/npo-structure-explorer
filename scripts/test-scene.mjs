@@ -79,16 +79,165 @@ for (const count of [1,4,8,16,32,64]) {
   assert.equal(new Set(rows.map(r=>r.rxZ)).size,count);
   checks+=4;
 }
+const previews=(root,id)=>objects(root,o=>o.userData.previewPattern===id);
+const pathMeshes=root=>objects(root,o=>o.geometry?.type==='TubeGeometry');
+const pathPoints=mesh=>mesh.geometry.parameters.path.getPoints(100).map(p=>p.add(mesh.position));
+const patternSignature=root=>objects(root,o=>o.isMesh).map(o=>({
+  type:o.geometry.type,
+  material:o.material.userData.baseColor?.getHexString(),
+  branches:o.geometry.parameters.path?.points?.length,
+}));
+function assertMzmReadable(pattern) {
+  const paths=pathMeshes(pattern);
+  assert.equal(paths.length,2,'MZM contains two optical arms, rather than only a colored slab');
+  const points=paths.map(pathPoints),length=Math.max(...points.flat().map(p=>p.x))-Math.min(...points.flat().map(p=>p.x));
+  const centers=points.map(points=>points.filter(p=>Math.abs(p.x)<length*.1));
+  assert.ok(centers.every(points=>points.length>0),'Both arms run through the central modulation region');
+  const negative=centers.find(points=>points.every(p=>p.z<0));
+  const positive=centers.find(points=>points.every(p=>p.z>0));
+  assert.ok(negative&&positive,'The two arms occupy opposite sides of the centerline');
+  const radius=Math.max(...paths.map(path=>path.geometry.parameters.radius));
+  const lower=Math.max(...negative.map(p=>p.z)),upper=Math.min(...positive.map(p=>p.z));
+  assert.ok(upper-lower>radius*4,'Optical arm surfaces leave a visible central gap');
+  for(const path of paths) {
+    const controlPoints=path.geometry.parameters.path.points;
+    assert.ok(Math.abs(controlPoints[0].z)<1e-8&&Math.abs(controlPoints.at(-1).z)<1e-8,'Each arm branches from and returns to the optical centerline');
+  }
+  const electrodes=objects(pattern,o=>o.geometry?.type==='BoxGeometry'&&o.geometry.parameters.width>length*.3);
+  assert.ok(electrodes.some(o=>o.position.z<0)&&electrodes.some(o=>o.position.z>0),'Two separate electrodes flank the arms');
+  for(const electrode of electrodes) {
+    const side=Math.sign(electrode.position.z);
+    const inner=Math.abs(electrode.position.z)-electrode.geometry.parameters.depth/2;
+    const armOuter=Math.max(...centers.flat().filter(p=>Math.sign(p.z)===side).map(p=>Math.abs(p.z)))+radius;
+    assert.ok(inner>armOuter,`Electrode edges do not cover the optical arms: inner=${inner}, armOuter=${armOuter}`);
+  }
+  checks+=8;
+}
+function assertIntegratedDetector(pattern) {
+  const paths=pathMeshes(pattern);
+  assert.equal(paths.length,1,'Integrated PD has one terminating optical input');
+  const points=pathPoints(paths[0]);
+  assert.ok(points.every(p=>Math.abs(p.y-points[0].y)<1e-8),'Integrated PD has no raised package bond-wire loop');
+  assert.ok(objects(pattern,o=>o.isMesh).every(o=>o.material.userData.baseColor?.getHexString()!=='e2ddd1'),'Integrated PD does not introduce a separate ceramic package');
+  const regions=objects(pattern,o=>o.geometry?.type==='BoxGeometry');
+  const absorber=regions.find(o=>o.material.userData.baseColor?.getHexString()==='94576b');
+  assert.ok(absorber,'Integrated PD has a distinct absorbing region');
+  const termination=points.at(-1);
+  assert.ok(Math.abs(termination.x-absorber.position.x)<absorber.geometry.parameters.width/2,'Receive waveguide ends within the detector region');
+  assert.ok(regions.some(o=>o.material.userData.baseColor?.getHexString()==='263852'),'Integrated PD has a visible active surface');
+  checks+=6;
+}
+function assertPassivePattern(pattern,id) {
+  const paths=pathMeshes(pattern);
+  if(id==='splitter') {
+    assert.equal(paths.length,2,'A splitter preview contains two distinct output paths');
+    const ends=paths.map(path=>path.geometry.parameters.path.points.at(-1));
+    assert.ok(ends[0].z*ends[1].z<0,'Splitter outputs branch to opposite sides');
+    const radius=Math.max(...paths.map(path=>path.geometry.parameters.radius));
+    assert.ok(Math.abs(ends[0].z-ends[1].z)>radius*4,'Splitter output surfaces are visibly separated');
+    checks+=3;
+  } else if(id==='coupler') {
+    const ribs=objects(pattern,o=>o.geometry?.type==='BoxGeometry');
+    assert.ok(ribs.length>=5,'Coupler preview has a recognizable repeated optical interface pattern');
+    assert.equal(paths.length,1,'Coupler preview includes its incoming waveguide');
+    assert.ok(new Set(ribs.map(o=>o.position.x)).size===ribs.length,'Coupling ribs are distributed along the optical path');
+    checks+=3;
+  } else if(id==='phase') {
+    assert.equal(paths.length,1,'Phase tuning has a single optical path');
+    const points=pathPoints(paths[0]);
+    assert.ok(points.every(p=>Math.abs(p.z-points[0].z)<1e-8),'Phase tuning is distinct from a bifurcated MZM');
+    assert.ok(objects(pattern,o=>o.geometry?.type==='BoxGeometry').some(o=>Math.abs(o.position.z-points[0].z)>paths[0].geometry.parameters.radius),'A separate tuning strip sits beside the waveguide');
+    checks+=3;
+  }
+}
 for (const channels of [4,8,16]) {
   const root=current('pic',{picChannels:channels,lanes:32});
-  const modulators=objects(root,o=>o.isMesh&&o.userData.id==='modulator');
-  const detectors=objects(root,o=>o.isMesh&&o.userData.id==='photodiode');
-  assert.equal(detectors.length,channels,'One Rx detector per displayed Rx channel');
-  assert.equal(modulators.length,channels*4,'Each Tx channel has only the two-arm MZM geometry and electrodes');
+  const modulators=previews(root,'modulator'),detectors=previews(root,'photodiode');
+  assert.equal(detectors.length,channels,'One semantic Rx detector instance per displayed Rx channel');
+  assert.equal(modulators.length,channels,'One semantic MZM instance per displayed Tx channel');
+  for(const [id,count] of [['coupler',channels*2],['splitter',channels],['phase',channels]]) {
+    assert.equal(previews(root,id).length,count,`${id} keeps its per-channel preview instances`);
+  }
   assert.ok(modulators.every(o=>new THREE.Box3().setFromObject(o).max.z<0),'MZM lies only in Tx band');
   assert.ok(detectors.every(o=>new THREE.Box3().setFromObject(o).min.z>0),'PD lies only in Rx band');
   assert.equal(objects(root,o=>o.geometry?.type==='TorusGeometry').length,0,'MZM view must not contain microrings');
-  checks+=5;
+  assertMzmReadable(modulators[0]);assertIntegratedDetector(detectors[0]);
+  for(const id of ['coupler','splitter','phase'])assertPassivePattern(previews(root,id)[0],id);
+  const signatures=Object.fromEntries(['modulator','photodiode','coupler','splitter','phase'].map(id=>[id,patternSignature(previews(root,id)[0])]));
+  for(const id of Object.keys(signatures)) {
+    const detail=previews(current(id),id);
+    assert.equal(detail.length,1,`${id} detail contains one enlarged physical pattern`);
+    assert.deepEqual(patternSignature(detail[0]),signatures[id],`${id} keeps the same recognizable geometry and materials inside PIC and in detail`);
+    if(id==='modulator')assertMzmReadable(detail[0]);
+    else if(id==='photodiode')assertIntegratedDetector(detail[0]);
+    else assertPassivePattern(detail[0],id);
+    checks+=2;
+  }
+  checks+=8;
+}
+for(const id of ['phase','waveguide']) {
+  const pattern=previews(current(id),id)[0];
+  assert.ok(pattern,`${id} has its own preview pattern`);
+  assert.equal(pathMeshes(pattern).length,1,`${id} must not reuse the two-arm MZM geometry`);
+  if(id==='phase')assert.ok(objects(pattern,o=>o.geometry?.type==='BoxGeometry').length>0,'Phase tuning includes a separate tuning strip');
+  checks+=id==='phase'?3:2;
+}
+const cwDetector=previews(current('cw'),'monitor_pd')[0];
+const monitorSignature=patternSignature(cwDetector);
+const monitorDetail=previews(current('monitor_pd'),'monitor_pd')[0];
+assert.deepEqual(patternSignature(monitorDetail),monitorSignature,'Monitor PD retains its detector structure when enlarged from the CW package');
+assert.ok(pathMeshes(monitorDetail).length>0,'Monitor PD retains electrical connections instead of a generic IC block');
+checks+=2;
+
+// The carrier preview needs exposed contacts, not vias buried inside its top
+// dielectric. Test the actual surfaces and camera ray intersections.
+for(const view of ['substrate','interposer']) {
+  const root=current(view,{interposer:true},{interposer:1});
+  const carrier=objects(root,o=>o.userData.navigationAnchor==='interposer')[0];
+  assert.ok(carrier,'An enabled interposer has a physical preview');
+  const dielectric=objects(carrier,o=>o.geometry?.type==='BoxGeometry'&&o.material.userData.baseColor?.getHexString()==='235965')[0];
+  const top=new THREE.Box3().setFromObject(dielectric).max.y;
+  const contacts=objects(carrier,o=>o.geometry?.type==='BoxGeometry'&&o.material.userData.baseColor?.getHexString()==='c9983c');
+  const routes=pathMeshes(carrier);
+  assert.ok(contacts.length>0&&routes.length>0,'Surface pads and connecting traces are present');
+  assert.ok([...contacts,...routes].every(o=>new THREE.Box3().setFromObject(o).min.y>top),'Surface contacts and traces lie above the dielectric rather than being buried');
+  const ray=new THREE.Raycaster();
+  const visible=contacts.some(mesh=>{
+    const bounds=new THREE.Box3().setFromObject(mesh),point=bounds.getCenter(new THREE.Vector3());
+    point.y=bounds.max.y;
+    const projected=point.project(renderedCamera);
+    if(Math.abs(projected.x)>=1||Math.abs(projected.y)>=1)return false;
+    ray.setFromCamera(new THREE.Vector2(projected.x,projected.y),renderedCamera);
+    const first=ray.intersectObject(root,true).find(hit=>hit.object.isMesh&&hit.object.material?.opacity>=.1);
+    return first?.object===mesh;
+  });
+  assert.ok(visible,`At least one real ${view} surface contact is visible and ray-accessible from the default camera`);
+  checks+=4;
+}
+
+// Ferrule openings stay flush with the end face even as its body thickness and
+// channel density change. An extruded marker must not turn into a visible stud.
+for(const view of ['connector','ferrule'])for(const channelCount of [4,16,64]) {
+  const root=current(view,{lanes:channelCount});
+  const core=previews(root,'ferrule')[0];
+  const body=objects(core,o=>o.geometry?.type==='BoxGeometry')[0];
+  const front=new THREE.Box3().setFromObject(body).max.x;
+  const markers=objects(core,o=>o.geometry?.type==='CylinderGeometry');
+  const openings=markers.filter(o=>o.material.userData.baseColor?.getHexString()==='152633');
+  assert.equal(openings.length,channelCount*2,'Ferrule openings retain the configured Tx and Rx fiber count');
+  assert.ok(markers.every(o=>{
+    const protrusion=new THREE.Box3().setFromObject(o).max.x-front;
+    return protrusion>0&&protrusion<=o.geometry.parameters.radiusTop*.6;
+  }),'Opening markers remain shallow relative to their radius, independently of body thickness');
+  checks+=2;
+}
+
+for(const view of ['fau','fiber','connector']) {
+  const root=current(view);
+  const strands=objects(root,o=>o.geometry?.type==='TubeGeometry'&&o.userData.id==='fiber');
+  assert.ok(strands.length>=32,`${view} retains every configured signal strand`);
+  assert.ok(strands.every(o=>o.material.opacity>=.85&&!o.material.transparent),'Signal strands stay opaque enough to read against the pale scene background');
+  checks+=2;
 }
 for (const view of ['npo','engine','pic']) {
   const root=current(view);
@@ -236,6 +385,27 @@ assert.ok(returnCameraAtFinish.distanceTo(renderedCamera.position)<1e-8,'Parent 
 checks+=4;
 
 // Clicking a repeated instance must preserve its spatial identity on return.
+// Newly detailed embedded parts must be reachable through actual visible meshes,
+// not only via a tree label or a programmatic selection.
+for(const [parent,child,index] of [
+  ['pic','photodiode',3],['pic','coupler',4],['pic','splitter',3],['pic','phase',3],
+  ['connector','ferrule',0],['laser_die','inp_substrate',0],
+]) {
+  const root=current(parent);
+  const instances=objects(root,o=>o.userData.navigationAnchor===child);
+  assert.ok(instances.length>index,`${parent} contains a real spatial anchor for ${child}`);
+  const center=new THREE.Box3().setFromObject(instances[index]).getCenter(new THREE.Vector3());
+  clickInstance(root,instances[index],child);
+  const inward=api.getNavigationState();
+  assert.equal(inward.kind,'in',`Clicking ${child} in ${parent} starts a containment zoom`);
+  assert.ok(new THREE.Vector3(...inward.anchorCenter).distanceTo(center)<.05,'Zoom target matches the physical feature that was clicked');
+  settle();onlyRoot(child);navigate(parent);
+  const outward=api.getNavigationState();
+  assert.equal(outward.kind,'out',`Returning from ${child} restores its enclosing component`);
+  assert.ok(new THREE.Vector3(...outward.anchorCenter).distanceTo(new THREE.Vector3(...inward.anchorCenter))<1e-7,'Returning uses the same embedded instance');
+  settle();onlyRoot(parent);
+  checks+=8;
+}
 for(const [parent,child,index,quantities] of [['engine','pic',1,{pic:2}],['pic','modulator',5,{}]]){
   const root=current(parent,{},quantities);
   const instances=objects(root,o=>o.userData.navigationAnchor===child);
