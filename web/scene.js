@@ -20,9 +20,9 @@ export function signalModesForComponent(id) {
 export function picChannelLayout(channelCount) {
   const count = Math.max(1, Math.min(64, Math.floor(Number(channelCount) || 1)));
   return Array.from({ length: count }, (_, index) => ({
-    txZ: -0.82 + (index + 0.5) * 0.66 / count,
-    rxZ: 0.16 + (index + 0.5) * 0.66 / count,
-    pitch: 0.66 / count,
+    txZ: -1.48 + (index + 0.5) * 1.2 / count,
+    rxZ: 0.28 + (index + 0.5) * 1.2 / count,
+    pitch: 1.2 / count,
   }));
 }
 
@@ -111,7 +111,7 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
     copper: material('#b57745', 0.78, 0.28), dark: material('#152633', 0.5, 0.42),
     pcb: material('#235965', 0.52, 0.55), pcbDark: material('#153d4b', 0.43, 0.55),
     silicon: material('#263852', 0.72, 0.22), blue: material('#3389bd', 0.65, 0.3),
-    cyan: material('#41bfce', 0.35, 0.25), purple: material('#805898', 0.62, 0.25),
+    cyan: material('#41bfce', 0.35, 0.25), fiber: material('#287f9e', 0.12, 0.48), purple: material('#805898', 0.62, 0.25),
     ceramic: material('#e2ddd1', 0.08, 0.65), polymer: material('#e9eeef', 0.12, 0.43),
     maroon: material('#94576b', 0.45, 0.28), grey: material('#b9c1c9', 0.1, 0.7),
     glass: new THREE.MeshPhysicalMaterial({ color: '#b6e9ed', metalness: 0.04, roughness: 0.14, transparent: true, opacity: 0.43, transmission: 0.24, thickness: 0.4, ior: 1.48, depthWrite: false }),
@@ -281,8 +281,11 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
       el.addEventListener('mouseenter', e => changeHover(id, e));
       el.addEventListener('mouseleave', () => changeHover(null));
     }
+    const leader = document.createElement('div');
+    Object.assign(leader.style, {position:'absolute',height:'1px',background:'#91a5b2',transformOrigin:'0 0',pointerEvents:'none',display:'none'});
+    overlay.appendChild(leader);
     overlay.appendChild(el);
-    labels.push({ anchor, el, id, priority, root: buildingRoot, width: 0, height: 0 });
+    labels.push({ anchor, el, leader, id, priority, root: buildingRoot, width: 0, height: 0 });
     return anchor;
   }
   let buildingRoot = null;
@@ -323,51 +326,94 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
     return g;
   }
 
+  // Shared masks keep the embedded preview and enlarged detail recognizable.
+  // Dimensions are deliberately exaggerated for legibility, not a process layout.
+  function photonicPattern(parent, id, pos, length, width) {
+    const g = group(id, parent, pos);
+    g.userData.navigationAnchor = id;
+    g.userData.previewPattern = id;
+    const r = Math.min(width * 0.055, length * 0.014);
+    const path = points => tube(g, points.map(([x,z]) => [x * length, r, z * width]), r, palette.gold, id, 28);
+    if (id === 'modulator') {
+      path([[-.5,0],[-.36,0],[-.23,-.24],[.23,-.24],[.38,0],[.5,0]]);
+      path([[-.36,0],[-.23,.24],[.23,.24],[.38,0]]);
+      // Electrodes sit beside the optical arms, never on top of them.
+      for (const side of [-1,1]) {
+        box(g,[length*.45,r*1.4,width*.055],[0,r,side*width*.44],palette.copper,id);
+        for (const x of [-.2,.2]) box(g,[length*.045,r*1.8,width*.075],[x*length,r,side*width*.44],palette.gold,id);
+      }
+    } else if (id === 'photodiode') {
+      box(g,[length*.58,r*2.5,width*.62],[0,r,0],palette.maroon,id);
+      box(g,[length*.43,r,width*.3],[0,r*2.75,0],palette.silicon,id);
+      path([[.5,0],[.14,0]]);
+      for (const side of [-1,1]) box(g,[length*.48,r,width*.1],[0,r*2.3,side*width*.38],palette.gold,id);
+    } else if (id === 'coupler') {
+      path([[-.5,0],[-.24,0]]);
+      for (let i=0;i<8;i++) box(g,[length*.04,r*1.2,width*(.2+i*.075)],[(i*.075-.2)*length,r,0],palette.gold,id);
+    } else if (id === 'splitter') {
+      path([[-.5,0],[-.22,0],[.13,-.32],[.5,-.32]]);
+      path([[-.22,0],[.13,.32],[.5,.32]]);
+    } else if (id === 'phase') {
+      path([[-.5,0],[.5,0]]);
+      // One straight guide plus a separate tuning strip, not a second MZM.
+      box(g,[length*.55,r*1.4,width*.2],[0,r,width*.29],palette.copper,id);
+      for (const x of [-.25,.25]) box(g,[length*.1,r*1.8,width*.32],[x*length,r,width*.3],palette.gold,id);
+    } else {
+      path([[-.5,0],[-.3,0],[-.1,-.32],[.12,-.32],[.3,0],[.5,0]]);
+    }
+    return g;
+  }
+  function monitorDetector(parent, pos, length, width) {
+    const g = group('monitor_pd',parent,pos);
+    g.userData.navigationAnchor = 'monitor_pd';
+    g.userData.previewPattern = 'monitor_pd';
+    box(g,[length,.08*length,width],[0,0,0],palette.maroon);
+    box(g,[length*.65,.012*length,width*.6],[0,.048*length,0],palette.silicon);
+    for (const side of [-1,1]) {
+      box(g,[length*.12,.025*length,width*.7],[side*length*.43,.05*length,0],palette.gold);
+      tube(g,[[side*length*.43,.06*length,0],[side*length*.65,.3*length,0],[side*length*.82,-.03*length,0]],length*.016,palette.gold,'monitor_pd',16);
+    }
+    return g;
+  }
+
   function pic(parent, pos = [0, 0, 0], detailed = false, channelCount = null) {
     const g = group('pic', parent, pos);
     g.userData.navigationAnchor = 'pic';
     const base = group(null, g);
-    box(base, [3.9, 0.115, 2.0], [0, 0, 0], palette.silicon, null, 1);
-    box(base, [3.76, 0.008, 1.87], [0, 0.061, 0], palette.darkSilver);
+    box(base, [3.9, 0.115, 3.2], [0, 0, 0], palette.silicon, null, 1);
+    box(base, [3.76, 0.008, 3.07], [0, 0.061, 0], palette.darkSilver);
     const count = channelCount ?? Math.min(lanes(), Number(state.config.picChannels) || 8);
     const optical = movable(group(null, g, [0, 0.071, 0]), [0, detailed ? 0.34 : 0.05, 0]);
     const layout = picChannelLayout(count);
     for (const { txZ, rxZ, pitch } of layout) {
       const guideRadius = Math.min(detailed ? 0.011 : 0.008, pitch * 0.105);
-      const arm = pitch * 0.22;
       const tx = signalTag(group(null, optical), 'tx');
       const rx = signalTag(group(null, optical), 'rx');
-      // Each MZM is an explicit spatial anchor, so drilling in follows one real
-      // channel rather than treating all repeated modulators as one large part.
-      const mzm = group('modulator', tx);
-      mzm.userData.navigationAnchor = 'modulator';
-      // Separate transmit and receive rows: MZM on Tx, terminating PD on Rx.
-      signalTag(straight(tx, [-1.8, 0.017, txZ], [-1.0, 0.017, txZ], guideRadius, palette.gold, 'waveguide'), ['cw', 'tx']);
-      for (const side of [-1, 1]) {
-        tube(mzm, [[-1, 0.017, txZ], [-0.72, 0.017, txZ + side * arm], [0.27, 0.017, txZ + side * arm], [0.54, 0.017, txZ]], guideRadius, palette.gold, 'modulator', 20);
-        box(mzm, [0.93, 0.022, arm * 0.6], [-0.23, 0.035, txZ + side * arm], palette.cyan, 'modulator');
-      }
-      straight(tx, [0.54, 0.017, txZ], [1.8, 0.017, txZ], guideRadius, palette.gold, 'waveguide');
-      box(tx, [0.2, 0.012, pitch * 0.42], [1.67, 0.025, txZ], palette.gold, 'coupler');
-      signalTag(box(tx, [0.16, 0.012, pitch * 0.3], [-1.58, 0.025, txZ], palette.gold, 'splitter'), 'cw');
-      box(tx, [0.2, 0.009, pitch * 0.3], [0.94, 0.035, txZ], palette.blue, 'phase');
-      straight(rx, [1.8, 0.017, rxZ], [0.6, 0.017, rxZ], guideRadius, palette.cyan, 'waveguide');
-      box(rx, [0.2, 0.012, pitch * 0.42], [1.67, 0.025, rxZ], palette.gold, 'coupler');
-      box(rx, [0.27, 0.038, pitch * 0.54], [0.46, 0.03, rxZ], palette.maroon, 'photodiode');
+      photonicPattern(tx,'modulator',[-.23,.018,txZ],1.54,pitch*.9);
+      signalTag(straight(tx,[-1.8,.017,txZ],[-1,.017,txZ],guideRadius,palette.gold,'waveguide'),['cw','tx']);
+      straight(tx,[.54,.017,txZ],[1.8,.017,txZ],guideRadius,palette.gold,'waveguide');
+      photonicPattern(tx,'coupler',[1.67,.025,txZ],.27,pitch*.72);
+      signalTag(photonicPattern(tx,'splitter',[-1.58,.023,txZ],.3,pitch*.75),'cw');
+      photonicPattern(tx,'phase',[.94,.027,txZ],.3,pitch*.72);
+      straight(rx,[1.8,.017,rxZ],[.64,.017,rxZ],guideRadius,palette.cyan,'waveguide');
+      photonicPattern(rx,'coupler',[1.67,.025,rxZ],.27,pitch*.72);
+      photonicPattern(rx,'photodiode',[.46,.022,rxZ],.36,pitch*.83);
     }
     for (let i = 0; i < 20; i++) {
       const x = -1.75 + i * 3.5 / 19;
-      for (const z of [-0.955, 0.955]) box(g, [0.085, 0.016, 0.058], [x, 0.069, z], palette.gold, 'pic');
+      for (const z of [-1.555, 1.555]) box(g, [0.085, 0.016, 0.058], [x, 0.069, z], palette.gold, 'pic');
     }
     if (detailed) {
-      label(g, `单颗PIC · ${count}Tx＋${count}Rx结构示意`, [-0.5, 0.7, -1], 'pic', 0);
-      label(optical, '调制器 · MZM示意', [-0.5, 0.31, -0.74], 'modulator', 1);
-      label(optical, '接收PD', [0.48, 0.33, 0.7], 'photodiode', 1);
+      label(g, `单颗PIC · ${count}Tx＋${count}Rx结构示意`, [-0.5, 0.7, -1.6], 'pic', 0);
+      label(optical, '调制器 · 双臂MZM示意', [-0.23, 0.34, -1.15], 'modulator', -2);
+      label(optical, '接收PD', [0.46, 0.24, 0.96], 'photodiode', -2);
       label(optical, '片上波导', [0.94, 0.18, 0.08], 'waveguide', 2);
-      label(optical, 'Tx / Rx光接口', [1.7, 0.29, 0.02], 'coupler', 2);
-      signalRoute(optical, 'tx', [[-0.98, 0.17, -0.95], [0.6, 0.17, -0.95], [1.87, 0.17, -0.95]], 'Tx发射输出', [0.83, 0.37, -1.12], 0.015);
-      signalRoute(optical, 'rx', [[1.87, 0.17, 0.96], [0.65, 0.17, 0.96], [0.46, 0.17, 0.64]], 'Rx输入至PD', [1.45, 0.38, 1.04], 0.015);
-      signalRoute(optical, 'cw', [[-2.16, 0.17, -0.82], [-1.8, 0.17, -0.82], [-1.55, 0.17, -0.52]], 'CW供光至Tx', [-1.77, 0.39, 0.0], 0.015);
+      label(optical, '光耦合结构', [1.7, 0.22, -0.1], 'coupler', 1);
+      label(optical, '分光器', [-1.58, 0.19, -0.55], 'splitter', 1);
+      label(optical, '相位调节', [0.94, 0.23, -0.6], 'phase', 1);
+      signalRoute(optical, 'tx', [[-0.98, 0.17, -1.59], [0.6, 0.17, -1.59], [1.87, 0.17, -1.59]], 'Tx发射输出', [0.83, 0.37, -1.74], 0.015);
+      signalRoute(optical, 'rx', [[1.87, 0.17, 1.59], [0.65, 0.17, 1.59], [0.46, 0.17, 1.22]], 'Rx输入至PD', [1.45, 0.38, 1.7], 0.015);
+      signalRoute(optical, 'cw', [[-2.16, 0.17, -1.48], [-1.8, 0.17, -1.48], [-1.55, 0.17, -1.18]], 'CW供光至Tx', [-1.77, 0.39, 0.0], 0.015);
     }
     return g;
   }
@@ -413,7 +459,7 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
         const tip = detailed ? -length / 2 - 1.1 : -length / 2 - 0.14;
         const end = detailed ? length / 2 + 1.6 : length / 2 + 0.68;
         const tx = fiberIndex < count / 2;
-        const jacket = pm ? palette.gold : tx ? palette.glass : palette.glass;
+        const jacket = pm ? palette.gold : palette.fiber;
         const strand = signalTag(group(fiberId, fibers), pm ? 'cw' : tx ? 'tx' : 'rx');
         tube(strand, [[tip, fiberY, z], [0, fiberY, z], [length / 2 + 0.38, fiberY, z], [end, fiberY + (detailed ? 0.1 : 0.04), z]], radius, jacket, fiberId, 24);
         straight(strand, [tip, fiberY, z], [length / 2 + 0.2, fiberY, z], radius * 0.22, pm || tx ? palette.gold : palette.cyan, fiberId);
@@ -451,8 +497,18 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
     box(g, [w, 0.12, d], [0, 0, 0], palette.ceramic, null, 1);
     box(g, [w - 0.08, 0.021, d - 0.08], [0, 0.065, 0], palette.pcb);
     box(g, [w - 0.03, 0.014, d - 0.03], [0, -0.059, 0], palette.copper);
+    g.userData.navigationAnchor = 'interposer';
+    // Surface contacts must clear the top dielectric layer; buried vias alone
+    // disappear in the parent preview and make the carrier look like a slab.
     for (let ix = 0; ix < 14; ix++) {
-      for (const z of [-d / 2 + 0.1, d / 2 - 0.1]) cylinder(g, 0.022, 0.13, [-w / 2 + 0.2 + ix * (w - 0.4) / 13, 0, z], palette.gold, null, 'y', 10);
+      const x = -w/2+.2+ix*(w-.4)/13;
+      for (const side of [-1,1]) {
+        const z = side*(d/2-.1);
+        cylinder(g,.022,.17,[x,0,z],palette.gold,null,'y',10);
+        box(g,[.09,.008,.09],[x,.084,z],palette.gold);
+        tube(g,[[x,.086,z],[x,.086,side*d*.35],[x*.72,.086,side*d*.2]],.006,palette.gold,'interposer',10);
+        box(g,[.085,.012,.11],[x*.72,.087,side*d*.2],palette.gold);
+      }
     }
     return g;
   }
@@ -483,7 +539,7 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
       const z = (Math.floor(i / cols) - (rows - 1) / 2) * 1.91 / rows;
       const channels = Math.max(1, Math.min(state.config.picChannels || 8, lanes() - i * (state.config.picChannels || 8)));
       const tile = pic(die, [x, 0, z], false, channels);
-      tile.scale.set(0.94 / cols, 1, 0.91 / rows);
+      tile.scale.set(0.94 / cols, 1, 0.57 / rows);
     }
     movable(die, [0, detailed ? 0.54 : 0.12, 0]);
     const driverCount = q('driver', Math.ceil(lanes() / (state.config.driverChannels || 4)), 16);
@@ -614,7 +670,9 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
     const g = group('laser_die', parent, pos);
     const s = detailed ? 1 : 0.55;
     g.scale.setScalar(s);
-    box(g, [0.98, 0.12, 0.44], [0, 0, 0], palette.maroon, null, 1);
+    const substrate = group('inp_substrate',g);
+    substrate.userData.navigationAnchor = 'inp_substrate';
+    box(substrate, [0.98, 0.12, 0.44], [0, 0, 0], palette.maroon, null, 1);
     box(g, [0.88, 0.015, 0.32], [0, 0.068, 0], palette.gold);
     box(g, [0.92, 0.019, 0.065], [0, 0.08, 0], palette.silicon);
     box(g, [0.012, 0.085, 0.16], [0.497, 0.004, 0], palette.cyan);
@@ -634,7 +692,7 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
     box(submount, [1.44, 0.15, 1.04], [0, 0, 0], palette.gold, null, 1);
     box(submount, [1.05, 0.02, 0.72], [0, 0.083, 0], palette.ceramic);
     const die = movable(laserDie(g, [0, 0.6, 0], true), [0, detailed ? 0.56 : 0.055, 0]);
-    const pd = movable(chip(g, 'monitor_pd', [-0.88, 0.61, 0], [0.2, 0.13, 0.24], 2), [-detailed * 0.28, detailed ? 0.34 : 0.01, 0]);
+    const pd = movable(monitorDetector(g, [-0.88, 0.61, 0], 0.2, 0.24), [-detailed * 0.28, detailed ? 0.34 : 0.01, 0]);
     const cap = movable(group('cw', g, [0.4, 0.62, 0]), [0, detailed ? 1.28 : 0.15, -detailed * 0.45]);
     const shell = cylinder(cap, 0.76, 1.55, [0, 0, 0], palette.silver, null, 'x', 56, true, Math.PI * 1.13);
     shell.rotation.x = Math.PI * 0.43;
@@ -667,7 +725,8 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
     chip(g, 'tec_controller', [0.05, 0.41, 0.72], [0.45, 0.1, 0.36], 4);
     const supplyArray = fau(g, [1.58, 0.48, 0.61], false, true);
     supplyArray.scale.setScalar(0.29);
-    sphere(g, 0.17, [1.33, 0.79, -0.2], palette.glass, 'els_optics', [0.35, 1, 1]);
+    const shaping = opticalTrain(g,[1.38,0.79,-0.2]);
+    shaping.scale.setScalar(.085);
     const output = group('pm_fiber', g);
     tube(output, [[1.35, 0.79, -0.2], [1.65, 0.79, -0.2], [2.26, 0.65, 0], [2.4, 0.45, 0.7]], 0.048, palette.gold, 'pm_fiber');
     cylinder(g, 0.14, 0.4, [2.1, 0.61, -0.13], palette.silver, 'connector', 'x');
@@ -685,22 +744,39 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
     return g;
   }
 
+  function ferruleCore(parent,pos,size,count) {
+    const g = group('ferrule',parent,pos);
+    g.userData.navigationAnchor = 'ferrule';
+    g.userData.previewPattern = 'ferrule';
+    box(g,size,[0,0,0],palette.ceramic,null,1);
+    const rows = Math.max(2,Math.ceil(count/32)), cols = Math.ceil(count/rows);
+    const radius = Math.min(size[1]*.052,size[2]/Math.max(cols,1)*.12);
+    for (let i=0;i<count;i++) {
+      const y = (Math.floor(i/cols)-(rows-1)/2)*size[1]*.22;
+      const z = -size[2]*.41+(i%cols)*size[2]*.82/Math.max(cols-1,1);
+      cylinder(g,radius,.002,[size[0]/2+.001,y,z],palette.dark,'ferrule','x',16);
+      cylinder(g,radius*.58,.003,[size[0]/2+.002,y,z],palette.glass,'ferrule','x',14);
+    }
+    for (const z of [-size[2]*.46,size[2]*.46]) cylinder(g,radius*1.7,.002,[size[0]/2+.001,0,z],palette.darkSilver,'ferrule','x',16);
+    return g;
+  }
+
   function connector(parent, pos = [0, 0, 0], detailed = false) {
     const g = group('connector', parent, pos);
     const n = signalFibers(), width = detailed ? 3.9 : 1.8;
     box(g, [1.04, 0.67, width], [0, 0.37, 0], palette.darkSilver, null, 1);
-    box(g, [0.06, 0.5, width - 0.12], [0.55, 0.39, 0], palette.ceramic);
+    const ferrule = ferruleCore(g,[0.51,0.39,0],[0.16,0.5,width-0.12],n);
     const rows = Math.max(2, Math.ceil(n / 32)), columns = Math.ceil(n / rows);
     for (let i = 0; i < n; i++) {
       const z = -width * 0.41 + (i % columns) * width * 0.82 / Math.max(columns - 1, 1);
       const y = 0.39 + (Math.floor(i / columns) - (rows - 1) / 2) * (rows > 2 ? 0.1 : 0.17);
-      cylinder(g, detailed ? 0.035 : 0.017, 0.05, [0.59, y, z], palette.dark, 'fiber', 'x', 16);
-      cylinder(g, detailed ? 0.02 : 0.012, 0.056, [0.6, y, z], palette.glass, 'fiber', 'x', 14);
-      tube(g, [[-0.6, y, z], [-1.1, y, z], [-1.9, y - 0.12, z * 0.85]], detailed ? 0.026 : 0.015, palette.glass, 'fiber', 20);
+      tube(g, [[-0.6, y, z], [-1.1, y, z], [-1.9, y - 0.12, z * 0.85]], detailed ? 0.026 : 0.015, palette.fiber, 'fiber', 20);
     }
-    for (const z of [-width / 2 + 0.13, width / 2 - 0.13]) cylinder(g, 0.055, 0.16, [0.61, 0.4, z], palette.silver, 'connector', 'x');
     box(g, [0.38, 0.11, width * 0.65], [0, 0.755, 0], palette.paleMetal);
-    if (detailed) label(g, '多通道光纤连接器 · 结构示意', [0.1, 1.12, 0], 'connector', 0);
+    if (detailed) {
+      label(g, '多通道光纤连接器 · 结构示意', [0.1, 1.12, 0], 'connector', 0);
+      label(ferrule, '陶瓷插芯', [0.6,0.75,width*.25], 'ferrule', 1);
+    }
     return g;
   }
 
@@ -852,8 +928,10 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
     label(sink, '热管理与机械结构', [0, 1.46, 0], 'thermal', 0);
     label(conn, '光电连接器', [0.8, 1.5, 0], 'connector', 1);
   }
-  function opticsView(root) {
-    const g = group('els_optics', root, [0, 1.18, 0]);
+  function opticalTrain(parent,pos) {
+    const g = group('els_optics',parent,pos);
+    g.userData.navigationAnchor = 'els_optics';
+    g.userData.previewPattern = 'els_optics';
     for (const [x, radius] of [[-1.55, 0.69], [1.4, 0.95]]) {
       const lens = movable(group('els_optics', g, [x, 0, 0]), [x * 0.38, 0, 0]);
       sphere(lens, radius, [0, 0, 0], palette.glass, 'els_optics', [0.38, 1, 1]);
@@ -864,7 +942,11 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
     cylinder(filterGroup, 0.77, 0.07, [0, 0, 0], palette.film, 'els_optics', 'x');
     torus(filterGroup, 0.79, 0.05, [0, 0, 0], palette.gold, 'els_optics');
     straight(g, [-3.1, 0, 0], [3.1, 0, 0], 0.018, palette.gold, 'els_optics');
-    label(g, '整形与滤光 · 组合示意', [0, 1.36, 0], 'els_optics', 0);
+    return g;
+  }
+  function opticsView(root) {
+    const g = opticalTrain(root,[0,1.18,0]);
+    label(g,'整形与滤光 · 组合示意',[0,1.36,0],'els_optics',0);
   }
 
   function leafView(root, id) {
@@ -877,32 +959,18 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
           for (const s of [-1, 1]) box(g, [0.1, 0.08, 0.45], [x, -0.14, s * 1.19], palette.gold, id);
         }
         break;
-      case 'photodiode': case 'monitor_pd':
-        box(g, [2.5, 0.2, 1.7], [0, -0.1, 0], palette.ceramic);
-        box(g, [1.1, 0.12, 0.8], [0, 0.08, 0], palette.maroon);
-        box(g, [0.78, 0.025, 0.57], [0, 0.16, 0], palette.silicon);
-        for (const z of [-0.35, 0.35]) tube(g, [[-0.32, 0.19, z], [-0.75, 0.5, z * 1.2], [-1, 0.05, z]], 0.018, palette.gold);
+      case 'monitor_pd':
+        monitorDetector(g,[0,0,0],2.1,1.3);
         break;
-      case 'modulator': case 'waveguide': case 'coupler': case 'splitter': case 'phase': {
-        box(g, [4.7, 0.18, 2.5], [0, 0, 0], palette.silicon, null, 1);
-        const y = 0.12;
-        if (id === 'splitter') {
-          tube(g, [[-2.1, y, 0], [-0.6, y, 0], [0.5, y, -0.7], [2.1, y, -0.7]], 0.035, palette.gold, id);
-          tube(g, [[-0.7, y, 0], [0.1, y, 0.15], [0.65, y, 0.7], [2.1, y, 0.7]], 0.035, palette.gold, id);
-        } else if (id === 'coupler') {
-          for (let i = 0; i < 11; i++) box(g, [0.048, 0.019, 0.4 + i * 0.085], [-0.78 + i * 0.16, y, 0], palette.gold, id);
-          straight(g, [-2.1, y, 0], [-0.82, y, 0], 0.035, palette.gold, id);
-          sphere(g, 0.36, [1.75, 0.34, 0], palette.glass, 'coupler', [0.42, 1, 1]);
-        } else {
-          for (const s of [-1, 1]) tube(g, [[-2.1, y, 0], [-1.2, y, 0], [-0.75, y, 0.48 * s], [0.9, y, 0.48 * s], [1.45, y, 0], [2.1, y, 0]], 0.027, palette.gold, id);
-          if (id !== 'waveguide') for (const z of [-0.48, 0.48]) {
-            box(g, [1.55, 0.035, 0.18], [0.08, y + 0.021, z], palette.cyan, id);
-            box(g, [1.48, 0.048, 0.13], [0.08, y + 0.031, z + 0.18], palette.gold, id);
-          }
-        }
+      case 'modulator': case 'photodiode': case 'waveguide': case 'coupler': case 'splitter': case 'phase': {
+        box(g,[4.7,.18,2.5],[0,0,0],palette.silicon,null,1);
+        photonicPattern(g,id,[0,.12,0],4.2,1.8);
         break;
       }
-      case 'laser_die': laserDie(g, [0, 0, 0], true).scale.setScalar(2.5); break;
+      case 'laser_die':
+        laserDie(g, [0, 0, 0], true).scale.setScalar(2.5);
+        label(g,'InP衬底',[.9,.25,.55],'inp_substrate',1);
+        break;
       case 'laser_submount':
         box(g, [3.2, 0.42, 2.3], [0, 0, 0], palette.gold, null, 1);
         box(g, [2.45, 0.13, 1.7], [0, 0.27, 0], palette.ceramic, null, 1);
@@ -912,8 +980,7 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
       case 'polarizer': case 'analyzer': filter(g, id, 0, 1.2, id === 'analyzer' ? Math.PI / 4 : 0); break;
       case 'magnet': ringMagnet(g, [0, 0, 0], 1.25, 0.66); break;
       case 'garnet':
-        cylinder(g, 1.3, 0.22, [0, 0, 0], palette.film, id, 'x', 72);
-        torus(g, 1.3, 0.014, [0.12, 0, 0], palette.purple, id);
+        box(g,[.22,2.5,2.5],[0,0,0],palette.film,id,1);
         for (let iy = -2; iy <= 2; iy++) for (let iz = -2; iz <= 2; iz++) {
           const y = iy * 0.34, z = iz * 0.34;
           sphere(g, 0.037, [0.14, y, z], (iy + iz) % 2 ? palette.purple : palette.cyan, id);
@@ -923,10 +990,10 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
         label(g, '晶格为材料结构示意', [0, -1.4, 0], null, 2, true);
         break;
       case 'coating':
-        cylinder(g, 1.3, 0.035, [0, 0, 0], palette.glass, id, 'x', 72);
+        box(g,[.035,2.5,2.5],[0,0,0],palette.glass,id,1);
         for (let i = 0; i < 5; i++) {
           const coat = movable(group(id, g, [-0.16 + i * 0.08, 0, 0]), [(i - 2) * 0.26, 0, 0]);
-          cylinder(coat, 1.3, 0.012, [0, 0, 0], i % 2 ? palette.glass : palette.film, id, 'x', 64);
+          box(coat,[.012,2.5,2.5],[0,0,0],i % 2 ? palette.glass : palette.film,id);
         }
         break;
       case 'collimator': case 'lens':
@@ -945,7 +1012,7 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
         const radius = Math.min(id === 'pm_fiber' ? 0.11 : 0.045, pitch * 0.28);
         for (let i = 0; i < cables; i++) {
           const z = (i - (cables - 1) / 2) * pitch;
-          tube(g, [[-2.5, 0.05, z], [-1, 0, z], [0.7, 0.12, z + 0.12], [2.4, 0.55, z + 0.35]], radius, id === 'pm_fiber' ? palette.gold : palette.glass, id, 48);
+          tube(g, [[-2.5, 0.05, z], [-1, 0, z], [0.7, 0.12, z + 0.12], [2.4, 0.55, z + 0.35]], radius, id === 'pm_fiber' ? palette.gold : palette.fiber, id, 48);
           cylinder(g, radius * 0.86, 0.018, [-2.51, 0.05, z], palette.glass, id, 'x', 18);
           cylinder(g, radius * 0.27, 0.022, [-2.525, 0.05, z], palette.cyan, id, 'x', 16);
           if (id === 'pm_fiber') for (const offset of [-radius * 0.53, radius * 0.53]) cylinder(g, radius * 0.13, 0.025, [-2.53, 0.05 + offset, z], palette.purple, id, 'x', 12);
@@ -974,18 +1041,7 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
         box(g, [3.24, 0.009, 2.24], [0, 0.099, 0], palette.purple, id);
         for (let i = 0; i < 7; i++) straight(g, [-1.4, 0.11, -0.87 + i * 0.29], [1.4, 0.11, -0.87 + i * 0.29], 0.007, palette.blue, id);
         break;
-      case 'ferrule': {
-        box(g, [1.55, 0.8, 3.75], [0, 0, 0], palette.ceramic, id, 1);
-        const count = signalFibers(), rows = Math.max(2, Math.ceil(count / 32)), columns = Math.ceil(count / rows);
-        for (let i = 0; i < count; i++) {
-          const y = (Math.floor(i / columns) - (rows - 1) / 2) * 0.17;
-          const z = -1.55 + (i % columns) * 3.1 / Math.max(columns - 1, 1);
-          cylinder(g, 0.039, 0.016, [0.784, y, z], palette.dark, id, 'x', 16);
-          cylinder(g, 0.023, 0.02, [0.794, y, z], palette.glass, id, 'x', 14);
-        }
-        for (const z of [-1.7, 1.7]) cylinder(g, 0.078, 0.021, [0.786, 0, z], palette.darkSilver, id, 'x', 20);
-        break;
-      }
+      case 'ferrule': ferruleCore(g,[0,0,0],[1.55,.8,3.75],signalFibers()); break;
       case 'solder': {
         box(g, [3.8, 0.12, 2.7], [0, -0.3, 0], palette.ceramic, 'solder', 1);
         for (let x = -1.6; x < 1.7; x += 0.32) for (let z = -1.04; z < 1.1; z += 0.32) sphere(g, 0.074, [x, -0.13, z], palette.silver, id);
@@ -1005,7 +1061,7 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
       default: box(g, [2.5, 0.22, 1.8], [0, 0, 0], palette.silver, id, 1); break;
     }
     const node = state.nodes?.[id];
-    label(g, `${node?.name || id}${q(id, 1) === 0 ? ' · 未配置，结构示意' : ''}`, [0, 1.7, 0], id, 0);
+    label(g, `${node?.name || id}${q(id, 1) === 0 ? ' · 未配置，结构示意' : ''}`, [0, id === 'monitor_pd' ? .75 : 1.7, 0], id, 0);
   }
 
   function buildScene(allowHierarchy = true) {
@@ -1365,7 +1421,7 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
           o.material.color.lerp(new THREE.Color('#a4adb5'), 0.55);
         }
       }
-      if (hasAncestorId(o, state.selectedId)) {
+      if (state.selectedId !== state.viewId && hasAncestorId(o, state.selectedId)) {
         o.material.emissive.lerp(new THREE.Color('#167ea7'), 0.3);
         o.material.emissiveIntensity = 0.72;
       } else if (hasAncestorId(o, hoveredId)) {
@@ -1464,9 +1520,13 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
 
   function updateLabels() {
     const w = renderer.domElement.clientWidth, h = renderer.domElement.clientHeight;
-    const occupied = [];
-    const sorted = [...labels].sort((a, b) => a.priority - b.priority);
+    const viewport = container.getBoundingClientRect();
+    const reserved = container.parentElement?.querySelectorAll?.('.stage-top-note, .stage-controls, .stage-legend') || [];
+    const occupied = [...reserved].map(el=>el.getBoundingClientRect()).filter(r=>r.width&&r.height).map(r=>({x:r.left-viewport.left-5,y:r.top-viewport.top-5,width:r.width+10,height:r.height+10}));
+    const rank = l => l.priority + (l.anchor.parent?.userData.signalRoute ? 5 : 0);
+    const sorted = [...labels].sort((a, b) => rank(a) - rank(b));
     for (const l of sorted) {
+      l.leader.style.display = 'none';
       let visible = true;
       for (let cursor = l.anchor; cursor; cursor = cursor.parent) if (!cursor.visible) { visible = false; break; }
       const activeLabelRoot = navigationTween?.kind === 'in' && navigationInfo.phase < 0.44 ? navigationTween.previousRoot : currentRoot;
@@ -1474,17 +1534,31 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
       l.anchor.getWorldPosition(projected);
       projected.project(camera);
       const x = (projected.x + 1) * w / 2, y = (-projected.y + 1) * h / 2;
-      if (projected.z < -1 || projected.z > 1 || x < 18 || x > w - 18 || y < 28 || y > h - 16) { l.el.style.display = 'none'; continue; }
+      if (projected.z < -1 || projected.z > 1 || x < 12 || x > w - 12 || y < 20 || y > h - 12) { l.el.style.display = 'none'; continue; }
       l.el.style.display = 'block';
       l.width = l.el.offsetWidth || l.el.textContent.length * 9 + 20;
       l.height = l.el.offsetHeight || 24;
-      const r = { x: x - l.width / 2 - 3, y: y - l.height - 3, width: l.width + 6, height: l.height + 6 };
-      const collision = occupied.some(a => r.x < a.x + a.width && r.x + r.width > a.x && r.y < a.y + a.height && r.y + r.height > a.y);
-      if (collision && l.id !== state.selectedId) { l.el.style.display = 'none'; continue; }
-      occupied.push(r);
-      l.el.style.left = `${Math.round(x)}px`;
-      l.el.style.top = `${Math.round(y)}px`;
+      // Relocate colliding labels and connect them back to the real part.
+      // Device labels precede decorative route captions in tight layouts.
+      let placed = null;
+      const shifts = [[0,0],[0,-34],[0,34],[-68,0],[68,0],[-68,-34],[68,-34],[-68,34],[68,34],[0,-68],[0,68],[-125,0],[125,0],[-125,34],[125,34],[0,102]];
+      for (const [dx,dy] of shifts) {
+        const px = Math.max(l.width/2+8,Math.min(w-l.width/2-8,x+dx));
+        const py = Math.max(l.height+8,Math.min(h-14,y+dy));
+        const r = {x:px-l.width/2-4,y:py-l.height-4,width:l.width+8,height:l.height+8};
+        if (occupied.some(a=>r.x<a.x+a.width&&r.x+r.width>a.x&&r.y<a.y+a.height&&r.y+r.height>a.y)) continue;
+        placed = {px,py,r}; break;
+      }
+      if (!placed) { l.el.style.display = 'none'; continue; }
+      occupied.push(placed.r);
+      l.el.style.left = `${Math.round(placed.px)}px`;
+      l.el.style.top = `${Math.round(placed.py)}px`;
       l.el.style.opacity = String(l.root.userData.opacity);
+      if (Math.hypot(placed.px-x,placed.py-y)>8) {
+        const endX = Math.max(placed.px-l.width/2,Math.min(placed.px+l.width/2,x));
+        const endY = Math.max(placed.py-l.height,Math.min(placed.py,y));
+        Object.assign(l.leader.style,{display:'block',left:`${x}px`,top:`${y}px`,width:`${Math.hypot(endX-x,endY-y)}px`,transform:`rotate(${Math.atan2(endY-y,endX-x)}rad)`,opacity:String(l.root.userData.opacity)});
+      }
     }
   }
   function disposeRoot(root) {
@@ -1496,7 +1570,7 @@ export function createScene(container, { onSelect, onEnter, onHover } = {}) {
     });
     for (const g of geometrySet) g.dispose();
     for (const m of materialSet) m.dispose();
-    labels = labels.filter(l => { if (l.root === root) { l.el.remove(); return false; } return true; });
+    labels = labels.filter(l => { if (l.root === root) { l.el.remove(); l.leader.remove(); return false; } return true; });
   }
   function resize() {
     if (disposed) return;
